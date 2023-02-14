@@ -1,4 +1,4 @@
-import { Module, Response } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Survey } from './survey/entities/survey.entity';
@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Answer } from './answer/entities/answer.entity';
 import { Participant } from './participant/entities/participant.entity';
 import { Question } from './question/entities/question.entity';
+import { Response } from './response/entities/response.entity';
 
 @Module({
   imports: [
@@ -14,9 +15,9 @@ import { Question } from './question/entities/question.entity';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'soyi',
-      password: 'soyi',
-      database: 'survey',
+      username: 'postgres',
+      password: 'postgres',
+      database: 'postgres',
       entities: [Answer, Participant, Question, Response, Survey],
       synchronize: true,
     }),
