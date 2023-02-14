@@ -19,17 +19,17 @@ export class QuestionResolver {
   }
 
   @Query(() => Question, { name: 'question' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.questionService.findOne(id);
+  findOne(@Args('questionId', { type: () => Int }) questionId: number) {
+    return this.questionService.findOne(questionId);
   }
 
   @Mutation(() => Question)
   updateQuestion(@Args('updateQuestionInput') updateQuestionInput: UpdateQuestionInput) {
-    return this.questionService.update(updateQuestionInput.id, updateQuestionInput);
+    return this.questionService.update(updateQuestionInput.questionId, updateQuestionInput);
   }
 
   @Mutation(() => Question)
-  removeQuestion(@Args('id', { type: () => Int }) id: number) {
-    return this.questionService.remove(id);
+  removeQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
+    return this.questionService.remove(questionId);
   }
 }

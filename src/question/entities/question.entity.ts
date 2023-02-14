@@ -1,7 +1,27 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, GraphQLTimestamp } from '@nestjs/graphql';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
+@Entity()
 export class Question {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field(() => Int)
+  @PrimaryGeneratedColumn()
+  questionId: number;
+
+  @Field(() => Int)
+  @Column()
+  questionNumber: number;
+
+  @Field(() => String)
+  @Column()
+  questionContent: string;
+
+  @Field(() => GraphQLTimestamp)
+  @Column()
+  createdAt: Date;
+
+  @Field(() => GraphQLTimestamp)
+  updatedAt: Date;
+
+
 }
