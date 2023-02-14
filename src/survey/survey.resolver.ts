@@ -19,17 +19,17 @@ export class SurveyResolver {
   }
 
   @Query(() => Survey, { name: 'survey' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.surveyService.findOne(id);
+  findOne(@Args('surveyId', { type: () => Int }) surveyId: number) {
+    return this.surveyService.findOne(surveyId);
   }
 
   @Mutation(() => Survey)
   updateSurvey(@Args('updateSurveyInput') updateSurveyInput: UpdateSurveyInput) {
-    return this.surveyService.update(updateSurveyInput.id, updateSurveyInput);
+    return this.surveyService.update(updateSurveyInput.surveyId, updateSurveyInput);
   }
 
   @Mutation(() => Survey)
-  removeSurvey(@Args('id', { type: () => Int }) id: number) {
-    return this.surveyService.remove(id);
+  removeSurvey(@Args('surveyId', { type: () => Int }) surveyId: number) {
+    return this.surveyService.remove(surveyId);
   }
 }
