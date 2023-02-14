@@ -12,15 +12,15 @@ export class ResponseService {
     return `This action returns all response`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} response`;
+  findOne(responseId: number) {
+    return `This action returns a #${responseId} response`;
   }
 
-  update(id: number, updateResponseInput: UpdateResponseInput) {
-    return `This action updates a #${id} response`;
+  update(responseId: number, updateResponseInput: UpdateResponseInput) {
+    return `This action updates a #${responseId} response`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} response`;
+  remove(responseId: number) {
+    return `This action removes a #${responseId} response`;
   }
 }
