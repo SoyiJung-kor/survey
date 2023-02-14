@@ -19,17 +19,17 @@ export class AnswerResolver {
   }
 
   @Query(() => Answer, { name: 'answer' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.answerService.findOne(id);
+  findOne(@Args('answerId', { type: () => Int }) answerId: number) {
+    return this.answerService.findOne(answerId);
   }
 
   @Mutation(() => Answer)
   updateAnswer(@Args('updateAnswerInput') updateAnswerInput: UpdateAnswerInput) {
-    return this.answerService.update(updateAnswerInput.id, updateAnswerInput);
+    return this.answerService.update(updateAnswerInput.answerId, updateAnswerInput);
   }
 
   @Mutation(() => Answer)
-  removeAnswer(@Args('id', { type: () => Int }) id: number) {
-    return this.answerService.remove(id);
+  removeAnswer(@Args('answerId', { type: () => Int }) answerId: number) {
+    return this.answerService.remove(answerId);
   }
 }
