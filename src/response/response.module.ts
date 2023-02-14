@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, Response } from '@nestjs/common';
 import { ResponseService } from './response.service';
 import { ResponseResolver } from './response.resolver';
 import { Participant } from '../participant/entities/participant.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [ Participant],
-  providers: [ResponseResolver, ResponseService]
+  imports: [Participant, TypeOrmModule.forFeature([Response])],
+  providers: [ResponseResolver, ResponseService],
+  exports: [TypeOrmModule],
 })
 export class ResponseModule {}

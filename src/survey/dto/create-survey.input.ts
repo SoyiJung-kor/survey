@@ -2,6 +2,6 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreateSurveyInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field(() => String, { description: '설문지 이름' })
+  surveyTitle: string;
 }

@@ -1,8 +1,9 @@
 import { ObjectType, Field, Int, GraphQLTimestamp } from '@nestjs/graphql';
-import { Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Response } from '../../response/entities/response.entity';
 
 @ObjectType()
+@Entity()
 export class Participant {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
@@ -19,8 +20,7 @@ export class Participant {
   @Field(() => GraphQLTimestamp)
   @Column()
   modifiedAt: Date;
-  
-  @OneToMany(type => Response, responses => responses.participant)
-  responses: Response[];
 
+  @OneToMany(() => Response, (responses) => responses.participant)
+  responses: Response[];
 }
