@@ -19,17 +19,17 @@ export class ParticipantResolver {
   }
 
   @Query(() => Participant, { name: 'participant' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.participantService.findOne(id);
+  findOne(@Args('participantId', { type: () => Int }) participantId: number) {
+    return this.participantService.findOne(participantId);
   }
 
   @Mutation(() => Participant)
   updateParticipant(@Args('updateParticipantInput') updateParticipantInput: UpdateParticipantInput) {
-    return this.participantService.update(updateParticipantInput.id, updateParticipantInput);
+    return this.participantService.update(updateParticipantInput.participantId, updateParticipantInput);
   }
 
   @Mutation(() => Participant)
-  removeParticipant(@Args('id', { type: () => Int }) id: number) {
-    return this.participantService.remove(id);
+  removeParticipant(@Args('participantId', { type: () => Int }) participantId: number) {
+    return this.participantService.remove(participantId);
   }
 }

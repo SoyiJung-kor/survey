@@ -12,15 +12,15 @@ export class ParticipantService {
     return `This action returns all participant`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} participant`;
+  findOne(participantId: number) {
+    return `This action returns a #${participantId} participant`;
   }
 
-  update(id: number, updateParticipantInput: UpdateParticipantInput) {
-    return `This action updates a #${id} participant`;
+  update(participantId: number, updateParticipantInput: UpdateParticipantInput) {
+    return `This action updates a #${participantId} participant`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} participant`;
+  remove(participantId: number) {
+    return `This action removes a #${participantId} participant`;
   }
 }
