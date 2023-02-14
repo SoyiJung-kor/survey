@@ -6,9 +6,10 @@ import { QuestionModule } from './question/question.module';
 import { SurveyModule } from './survey/survey.module';
 import { ResponseModule } from './response/response.module';
 import { ParticipantModule } from './participant/participant.module';
+import { Survey } from './survey/entities/survey.entity';
 
 @Module({
-  imports: [AnswerModule, QuestionModule, SurveyModule, ResponseModule, ParticipantModule],
+  imports: [Survey],
   controllers: [AppController],
   providers: [AppService],
 })
