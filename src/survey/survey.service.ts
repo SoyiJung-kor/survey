@@ -12,15 +12,15 @@ export class SurveyService {
     return `This action returns all survey`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} survey`;
+  findOne(surveyId: number) {
+    return `This action returns a #${surveyId} survey`;
   }
 
-  update(id: number, updateSurveyInput: UpdateSurveyInput) {
-    return `This action updates a #${id} survey`;
+  update(surveyId: number, updateSurveyInput: UpdateSurveyInput) {
+    return `This action updates a #${surveyId} survey`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} survey`;
+  remove(surveyId: number) {
+    return `This action removes a #${surveyId} survey`;
   }
 }
