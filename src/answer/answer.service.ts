@@ -38,8 +38,12 @@ export class AnswerService {
     return this.answerRepository.merge(await answer, updateAnswerInput);
   }
 
-  remove(answerId: number) {
-    return `This action removes a #${answerId} answer`;
+  async remove(answerId: number): Promise<void> {
+    const answer = this.answerRepository.findOneBy({ answerId });
+    if (!answer) {
+      throw new Error("CAN'T FIND THE ANSWER!");
+    }
+    await this.answerRepository.delete({ answerId });
   }
 
   validAnswerById(answerId: number) {
