@@ -42,6 +42,7 @@ type Query {
   findSurvey(surveyId: Int!): Survey!
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
+  findAllAnswers: [Answer!]!
   answer(answerId: Int!): Answer!
   response(responseId: Int!): Response!
 }

@@ -24,7 +24,7 @@ export class AnswerService {
   }
 
   findAll() {
-    return `This action returns all answer`;
+    return this.answerRepository.find();
   }
 
   findOne(answerId: number) {
