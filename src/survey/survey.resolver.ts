@@ -9,23 +9,30 @@ export class SurveyResolver {
   constructor(private readonly surveyService: SurveyService) {}
 
   @Mutation(() => Survey)
-  createSurvey(@Args('createSurveyInput') createSurveyInput: CreateSurveyInput) {
+  createSurvey(
+    @Args('createSurveyInput') createSurveyInput: CreateSurveyInput,
+  ) {
     return this.surveyService.create(createSurveyInput);
   }
 
-  @Query(() => [Survey], { name: 'survey' })
+  @Query(() => [Survey], { name: 'findAllSurveys' })
   findAll() {
     return this.surveyService.findAll();
   }
 
-  @Query(() => Survey, { name: 'survey' })
+  @Query(() => Survey, { name: 'findSurvey' })
   findOne(@Args('surveyId', { type: () => Int }) surveyId: number) {
     return this.surveyService.findOne(surveyId);
   }
 
   @Mutation(() => Survey)
-  updateSurvey(@Args('updateSurveyInput') updateSurveyInput: UpdateSurveyInput) {
-    return this.surveyService.update(updateSurveyInput.surveyId, updateSurveyInput);
+  updateSurvey(
+    @Args('updateSurveyInput') updateSurveyInput: UpdateSurveyInput,
+  ) {
+    return this.surveyService.update(
+      updateSurveyInput.surveyId,
+      updateSurveyInput,
+    );
   }
 
   @Mutation(() => Survey)
