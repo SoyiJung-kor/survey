@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSurveyInput } from './dto/create-survey.input';
@@ -13,22 +13,48 @@ export class SurveyService {
   ) {}
 
   create(createSurveyInput: CreateSurveyInput) {
-    return 'This action adds a new survey';
+    const newSurvey = this.surveyRepository.create(createSurveyInput);
+    return this.surveyRepository.save(newSurvey);
   }
 
   findAll() {
-    return `This action returns all survey`;
+    return this.surveyRepository.find();
   }
 
   findOne(surveyId: number) {
-    return `This action returns a #${surveyId} survey`;
+    this.validSurveyById(surveyId);
+    return this.surveyRepository.findOneBy({ surveyId });
   }
 
-  update(surveyId: number, updateSurveyInput: UpdateSurveyInput) {
-    return `This action updates a #${surveyId} survey`;
+  async update(surveyId: number, updateSurveyInput: UpdateSurveyInput) {
+    const survey = this.validSurveyById(surveyId);
+    this.surveyRepository.merge(await survey, updateSurveyInput);
+    return this.surveyRepository.save(await survey);
   }
 
-  remove(surveyId: number) {
-    return `This action removes a #${surveyId} survey`;
+  async remove(surveyId: number): Promise<void> {
+    const survey = this.surveyRepository.findOneBy({ surveyId });
+    if (!survey) {
+      throw new Error("CAN'T FIND THE SURVEY!");
+    }
+    await this.surveyRepository.delete({ surveyId });
+  }
+
+  validSurveyById(surveyId: number) {
+    try {
+      this.surveyRepository.findOneBy({ surveyId });
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_GATEWAY,
+          error: 'message',
+        },
+        HttpStatus.BAD_GATEWAY,
+        {
+          cause: error,
+        },
+      );
+    }
+    return this.surveyRepository.findOneBy({ surveyId });
   }
 }
