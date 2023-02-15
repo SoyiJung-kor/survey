@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToOne,
   OneToMany,
@@ -27,15 +28,13 @@ export class Question {
   @Column()
   questionContent: string;
 
-  @Field()
   @CreateDateColumn()
-  createdAt: Date;
+  readonly createdAt: Date;
 
-  @Field()
   @UpdateDateColumn()
-  updatedAt: Date;
+  readonly updatedAt: Date;
 
-  @ManyToOne(() => Survey, (survey) => survey.questions)
+  @ManyToOne(() => Survey, (survey) => survey.questions, { nullable: false })
   survey: Survey;
 
   @OneToMany(() => Answer, (answers) => answers.question, { cascade: true })

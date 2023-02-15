@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { ObjectType, Field, Int, GraphQLISODateTime } from '@nestjs/graphql';
-import { Column, CreateDateColumn, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
 import { Response } from '../../response/entities/response.entity';
 
@@ -21,10 +21,9 @@ export class Survey {
   @UpdateDateColumn()
   readonly modifiedAt: Date;
 
-  @OneToMany((type) => Question, (question) => question.survey, { cascade : true })
-  @JoinTable()
+  @OneToMany(() => Question, (question) => question.survey, { cascade : true })
   questions: Question[];
 
-  @OneToMany((type) => Response, (response) => response.survey)
+  @OneToMany(() => Response, (response) => response.survey)
   responses: Response[];
 }
