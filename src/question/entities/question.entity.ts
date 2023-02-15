@@ -1,10 +1,12 @@
 import { ObjectType, Field, Int, GraphQLTimestamp } from '@nestjs/graphql';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Answer } from '../../answer/entities/answer.entity';
 import { Survey } from '../../survey/entities/survey.entity';
@@ -24,11 +26,12 @@ export class Question {
   @Column()
   questionContent: string;
 
-  @Field(() => GraphQLTimestamp)
-  @Column()
+  @Field()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Field(() => GraphQLTimestamp)
+  @Field()
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @ManyToOne(() => Survey, (survey) => survey.questions)
