@@ -35,8 +35,9 @@ export class SurveyResolver {
     );
   }
 
-  @Mutation(() => Survey)
+  @Mutation(() => Boolean)
   removeSurvey(@Args('surveyId', { type: () => Int }) surveyId: number) {
-    return this.surveyService.remove(surveyId);
+    this.surveyService.remove(surveyId);
+    return true;
   }
 }

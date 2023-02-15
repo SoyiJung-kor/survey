@@ -5,14 +5,7 @@
 type Survey {
   surveyId: Int!
   surveyTitle: String!
-  createdAt: DateTime!
-  modifiedAt: DateTime!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Query {
   findAllSurveys: [Survey!]!
@@ -22,7 +15,7 @@ type Query {
 type Mutation {
   createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
   updateSurvey(updateSurveyInput: UpdateSurveyInput!): Survey!
-  removeSurvey(surveyId: Int!): Survey!
+  removeSurvey(surveyId: Int!): Boolean!
 }
 
 input CreateSurveyInput {

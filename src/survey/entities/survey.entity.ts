@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { ObjectType, Field, Int, GraphQLISODateTime } from '@nestjs/graphql';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
 import { Response } from '../../response/entities/response.entity';
 
@@ -14,12 +15,10 @@ export class Survey {
   @Column()
   surveyTitle: string;
 
-  @Field(() => GraphQLISODateTime)
-  @Column()
+  @CreateDateColumn()
   readonly createdAt: Date;
 
-  @Field(() => GraphQLISODateTime)
-  @Column()
+  @CreateDateColumn()
   readonly modifiedAt: Date;
 
   @OneToMany((type) => Question, (question) => question.survey)
