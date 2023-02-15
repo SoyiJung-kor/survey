@@ -1,0 +1,36 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Survey {
+  surveyId: Int!
+  surveyTitle: String!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  survey(surveyId: Int!): Survey!
+}
+
+type Mutation {
+  createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
+  updateSurvey(updateSurveyInput: UpdateSurveyInput!): Survey!
+  removeSurvey(surveyId: Int!): Survey!
+}
+
+input CreateSurveyInput {
+  """설문지 이름"""
+  surveyTitle: String!
+}
+
+input UpdateSurveyInput {
+  """설문지 이름"""
+  surveyTitle: String
+  surveyId: Int!
+}
