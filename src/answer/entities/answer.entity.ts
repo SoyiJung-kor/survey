@@ -1,11 +1,17 @@
-import { ObjectType, Field, Int, GraphQLTimestamp } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
 
 @Entity()
 @ObjectType()
 export class Answer {
-
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   answerId: number;
@@ -22,15 +28,14 @@ export class Answer {
   @Column()
   answerScore: number;
 
-  @Field(() => GraphQLTimestamp)
-  @Column()
-  createdAt: Date;
+  @CreateDateColumn()
+  readonly createdAt: Date;
 
-  @Field(() => GraphQLTimestamp)
-  @Column()
-  modifiedAt:Date;
+  @UpdateDateColumn()
+  readonly modifiedAt: Date;
 
-  @ManyToOne(type => Question, question => question.answers)
+  @ManyToOne(() => Question, (question) => question.answers, {
+    nullable: false,
+  })
   question: Question;
-
 }

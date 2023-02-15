@@ -9,7 +9,9 @@ export class AnswerResolver {
   constructor(private readonly answerService: AnswerService) {}
 
   @Mutation(() => Answer)
-  createAnswer(@Args('createAnswerInput') createAnswerInput: CreateAnswerInput) {
+  createAnswer(
+    @Args('createAnswerInput') createAnswerInput: CreateAnswerInput,
+  ) {
     return this.answerService.create(createAnswerInput);
   }
 
@@ -24,8 +26,13 @@ export class AnswerResolver {
   }
 
   @Mutation(() => Answer)
-  updateAnswer(@Args('updateAnswerInput') updateAnswerInput: UpdateAnswerInput) {
-    return this.answerService.update(updateAnswerInput.answerId, updateAnswerInput);
+  updateAnswer(
+    @Args('updateAnswerInput') updateAnswerInput: UpdateAnswerInput,
+  ) {
+    return this.answerService.update(
+      updateAnswerInput.answerId,
+      updateAnswerInput,
+    );
   }
 
   @Mutation(() => Answer)

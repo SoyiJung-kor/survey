@@ -7,14 +7,7 @@ type Answer {
   answerNumber: Int!
   answerContent: String!
   answerScore: Int!
-  createdAt: Timestamp!
-  modifiedAt: Timestamp!
 }
-
-"""
-`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
-"""
-scalar Timestamp
 
 type Question {
   questionId: Int!
@@ -33,6 +26,11 @@ type Response {
   createdAt: Timestamp!
   modifiedAt: Timestamp!
 }
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
 
 type Survey {
   surveyId: Int!
@@ -91,13 +89,27 @@ input UpdateQuestionInput {
 }
 
 input CreateAnswerInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """answer Number"""
+  answerNumber: Int!
+
+  """answer Content"""
+  answerContent: String!
+
+  """answer Score"""
+  answerScore: Int!
+  questionId: Int!
 }
 
 input UpdateAnswerInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  """answer Number"""
+  answerNumber: Int
+
+  """answer Content"""
+  answerContent: String
+
+  """answer Score"""
+  answerScore: Int
+  questionId: Int
   answerId: Int!
 }
 
