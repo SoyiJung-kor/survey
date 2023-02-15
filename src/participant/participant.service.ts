@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantInput } from './dto/create-participant.input';
@@ -24,7 +24,8 @@ export class ParticipantService {
   }
 
   findOne(participantId: number) {
-    return `This action returns a #${participantId} participant`;
+    this.validParticipantById(participantId);
+    return this.participantRepository.findOneBy({ participantId });
   }
 
   update(
@@ -36,5 +37,23 @@ export class ParticipantService {
 
   remove(participantId: number) {
     return `This action removes a #${participantId} participant`;
+  }
+
+  validParticipantById(participantId: number) {
+    try {
+      this.participantRepository.findOneBy({ participantId });
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_GATEWAY,
+          error: 'message',
+        },
+        HttpStatus.BAD_GATEWAY,
+        {
+          cause: error,
+        },
+      );
+    }
+    return this.participantRepository.findOneBy({ participantId });
   }
 }

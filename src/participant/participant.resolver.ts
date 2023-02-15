@@ -21,7 +21,7 @@ export class ParticipantResolver {
     return this.participantService.findAll();
   }
 
-  @Query(() => Participant, { name: 'participant' })
+  @Query(() => Participant, { name: 'findParticipant' })
   findOne(@Args('participantId', { type: () => Int }) participantId: number) {
     return this.participantService.findOne(participantId);
   }
