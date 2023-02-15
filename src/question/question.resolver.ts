@@ -9,7 +9,9 @@ export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
   @Mutation(() => Question)
-  createQuestion(@Args('createQuestionInput') createQuestionInput: CreateQuestionInput) {
+  createQuestion(
+    @Args('createQuestionInput') createQuestionInput: CreateQuestionInput,
+  ) {
     return this.questionService.create(createQuestionInput);
   }
 
@@ -24,8 +26,13 @@ export class QuestionResolver {
   }
 
   @Mutation(() => Question)
-  updateQuestion(@Args('updateQuestionInput') updateQuestionInput: UpdateQuestionInput) {
-    return this.questionService.update(updateQuestionInput.questionId, updateQuestionInput);
+  updateQuestion(
+    @Args('updateQuestionInput') updateQuestionInput: UpdateQuestionInput,
+  ) {
+    return this.questionService.update(
+      updateQuestionInput.questionId,
+      updateQuestionInput,
+    );
   }
 
   @Mutation(() => Question)

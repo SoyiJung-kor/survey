@@ -11,8 +11,9 @@ export class QuestionService {
     @InjectRepository(Question)
     private questionRepository: Repository<Question>,
   ) {}
-  create(createQuestionInput: CreateQuestionInput) {
-    return 'This action adds a new question';
+  create(input: CreateQuestionInput) {
+    const question = this.questionRepository.create(input);
+    return this.questionRepository.save(question);
   }
 
   findAll() {
