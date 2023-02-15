@@ -8,7 +8,7 @@ import { Survey } from '../../survey/entities/survey.entity';
 export class Response {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  responseId: number
+  responseId: number;
 
   @Field(() => String)
   @Column()
@@ -42,9 +42,9 @@ export class Response {
   @Column()
   modifiedAt: Date;
 
-  @ManyToOne(type => Participant, participant => participant.responses)
+  @ManyToOne(() => Participant, (participant) => participant.responses)
   participant: Participant;
 
-  @ManyToOne(type => Survey, survey => survey.responses)
+  @ManyToOne(() => Survey, (survey) => survey.responses)
   survey: Survey;
 }

@@ -11,8 +11,12 @@ export class ParticipantService {
     @InjectRepository(Participant)
     private participantRepository: Repository<Participant>,
   ) {}
+
   create(createParticipantInput: CreateParticipantInput) {
-    return 'This action adds a new participant';
+    const newParticipant = this.participantRepository.create(
+      createParticipantInput,
+    );
+    return this.participantRepository.save(newParticipant);
   }
 
   findAll() {

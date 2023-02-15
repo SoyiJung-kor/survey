@@ -1,5 +1,12 @@
-import { ObjectType, Field, Int, GraphQLTimestamp } from '@nestjs/graphql';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Response } from '../../response/entities/response.entity';
 
 @ObjectType()
@@ -13,14 +20,14 @@ export class Participant {
   @Column()
   email: string;
 
-  @Field(() => GraphQLTimestamp)
-  @Column()
-  createdAt: Date;
+  @CreateDateColumn()
+  readonly createdAt: Date;
 
-  @Field(() => GraphQLTimestamp)
-  @Column()
-  modifiedAt: Date;
+  @UpdateDateColumn()
+  readonly modifiedAt: Date;
 
-  @OneToMany(() => Response, (responses) => responses.participant)
+  @OneToMany(() => Response, (responses) => responses.participant, {
+    cascade: true,
+  })
   responses: Response[];
 }
