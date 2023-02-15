@@ -2,6 +2,38 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Answer {
+  answerId: Int!
+  answerNumber: Int!
+  answerContent: String!
+  answerScore: Int!
+  createdAt: Timestamp!
+  modifiedAt: Timestamp!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+type Question {
+  questionId: Int!
+  questionNumber: Int!
+  questionContent: String!
+}
+
+type Response {
+  responseId: Int!
+  surveyTitle: String!
+  questionNumber: Int!
+  questionContent: String!
+  answerNumber: Int!
+  answerContent: String!
+  answerScore: Int!
+  createdAt: Timestamp!
+  modifiedAt: Timestamp!
+}
+
 type Survey {
   surveyId: Int!
   surveyTitle: String!
@@ -10,12 +42,25 @@ type Survey {
 type Query {
   findAllSurveys: [Survey!]!
   findSurvey(surveyId: Int!): Survey!
+  findAllQuestions: [Question!]!
+  findQuestion(questionId: Int!): Question!
+  answer(answerId: Int!): Answer!
+  response(responseId: Int!): Response!
 }
 
 type Mutation {
   createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
   updateSurvey(updateSurveyInput: UpdateSurveyInput!): Survey!
   removeSurvey(surveyId: Int!): Boolean!
+  createQuestion(createQuestionInput: CreateQuestionInput!): Question!
+  updateQuestion(updateQuestionInput: UpdateQuestionInput!): Question!
+  removeQuestion(questionId: Int!): Boolean!
+  createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
+  updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
+  removeAnswer(answerId: Int!): Answer!
+  createResponse(createResponseInput: CreateResponseInput!): Response!
+  updateResponse(updateResponseInput: UpdateResponseInput!): Response!
+  removeResponse(responseId: Int!): Response!
 }
 
 input CreateSurveyInput {
@@ -27,4 +72,42 @@ input UpdateSurveyInput {
   """설문지 이름"""
   surveyTitle: String
   surveyId: Int!
+}
+
+input CreateQuestionInput {
+  """question Number"""
+  questionNumber: Int!
+
+  """question Content"""
+  questionContent: String!
+  surveyId: Int!
+}
+
+input UpdateQuestionInput {
+  questionNumber: Int!
+  questionContent: String!
+  surveyId: Int!
+  questionId: Int!
+}
+
+input CreateAnswerInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateAnswerInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  answerId: Int!
+}
+
+input CreateResponseInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateResponseInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  responseId: Int!
 }

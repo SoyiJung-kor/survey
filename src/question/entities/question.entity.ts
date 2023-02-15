@@ -1,10 +1,14 @@
-import { ObjectType, Field, Int, GraphQLTimestamp } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
+  CreateDateColumn,
   Entity,
+  JoinColumn,
+  JoinTable,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Answer } from '../../answer/entities/answer.entity';
 import { Survey } from '../../survey/entities/survey.entity';
@@ -24,16 +28,16 @@ export class Question {
   @Column()
   questionContent: string;
 
-  @Field(() => GraphQLTimestamp)
-  @Column()
-  createdAt: Date;
+  @CreateDateColumn()
+  readonly createdAt: Date;
 
-  @Field(() => GraphQLTimestamp)
-  updatedAt: Date;
+  @UpdateDateColumn()
+  readonly updatedAt: Date;
 
-  @ManyToOne(() => Survey, (survey) => survey.questions)
+  @ManyToOne(() => Survey, (survey) => survey.questions, { nullable: false })
   survey: Survey;
 
-  @OneToMany(() => Answer, (answers) => answers.question)
+  @OneToMany(() => Answer, (answers) => answers.question, { cascade: true })
+  @JoinTable()
   answers: Answer[];
 }

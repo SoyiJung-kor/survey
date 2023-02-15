@@ -9,27 +9,34 @@ export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
   @Mutation(() => Question)
-  createQuestion(@Args('createQuestionInput') createQuestionInput: CreateQuestionInput) {
+  createQuestion(
+    @Args('createQuestionInput') createQuestionInput: CreateQuestionInput,
+  ) {
     return this.questionService.create(createQuestionInput);
   }
 
-  @Query(() => [Question], { name: 'question' })
+  @Query(() => [Question], { name: 'findAllQuestions' })
   findAll() {
     return this.questionService.findAll();
   }
 
-  @Query(() => Question, { name: 'question' })
+  @Query(() => Question, { name: 'findQuestion' })
   findOne(@Args('questionId', { type: () => Int }) questionId: number) {
     return this.questionService.findOne(questionId);
   }
 
   @Mutation(() => Question)
-  updateQuestion(@Args('updateQuestionInput') updateQuestionInput: UpdateQuestionInput) {
-    return this.questionService.update(updateQuestionInput.questionId, updateQuestionInput);
+  updateQuestion(
+    @Args('updateQuestionInput') updateQuestionInput: UpdateQuestionInput,
+  ) {
+    return this.questionService.update(
+      updateQuestionInput.questionId,
+      updateQuestionInput,
+    );
   }
 
-  @Mutation(() => Question)
+  @Mutation(() => Boolean)
   removeQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
-    return this.questionService.remove(questionId);
+    this.questionService.remove(questionId);
   }
 }
