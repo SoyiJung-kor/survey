@@ -16,15 +16,15 @@ export class Survey {
 
   @Field(() => GraphQLISODateTime)
   @Column()
-  createdAt: Date;
+  readonly createdAt: Date;
 
   @Field(() => GraphQLISODateTime)
   @Column()
-  modifiedAt: Date;
+  readonly modifiedAt: Date;
 
-  @OneToMany(type => Question, question => question.survey)
+  @OneToMany((type) => Question, (question) => question.survey)
   questions: Question[];
 
-  @OneToMany(type => Response, response => response.survey)
+  @OneToMany((type) => Response, (response) => response.survey)
   responses: Response[];
 }

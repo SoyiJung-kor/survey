@@ -26,8 +26,9 @@ export class SurveyService {
     return this.surveyRepository.findOneBy({ surveyId });
   }
 
-  update(surveyId: number, updateSurveyInput: UpdateSurveyInput) {
-    return `This action updates a #${surveyId} survey`;
+  async update(surveyId: number, updateSurveyInput: UpdateSurveyInput) {
+    const survey = this.validSurveyById(surveyId);
+    return this.surveyRepository.merge(await survey, updateSurveyInput);
   }
 
   remove(surveyId: number) {
@@ -36,9 +37,10 @@ export class SurveyService {
 
   validSurveyById(surveyId: number) {
     try {
-      const survey = this.surveyRepository.findOneBy({ surveyId });
+      this.surveyRepository.findOneBy({ surveyId });
     } catch {
       throw "CAN'T FIND THE SURVEY";
     }
+    return this.surveyRepository.findOneBy({ surveyId });
   }
 }
