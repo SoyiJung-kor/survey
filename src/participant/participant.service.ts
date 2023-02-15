@@ -28,11 +28,13 @@ export class ParticipantService {
     return this.participantRepository.findOneBy({ participantId });
   }
 
-  update(
+  async update(
     participantId: number,
     updateParticipantInput: UpdateParticipantInput,
   ) {
-    return `This action updates a #${participantId} participant`;
+    const participant = this.validParticipantById(participantId);
+    this.participantRepository.merge(await participant, updateParticipantInput);
+    return this.participantRepository.save(await participant);
   }
 
   remove(participantId: number) {
