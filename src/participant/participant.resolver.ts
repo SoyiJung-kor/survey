@@ -9,11 +9,14 @@ export class ParticipantResolver {
   constructor(private readonly participantService: ParticipantService) {}
 
   @Mutation(() => Participant)
-  createParticipant(@Args('createParticipantInput') createParticipantInput: CreateParticipantInput) {
+  createParticipant(
+    @Args('createParticipantInput')
+    createParticipantInput: CreateParticipantInput,
+  ) {
     return this.participantService.create(createParticipantInput);
   }
 
-  @Query(() => [Participant], { name: 'participant' })
+  @Query(() => [Participant], { name: 'findAllParticipants' })
   findAll() {
     return this.participantService.findAll();
   }
@@ -24,12 +27,20 @@ export class ParticipantResolver {
   }
 
   @Mutation(() => Participant)
-  updateParticipant(@Args('updateParticipantInput') updateParticipantInput: UpdateParticipantInput) {
-    return this.participantService.update(updateParticipantInput.participantId, updateParticipantInput);
+  updateParticipant(
+    @Args('updateParticipantInput')
+    updateParticipantInput: UpdateParticipantInput,
+  ) {
+    return this.participantService.update(
+      updateParticipantInput.participantId,
+      updateParticipantInput,
+    );
   }
 
   @Mutation(() => Participant)
-  removeParticipant(@Args('participantId', { type: () => Int }) participantId: number) {
+  removeParticipant(
+    @Args('participantId', { type: () => Int }) participantId: number,
+  ) {
     return this.participantService.remove(participantId);
   }
 }

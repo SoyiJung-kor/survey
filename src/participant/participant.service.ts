@@ -20,7 +20,7 @@ export class ParticipantService {
   }
 
   findAll() {
-    return `This action returns all participant`;
+    return this.participantRepository.find();
   }
 
   findOne(participantId: number) {
