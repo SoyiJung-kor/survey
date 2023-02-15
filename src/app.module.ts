@@ -7,6 +7,10 @@ import { Answer } from './answer/entities/answer.entity';
 import { Participant } from './participant/entities/participant.entity';
 import { Question } from './question/entities/question.entity';
 import { Response } from './response/entities/response.entity';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
+import { DirectiveLocation, GraphQLDirective } from 'graphql';
 
 @Module({
   imports: [
@@ -20,6 +24,19 @@ import { Response } from './response/entities/response.entity';
       database: 'postgres',
       entities: [Answer, Participant, Question, Response, Survey],
       synchronize: true,
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      installSubscriptionHandlers: true,
+      buildSchemaOptions: {
+        directives: [
+          new GraphQLDirective({
+            name: 'upper',
+            locations: [DirectiveLocation.FIELD_DEFINITION],
+          }),
+        ],
+      },
     }),
   ],
   controllers: [AppController],
