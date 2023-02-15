@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantInput } from './dto/create-participant.input';
@@ -11,26 +11,51 @@ export class ParticipantService {
     @InjectRepository(Participant)
     private participantRepository: Repository<Participant>,
   ) {}
+
   create(createParticipantInput: CreateParticipantInput) {
-    return 'This action adds a new participant';
+    const newParticipant = this.participantRepository.create(
+      createParticipantInput,
+    );
+    return this.participantRepository.save(newParticipant);
   }
 
   findAll() {
-    return `This action returns all participant`;
+    return this.participantRepository.find();
   }
 
   findOne(participantId: number) {
-    return `This action returns a #${participantId} participant`;
+    this.validParticipantById(participantId);
+    return this.participantRepository.findOneBy({ participantId });
   }
 
-  update(
+  async update(
     participantId: number,
     updateParticipantInput: UpdateParticipantInput,
   ) {
-    return `This action updates a #${participantId} participant`;
+    const participant = this.validParticipantById(participantId);
+    this.participantRepository.merge(await participant, updateParticipantInput);
+    return this.participantRepository.save(await participant);
   }
 
   remove(participantId: number) {
     return `This action removes a #${participantId} participant`;
+  }
+
+  validParticipantById(participantId: number) {
+    try {
+      this.participantRepository.findOneBy({ participantId });
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_GATEWAY,
+          error: 'message',
+        },
+        HttpStatus.BAD_GATEWAY,
+        {
+          cause: error,
+        },
+      );
+    }
+    return this.participantRepository.findOneBy({ participantId });
   }
 }
