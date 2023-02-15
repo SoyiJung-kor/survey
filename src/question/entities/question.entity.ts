@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, GraphQLTimestamp } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
