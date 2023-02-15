@@ -13,15 +13,17 @@ export class SurveyService {
   ) {}
 
   create(createSurveyInput: CreateSurveyInput) {
-    return 'This action adds a new survey';
+    const newSurvey = this.surveyRepository.create(createSurveyInput);
+    return this.surveyRepository.save(newSurvey);
   }
 
   findAll() {
-    return `This action returns all survey`;
+    return this.surveyRepository.find();
   }
 
   findOne(surveyId: number) {
-    return `This action returns a #${surveyId} survey`;
+    this.validSurveyById(surveyId);
+    return this.surveyRepository.findOneBy({ surveyId });
   }
 
   update(surveyId: number, updateSurveyInput: UpdateSurveyInput) {
@@ -30,5 +32,13 @@ export class SurveyService {
 
   remove(surveyId: number) {
     return `This action removes a #${surveyId} survey`;
+  }
+
+  validSurveyById(surveyId: number) {
+    try {
+      const survey = this.surveyRepository.findOneBy({ surveyId });
+    } catch {
+      throw "CAN'T FIND THE SURVEY";
+    }
   }
 }
