@@ -50,7 +50,7 @@ type Query {
   findAllSurveys: [Survey!]!
   findSurvey(surveyId: Int!): Survey!
   findAllQuestions: [Question!]!
-  question(questionId: Int!): Question!
+  findQuestion(questionId: Int!): Question!
   answer(answerId: Int!): Answer!
   response(responseId: Int!): Response!
 }
