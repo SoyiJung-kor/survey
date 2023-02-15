@@ -1,8 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, EntityManager, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Survey } from '../survey/entities/survey.entity';
-import { SurveyService } from '../survey/survey.service';
 import { CreateQuestionInput } from './dto/create-question.input';
 import { UpdateQuestionInput } from './dto/update-question.input';
 import { Question } from './entities/question.entity';
@@ -15,13 +14,6 @@ export class QuestionService {
 
     private entityManager: EntityManager,
   ) {}
-
-  // async create(input: CreateQuestionInput) {
-  //   const question = this.questionRepository.create(input);
-  //   const survey = this.surveyService.findOne(input.surveyId);
-  //   await this.dataSource.manager.save(survey);
-  //   return await this.dataSource.manager.save(question);
-  // }
 
   async create(input: CreateQuestionInput) {
     const question = this.questionRepository.create(input);
@@ -44,12 +36,15 @@ export class QuestionService {
   async update(questionId: number, updateQuestionInput: UpdateQuestionInput) {
     this.validQuestionById(questionId);
     const question = this.questionRepository.findOneBy({ questionId });
-    this.questionRepository.merge(await question, updateQuestionInput);
-    return `This action updates a #${questionId} question`;
+    return this.questionRepository.merge(await question, updateQuestionInput);
   }
 
-  remove(questionId: number) {
-    return `This action removes a #${questionId} question`;
+  async remove(questionId: number): Promise<void> {
+    const question = this.questionRepository.findOneBy({ questionId });
+    if (!question) {
+      throw new Error("CAN'T FIND THE QUENSTION!");
+    }
+    await this.questionRepository.delete({ questionId });
   }
 
   validQuestionById(questionId: number) {

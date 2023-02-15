@@ -11,4 +11,7 @@ export class UpdateQuestionInput extends PartialType(CreateQuestionInput) {
 
   @Field(() => String)
   questionContent?: string;
+
+  @Field(() => Int)
+  surveyId?: number;
 }

@@ -35,8 +35,8 @@ export class QuestionResolver {
     );
   }
 
-  @Mutation(() => Question)
+  @Mutation(() => Boolean)
   removeQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
-    return this.questionService.remove(questionId);
+    this.questionService.remove(questionId);
   }
 }
