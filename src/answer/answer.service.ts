@@ -32,8 +32,10 @@ export class AnswerService {
     return this.answerRepository.findOneBy({ answerId });
   }
 
-  update(answerId: number, updateAnswerInput: UpdateAnswerInput) {
-    return `This action updates a #${answerId} answer`;
+  async update(answerId: number, updateAnswerInput: UpdateAnswerInput) {
+    this.validAnswerById(answerId);
+    const answer = this.answerRepository.findOneBy({ answerId });
+    return this.answerRepository.merge(await answer, updateAnswerInput);
   }
 
   remove(answerId: number) {
