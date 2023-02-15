@@ -31,8 +31,9 @@ export class SurveyService {
     return this.surveyRepository.merge(await survey, updateSurveyInput);
   }
 
-  remove(surveyId: number) {
-    return `This action removes a #${surveyId} survey`;
+  async remove(surveyId: number) {
+    const survey = this.validSurveyById(surveyId);
+    return this.surveyRepository.delete(await survey);
   }
 
   validSurveyById(surveyId: number) {
