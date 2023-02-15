@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { Question } from '../question/entities/question.entity';
@@ -28,7 +28,8 @@ export class AnswerService {
   }
 
   findOne(answerId: number) {
-    return `This action returns a #${answerId} answer`;
+    this.validAnswerById(answerId);
+    return this.answerRepository.findOneBy({ answerId });
   }
 
   update(answerId: number, updateAnswerInput: UpdateAnswerInput) {
@@ -37,5 +38,23 @@ export class AnswerService {
 
   remove(answerId: number) {
     return `This action removes a #${answerId} answer`;
+  }
+
+  validAnswerById(answerId: number) {
+    try {
+      this.answerRepository.findOneBy({ answerId });
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_GATEWAY,
+          error: 'message',
+        },
+        HttpStatus.BAD_GATEWAY,
+        {
+          cause: error,
+        },
+      );
+      return this.answerRepository.findOneBy({ answerId });
+    }
   }
 }

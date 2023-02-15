@@ -20,7 +20,7 @@ export class AnswerResolver {
     return this.answerService.findAll();
   }
 
-  @Query(() => Answer, { name: 'answer' })
+  @Query(() => Answer, { name: 'findAnswer' })
   findOne(@Args('answerId', { type: () => Int }) answerId: number) {
     return this.answerService.findOne(answerId);
   }

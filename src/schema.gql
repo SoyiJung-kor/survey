@@ -43,7 +43,7 @@ type Query {
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
   findAllAnswers: [Answer!]!
-  answer(answerId: Int!): Answer!
+  findAnswer(answerId: Int!): Answer!
   response(responseId: Int!): Response!
 }
 
