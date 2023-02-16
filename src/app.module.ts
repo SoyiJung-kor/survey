@@ -13,6 +13,8 @@ import { join } from 'path';
 import { SurveyModule } from './survey/survey.module';
 import { DataSource } from 'typeorm';
 import { PickedAnswer } from './pickedAnswer/entities/pickedAnswer.entity';
+import { PickedSurvey } from './pickedSurvey/entities/pickedSurvey.entity';
+import { PickedQuestion } from './pickedQuestion/entities/pickedQuestion.entity';
 
 @Module({
   imports: [
@@ -24,7 +26,16 @@ import { PickedAnswer } from './pickedAnswer/entities/pickedAnswer.entity';
       username: 'postgres',
       password: 'postgres',
       database: 'postgres',
-      entities: [Answer, Participant, Question, Response, Survey, PickedAnswer],
+      entities: [
+        Answer,
+        Participant,
+        Question,
+        Response,
+        Survey,
+        PickedAnswer,
+        PickedSurvey,
+        PickedQuestion,
+      ],
       synchronize: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({

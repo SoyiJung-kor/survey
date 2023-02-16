@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Response } from '../../response/entities/response.entity';
-import { Survey } from './survey.entity';
+import { Survey } from '../../survey/entities/survey.entity';
 
 @ObjectType()
 @Entity()

@@ -26,6 +26,6 @@ export class PickedQuestion {
   @Column()
   responseId: number;
 
-  @ManyToOne(() => Response, (response) => response.pickedQuestion)
+  @ManyToOne(() => Response, (response) => response.pickedQuestions)
   response: Response;
 }

@@ -6,7 +6,7 @@ import { Survey } from './entities/survey.entity';
 import { DateScalar } from '../common/scalars/date.scalar';
 import { QuestionModule } from '../question/question.module';
 import { ResponseModule } from '../response/response.module';
-import { PickedSurvey } from './entities/pickedSurvey.entity';
+import { PickedSurvey } from '../pickedSurvey/entities/pickedSurvey.entity';
 
 @Module({
   imports: [

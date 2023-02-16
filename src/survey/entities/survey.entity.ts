@@ -2,7 +2,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
-import { PickedSurvey } from './pickedSurvey.entity';
+import { PickedSurvey } from '../../pickedSurvey/entities/pickedSurvey.entity';
 
 @ObjectType()
 @Entity()

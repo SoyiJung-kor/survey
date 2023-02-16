@@ -12,7 +12,7 @@ import {
 import { PickedAnswer } from '../../pickedAnswer/entities/pickedAnswer.entity';
 import { Participant } from '../../participant/entities/participant.entity';
 import { PickedQuestion } from '../../pickedQuestion/entities/pickedQuestion.entity';
-import { PickedSurvey } from '../../survey/entities/pickedSurvey.entity';
+import { PickedSurvey } from '../../pickedSurvey/entities/pickedSurvey.entity';
 
 @ObjectType()
 @Entity()
@@ -48,7 +48,10 @@ export class Response {
   @JoinTable()
   pickedSurvey: PickedSurvey[];
 
-  @OneToMany(() => PickedQuestion, (pickedQuestion) => pickedQuestion.response)
+  @OneToMany(
+    () => PickedQuestion,
+    (pickedQuestions) => pickedQuestions.response,
+  )
   @JoinTable()
-  pickedQuestion: PickedQuestion[];
+  pickedQuestions: PickedQuestion[];
 }
