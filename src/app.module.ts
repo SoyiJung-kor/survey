@@ -12,6 +12,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { SurveyModule } from './survey/survey.module';
 import { DataSource } from 'typeorm';
+import { PickedAnswer } from './answer/entities/pickedAnswer.entity';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { DataSource } from 'typeorm';
       username: 'postgres',
       password: 'postgres',
       database: 'postgres',
-      entities: [Answer, Participant, Question, Response, Survey],
+      entities: [Answer, Participant, Question, Response, Survey, PickedAnswer],
       synchronize: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
