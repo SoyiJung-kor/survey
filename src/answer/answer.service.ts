@@ -7,7 +7,7 @@ import { CreateAnswerInput } from './dto/create-answer.input';
 import { CreatePickedAnswerInput } from './dto/create-pickedAnswer.input';
 import { UpdateAnswerInput } from './dto/update-answer.input';
 import { Answer } from './entities/answer.entity';
-import { PickedAnswer } from './entities/pickedAnswer.entity';
+import { PickedAnswer } from '../pickedAnswer/entities/pickedAnswer.entity';
 
 @Injectable()
 export class AnswerService {

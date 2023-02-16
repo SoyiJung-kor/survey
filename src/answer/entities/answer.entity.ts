@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
-import { PickedAnswer } from './pickedAnswer.entity';
+import { PickedAnswer } from '../../pickedAnswer/entities/pickedAnswer.entity';
 
 @Entity()
 @ObjectType()

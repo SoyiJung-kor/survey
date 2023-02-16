@@ -3,13 +3,10 @@ import { AnswerService } from './answer.service';
 import { AnswerResolver } from './answer.resolver';
 import { Answer } from './entities/answer.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PickedAnswer } from './entities/pickedAnswer.entity';
+import { PickedAnswerModule } from '../pickedAnswer/pickedAnswer.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Answer]),
-    TypeOrmModule.forFeature([PickedAnswer]),
-  ],
+  imports: [TypeOrmModule.forFeature([Answer]), PickedAnswerModule],
   providers: [AnswerResolver, AnswerService],
   exports: [TypeOrmModule],
 })

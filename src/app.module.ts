@@ -12,7 +12,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { SurveyModule } from './survey/survey.module';
 import { DataSource } from 'typeorm';
-import { PickedAnswer } from './answer/entities/pickedAnswer.entity';
+import { PickedAnswer } from './pickedAnswer/entities/pickedAnswer.entity';
 
 @Module({
   imports: [

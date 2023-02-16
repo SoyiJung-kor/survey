@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { PickedAnswer } from '../../answer/entities/pickedAnswer.entity';
+import { PickedAnswer } from '../../pickedAnswer/entities/pickedAnswer.entity';
 import { Participant } from '../../participant/entities/participant.entity';
 import { PickedQuestion } from '../../question/entities/pickedQuestion.entity';
 import { PickedSurvey } from '../../survey/entities/pickedSurvey.entity';

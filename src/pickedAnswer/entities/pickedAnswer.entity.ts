@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Response } from '../../response/entities/response.entity';
-import { Answer } from './answer.entity';
+import { Answer } from '../../answer/entities/answer.entity';
 
 @Entity()
 @ObjectType()

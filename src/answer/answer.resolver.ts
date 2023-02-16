@@ -3,7 +3,7 @@ import { AnswerService } from './answer.service';
 import { Answer } from './entities/answer.entity';
 import { CreateAnswerInput } from './dto/create-answer.input';
 import { UpdateAnswerInput } from './dto/update-answer.input';
-import { PickedAnswer } from './entities/pickedAnswer.entity';
+import { PickedAnswer } from '../pickedAnswer/entities/pickedAnswer.entity';
 
 @Resolver(() => Answer)
 export class AnswerResolver {
