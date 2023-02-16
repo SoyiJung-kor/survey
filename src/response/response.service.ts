@@ -1,11 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
-import { PickedAnswer } from '../answer/entities/pickedAnswer.entity';
-import { Question } from '../question/entities/question.entity';
-import { Survey } from '../survey/entities/survey.entity';
 import { CreateResponseInput } from './dto/create-response.input';
-import { UpdateResponseInput } from './dto/update-response.input';
 import { Response } from './entities/response.entity';
 
 @Injectable()
@@ -17,46 +13,42 @@ export class ResponseService {
   ) {}
 
   async create(input: CreateResponseInput) {
-    const survey = await this.findSurvey(input.surveyId);
-    const question = await await this.findQuestions(input.surveyId);
-  }
-
-  async updateAnswer() {
-    return 'This action adds a new response';
+    const response = this.responseRepository.create(input);
+    return this.responseRepository.save(response);
   }
 
   findAll() {
-    return `This action returns all response`;
+    return this.responseRepository.find();
   }
 
   findOne(responseId: number) {
-    return `This action returns a #${responseId} response`;
+    this.validResponseId(responseId);
+    return this.responseRepository.findOneBy({ responseId });
   }
 
-  update(responseId: number, updateResponseInput: UpdateResponseInput) {
-    return `This action updates a #${responseId} response`;
+  async remove(responseId: number): Promise<void> {
+    const response = this.responseRepository.findOneBy({ responseId });
+    if (!response) {
+      throw new Error("CAN'T FIND THE RESPONSE!");
+    }
+    await this.responseRepository.delete({ responseId });
   }
 
-  remove(responseId: number) {
-    return `This action removes a #${responseId} response`;
-  }
-
-  async findSurvey(surveyId: number) {
-    const survey = await this.entityManager.findOneById(Survey, surveyId);
-    return survey;
-  }
-
-  async findQuestions(surveyId: number) {
-    const questions = await this.entityManager.find(Question, {
-      cache: surveyId,
-    });
-    return questions;
-  }
-
-  async findAnswer(responseId: number) {
-    const answer = await this.entityManager.find(PickedAnswer, {
-      cache: responseId,
-    });
-    return answer;
+  validResponseId(responseId: number) {
+    try {
+      this.responseRepository.findOneBy({ responseId });
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_GATEWAY,
+          error: 'message',
+        },
+        HttpStatus.BAD_GATEWAY,
+        {
+          cause: error,
+        },
+      );
+    }
+    return this.responseRepository.findOneBy({ responseId });
   }
 }

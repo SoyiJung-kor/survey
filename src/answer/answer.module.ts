@@ -6,7 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PickedAnswer } from './entities/pickedAnswer.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Answer, PickedAnswer])],
+  imports: [
+    TypeOrmModule.forFeature([Answer]),
+    TypeOrmModule.forFeature([PickedAnswer]),
+  ],
   providers: [AnswerResolver, AnswerService],
   exports: [TypeOrmModule],
 })

@@ -31,6 +31,10 @@ export class Response {
   @UpdateDateColumn()
   modifiedAt: Date;
 
+  @Field(() => Int)
+  @Column()
+  participantId: number;
+
   @ManyToOne(() => Participant, (participant) => participant.responses, {
     nullable: false,
   })
