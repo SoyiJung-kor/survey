@@ -33,6 +33,10 @@ export class Question {
   @UpdateDateColumn()
   readonly updatedAt: Date;
 
+  @Field(() => Int)
+  @Column()
+  surveyId: number;
+
   @ManyToOne(() => Survey, (survey) => survey.questions, { nullable: false })
   survey: Survey;
 

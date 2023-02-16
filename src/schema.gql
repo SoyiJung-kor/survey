@@ -13,24 +13,19 @@ type Question {
   questionId: Int!
   questionNumber: Int!
   questionContent: String!
+  surveyId: Int!
 }
 
 type Response {
   responseId: Int!
+  isSubmit: Boolean!
   surveyTitle: String!
   questionNumber: Int!
   questionContent: String!
   answerNumber: Int!
   answerContent: String!
   answerScore: Int!
-  createdAt: Timestamp!
-  modifiedAt: Timestamp!
 }
-
-"""
-`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
-"""
-scalar Timestamp
 
 type Survey {
   surveyId: Int!
@@ -115,12 +110,18 @@ input UpdateAnswerInput {
 }
 
 input CreateResponseInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """participant Id"""
+  participantId: Int!
+
+  """survey Id"""
+  surveyId: Int!
 }
 
 input UpdateResponseInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  """participant Id"""
+  participantId: Int
+
+  """survey Id"""
+  surveyId: Int
   responseId: Int!
 }
