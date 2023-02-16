@@ -12,7 +12,6 @@ import {
 import { PickedAnswer } from '../../answer/entities/pickedAnswer.entity';
 import { Participant } from '../../participant/entities/participant.entity';
 import { PickedSurvey } from '../../survey/entities/pickedSurvey.entity';
-import { Survey } from '../../survey/entities/survey.entity';
 
 @ObjectType()
 @Entity()

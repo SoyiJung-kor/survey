@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { response } from 'express';
-import { EntityManager, FindOneOptions, Repository } from 'typeorm';
-import { Answer } from '../answer/entities/answer.entity';
+import { EntityManager, Repository } from 'typeorm';
 import { PickedAnswer } from '../answer/entities/pickedAnswer.entity';
 import { Question } from '../question/entities/question.entity';
 import { Survey } from '../survey/entities/survey.entity';

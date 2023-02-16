@@ -2,7 +2,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
-import { Response } from '../../response/entities/response.entity';
 import { PickedSurvey } from './pickedSurvey.entity';
 
 @ObjectType()
