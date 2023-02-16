@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
+import { Participant } from '../participant/entities/participant.entity';
 import { CreateResponseInput } from './dto/create-response.input';
 import { Response } from './entities/response.entity';
 
@@ -14,6 +15,10 @@ export class ResponseService {
 
   async create(input: CreateResponseInput) {
     const response = this.responseRepository.create(input);
+    response.participant = await this.entityManager.findOneById(
+      Participant,
+      input.participantId,
+    );
     return this.responseRepository.save(response);
   }
 
