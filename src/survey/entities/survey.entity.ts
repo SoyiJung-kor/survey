@@ -3,6 +3,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
 import { Response } from '../../response/entities/response.entity';
+import { PickedSurvey } from './pickedSurvey.entity';
 
 @ObjectType()
 @Entity()
@@ -24,6 +25,6 @@ export class Survey {
   @OneToMany(() => Question, (question) => question.survey, { cascade : true })
   questions: Question[];
 
-  @OneToMany(() => Response, (response) => response.survey)
-  responses: Response[];
+  @OneToMany(() => PickedSurvey, (pickedSurvey) => pickedSurvey.survey)
+  pickedSurvey: PickedSurvey[];
 }
