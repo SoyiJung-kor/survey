@@ -21,12 +21,14 @@
       "typeorm": "typeorm-ts-node-commonjs"
    },
    "dependencies": {
+      "@apollo/gateway": "^2.3.2",
       "@nestjs/apollo": "^10.2.0",
       "@nestjs/common": "^9.0.0",
       "@nestjs/core": "^9.0.0",
       "@nestjs/graphql": "^10.2.0",
       "@nestjs/platform-express": "^9.0.0",
       "@nestjs/typeorm": "^9.0.1",
+      "apollo-server": "^3.11.1",
       "apollo-server-express": "^3.11.1",
       "graphql": "^16.6.0",
       "pg": "^8.4.0",
