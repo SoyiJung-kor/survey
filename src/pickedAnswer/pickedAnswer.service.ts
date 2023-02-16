@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager } from 'typeorm';
-import { CreatePickedAnswerInput } from '../answer/dto/create-pickedAnswer.input';
+import { CreatePickedAnswerInput } from './dto/create-pickedAnswer.input';
 import { Answer } from '../answer/entities/answer.entity';
 import { Response } from '../response/entities/response.entity';
 import { PickedAnswer } from './entities/pickedAnswer.entity';

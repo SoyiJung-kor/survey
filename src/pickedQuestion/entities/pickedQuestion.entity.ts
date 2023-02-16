@@ -1,7 +1,7 @@
 import { Field, Int } from '@nestjs/graphql';
 import { Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Response } from '../../response/entities/response.entity';
-import { Question } from './question.entity';
+import { Question } from '../../question/entities/question.entity';
 
 export class PickedQuestion {
   @Field(() => Int)

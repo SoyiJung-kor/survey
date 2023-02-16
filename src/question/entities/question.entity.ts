@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { Answer } from '../../answer/entities/answer.entity';
 import { Survey } from '../../survey/entities/survey.entity';
-import { PickedQuestion } from './pickedQuestion.entity';
+import { PickedQuestion } from '../../pickedQuestion/entities/pickedQuestion.entity';
 
 @ObjectType()
 @Entity()
