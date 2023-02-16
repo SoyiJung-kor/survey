@@ -37,8 +37,12 @@ export class ParticipantService {
     return this.participantRepository.save(await participant);
   }
 
-  remove(participantId: number) {
-    return `This action removes a #${participantId} participant`;
+  async remove(participantId: number): Promise<void> {
+    const participant = this.findOne(participantId);
+    if (!participant) {
+      throw new Error("CAN'T FIND THE PARTICIPANT!");
+    }
+    await this.participantRepository.delete({ participantId });
   }
 
   validParticipantById(participantId: number) {

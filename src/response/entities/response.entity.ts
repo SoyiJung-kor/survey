@@ -1,5 +1,12 @@
-import { ObjectType, Field, Int, GraphQLTimestamp } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Participant } from '../../participant/entities/participant.entity';
 import { Survey } from '../../survey/entities/survey.entity';
 
@@ -9,6 +16,10 @@ export class Response {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   responseId: number;
+
+  @Field(() => Boolean)
+  @Column({ default: false })
+  isSubmit: boolean;
 
   @Field(() => String)
   @Column()
@@ -34,17 +45,17 @@ export class Response {
   @Column()
   answerScore: number;
 
-  @Field(() => GraphQLTimestamp)
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Field(() => GraphQLTimestamp)
-  @Column()
+  @UpdateDateColumn()
   modifiedAt: Date;
 
-  @ManyToOne(() => Participant, (participant) => participant.responses)
+  @ManyToOne(() => Participant, (participant) => participant.responses, {
+    nullable: false,
+  })
   participant: Participant;
 
-  @ManyToOne(() => Survey, (survey) => survey.responses)
+  @ManyToOne(() => Survey, (survey) => survey.responses, { nullable: false })
   survey: Survey;
 }
