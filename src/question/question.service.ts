@@ -34,8 +34,9 @@ export class QuestionService {
 
   async update(questionId: number, updateQuestionInput: UpdateQuestionInput) {
     this.validQuestionById(questionId);
-    const question = this.questionRepository.findOneBy({ questionId });
-    return this.questionRepository.merge(await question, updateQuestionInput);
+    const question = this.findOne(questionId);
+    this.questionRepository.merge(await question, updateQuestionInput);
+    return this.questionRepository.update(questionId, await question);
   }
 
   async remove(questionId: number): Promise<void> {

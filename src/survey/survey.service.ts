@@ -30,7 +30,7 @@ export class SurveyService {
   async update(surveyId: number, updateSurveyInput: UpdateSurveyInput) {
     const survey = this.validSurveyById(surveyId);
     this.surveyRepository.merge(await survey, updateSurveyInput);
-    return this.surveyRepository.save(await survey);
+    return this.surveyRepository.update(surveyId, await survey);
   }
 
   async remove(surveyId: number): Promise<void> {
