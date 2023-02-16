@@ -5,13 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Survey } from './entities/survey.entity';
 import { DateScalar } from '../common/scalars/date.scalar';
 import { QuestionModule } from '../question/question.module';
-import { ResponseModule } from '../response/response.module';
 import { ResponseSurvey } from '../responseSurvey/entities/ResponseSurvey.entity';
+import { ResponseSurveyModule } from '../responseSurvey/responseSurvey.module';
 
 @Module({
   imports: [
     QuestionModule,
-    ResponseModule,
+    ResponseSurveyModule,
     TypeOrmModule.forFeature([Survey]),
     TypeOrmModule.forFeature([ResponseSurvey]),
   ],

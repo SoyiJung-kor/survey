@@ -9,7 +9,7 @@ import { Survey } from '../survey/entities/survey.entity';
 @Injectable()
 export class ResponseSurveyService {
   constructor(
-    @InjectRepository(Survey)
+    @InjectRepository(ResponseSurvey)
     private ResponseSurveyRepository: Repository<ResponseSurvey>,
     private entityManager: EntityManager,
   ) {}

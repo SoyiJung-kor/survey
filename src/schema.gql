@@ -2,10 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Response {
+type ResponseSurvey {
+  ResponseSurveyId: Int!
+  ResponseSurveyTitle: String!
+  surveyId: Int!
   responseId: Int!
-  isSubmit: Boolean!
-  participantId: Int!
 }
 
 type Answer {
@@ -35,8 +36,6 @@ type Query {
   findQuestion(questionId: Int!): Question!
   findAllAnswers: [Answer!]!
   findAnswer(answerId: Int!): Answer!
-  findAllResponses: [Response!]!
-  findResponse(responseId: Int!): Response!
 }
 
 type Mutation {
@@ -49,8 +48,7 @@ type Mutation {
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   removeAnswer(answerId: Int!): Answer!
-  createResponse(createResponseInput: CreateResponseInput!): Response!
-  removeResponse(responseId: Int!): Response!
+  createResponseSurvey(surveyId: Int!, responseId: Int!): ResponseSurvey!
 }
 
 input CreateSurveyInput {
@@ -103,8 +101,4 @@ input UpdateAnswerInput {
   answerScore: Int
   questionId: Int
   answerId: Int!
-}
-
-input CreateResponseInput {
-  participantId: Int!
 }
