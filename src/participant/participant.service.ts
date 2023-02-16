@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { CreateParticipantInput } from './dto/create-participant.input';
 import { UpdateParticipantInput } from './dto/update-participant.input';
 import { Participant } from './entities/participant.entity';
@@ -10,12 +10,11 @@ export class ParticipantService {
   constructor(
     @InjectRepository(Participant)
     private participantRepository: Repository<Participant>,
+    private entityManager: EntityManager,
   ) {}
 
-  create(createParticipantInput: CreateParticipantInput) {
-    const newParticipant = this.participantRepository.create(
-      createParticipantInput,
-    );
+  create(input: CreateParticipantInput) {
+    const newParticipant = this.participantRepository.create(input);
     return this.participantRepository.save(newParticipant);
   }
 
@@ -34,7 +33,7 @@ export class ParticipantService {
   ) {
     const participant = this.validParticipantById(participantId);
     this.participantRepository.merge(await participant, updateParticipantInput);
-    return this.participantRepository.save(await participant);
+    return this.participantRepository.update(participantId, await participant);
   }
 
   async remove(participantId: number): Promise<void> {
