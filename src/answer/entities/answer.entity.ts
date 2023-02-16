@@ -45,4 +45,8 @@ export class Answer {
   @OneToMany(() => PickedAnswer, (pickedAnswer) => pickedAnswer.answer)
   @JoinTable()
   pickedAnswer: PickedAnswer[];
+
+  @Field(() => Int)
+  @Column()
+  questionId: number;
 }

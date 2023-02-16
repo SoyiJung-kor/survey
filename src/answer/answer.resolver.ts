@@ -43,7 +43,10 @@ export class AnswerResolver {
   }
 
   @Mutation(() => PickedAnswer)
-  createPickedAnswer(@Args('answerId', { type: () => Int }) answerId, number) {
-    return this.answerService.createPickedAnswer(answerId);
+  createPickedAnswer(
+    @Args('answerId', { type: () => Int }) answerId: number,
+    @Args('responseId', { type: () => Int }) responseId: number,
+  ) {
+    return this.answerService.createPickedAnswer(answerId, responseId);
   }
 }

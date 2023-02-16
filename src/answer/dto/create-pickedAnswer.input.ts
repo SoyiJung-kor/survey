@@ -12,5 +12,5 @@ export class CreatePickedAnswerInput {
   pickedAnswerScore: number;
 
   @Field(() => Int)
-  answerId: number;
+  questionId: number;
 }

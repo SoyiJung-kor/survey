@@ -40,4 +40,12 @@ export class PickedAnswer {
 
   @ManyToOne(() => Response, (response) => response.pickedAnswers)
   response: Response;
+
+  @Field(() => Int)
+  @Column()
+  questionId: number;
+
+  @Field(() => Int)
+  @Column()
+  responseId: number;
 }
