@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
-import { PickedAnswer } from './pickedAnswer.entity';
+import { ResponseAnswer } from '../../ResponseAnswer/entities/ResponseAnswer.entity';
 
 @Entity()
 @ObjectType()
@@ -42,9 +42,9 @@ export class Answer {
   })
   question: Question;
 
-  @OneToMany(() => PickedAnswer, (pickedAnswer) => pickedAnswer.answer)
+  @OneToMany(() => ResponseAnswer, (ResponseAnswer) => ResponseAnswer.answer)
   @JoinTable()
-  pickedAnswer: PickedAnswer[];
+  ResponseAnswer: ResponseAnswer[];
 
   @Field(() => Int)
   @Column()

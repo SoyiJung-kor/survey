@@ -10,8 +10,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Answer } from '../../answer/entities/answer.entity';
+import { ResponseQuestion } from '../../responseQuestion/entities/response-question.entity';
 import { Survey } from '../../survey/entities/survey.entity';
-import { PickedQuestion } from './pickedQuestion.entity';
 
 @ObjectType()
 @Entity()
@@ -45,7 +45,10 @@ export class Question {
   @JoinTable()
   answers: Answer[];
 
-  @OneToMany(() => PickedQuestion, (pickedQuestion) => pickedQuestion.question)
+  @OneToMany(
+    () => ResponseQuestion,
+    (ResponseQuestion) => ResponseQuestion.question,
+  )
   @JoinTable()
-  pickedQuestion: PickedQuestion[];
+  ResponseQuestion: ResponseQuestion[];
 }

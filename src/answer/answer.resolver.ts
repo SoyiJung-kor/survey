@@ -3,7 +3,6 @@ import { AnswerService } from './answer.service';
 import { Answer } from './entities/answer.entity';
 import { CreateAnswerInput } from './dto/create-answer.input';
 import { UpdateAnswerInput } from './dto/update-answer.input';
-import { PickedAnswer } from './entities/pickedAnswer.entity';
 
 @Resolver(() => Answer)
 export class AnswerResolver {
@@ -39,13 +38,5 @@ export class AnswerResolver {
   @Mutation(() => Answer)
   removeAnswer(@Args('answerId', { type: () => Int }) answerId: number) {
     return this.answerService.remove(answerId);
-  }
-
-  @Mutation(() => PickedAnswer)
-  createPickedAnswer(
-    @Args('answerId', { type: () => Int }) answerId: number,
-    @Args('responseId', { type: () => Int }) responseId: number,
-  ) {
-    return this.answerService.createPickedAnswer(answerId, responseId);
   }
 }

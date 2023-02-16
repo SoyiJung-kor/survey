@@ -8,26 +8,26 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Response } from '../../response/entities/response.entity';
-import { Answer } from './answer.entity';
+import { Answer } from '../../answer/entities/answer.entity';
 
 @Entity()
 @ObjectType()
-export class PickedAnswer {
+export class ResponseAnswer {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  pickedAnswerId: number;
+  ResponseAnswerId: number;
 
   @Field(() => Int)
   @Column()
-  pickedAnswerNumber: number;
+  ResponseAnswerNumber: number;
 
   @Field(() => String)
   @Column()
-  pickedAnswerContent: string;
+  ResponseAnswerContent: string;
 
   @Field(() => Int)
   @Column()
-  pickedAnswerScore: number;
+  ResponseAnswerScore: number;
 
   @CreateDateColumn()
   readonly createdAt: Date;
@@ -35,10 +35,10 @@ export class PickedAnswer {
   @UpdateDateColumn()
   readonly modifiedAt: Date;
 
-  @ManyToOne(() => Answer, (answer) => answer.pickedAnswer)
+  @ManyToOne(() => Answer, (answer) => answer.ResponseAnswer)
   answer: Answer;
 
-  @ManyToOne(() => Response, (response) => response.pickedAnswers)
+  @ManyToOne(() => Response, (response) => response.responseAnswers)
   response: Response;
 
   @Field(() => Int)
