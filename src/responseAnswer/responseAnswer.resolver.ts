@@ -4,14 +4,14 @@ import { ResponseAnswerService } from './ResponseAnswer.service';
 
 @Resolver(() => ResponseAnswer)
 export class ResponseAnswerResolver {
-  constructor(private readonly ResponseAnswerService: ResponseAnswerService) {}
+  constructor(private readonly responseAnswerService: ResponseAnswerService) {}
 
   @Mutation(() => ResponseAnswer)
   createResponseAnswer(
     @Args('answerId', { type: () => Int }) answerId: number,
     @Args('responseId', { type: () => Int }) responseId: number,
   ) {
-    return this.ResponseAnswerService.createResponseAnswer(
+    return this.responseAnswerService.createResponseAnswer(
       answerId,
       responseId,
     );

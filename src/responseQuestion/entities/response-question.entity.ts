@@ -1,8 +1,10 @@
-import { Field, Int } from '@nestjs/graphql';
-import { Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Response } from '../../response/entities/response.entity';
 import { Question } from '../../question/entities/question.entity';
 
+@Entity()
+@ObjectType()
 export class ResponseQuestion {
   @Field(() => Int)
   @PrimaryGeneratedColumn()

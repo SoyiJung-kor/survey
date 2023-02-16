@@ -2,11 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Response {
+  responseId: Int!
+  isSubmit: Boolean!
+  participantId: Int!
+}
+
 type Answer {
   answerId: Int!
   answerNumber: Int!
   answerContent: String!
   answerScore: Int!
+  questionId: Int!
 }
 
 type Question {
@@ -14,17 +21,6 @@ type Question {
   questionNumber: Int!
   questionContent: String!
   surveyId: Int!
-}
-
-type Response {
-  responseId: Int!
-  isSubmit: Boolean!
-  surveyTitle: String!
-  questionNumber: Int!
-  questionContent: String!
-  answerNumber: Int!
-  answerContent: String!
-  answerScore: Int!
 }
 
 type Survey {
@@ -39,7 +35,8 @@ type Query {
   findQuestion(questionId: Int!): Question!
   findAllAnswers: [Answer!]!
   findAnswer(answerId: Int!): Answer!
-  response(responseId: Int!): Response!
+  findAllResponses: [Response!]!
+  findResponse(responseId: Int!): Response!
 }
 
 type Mutation {
@@ -53,7 +50,6 @@ type Mutation {
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   removeAnswer(answerId: Int!): Answer!
   createResponse(createResponseInput: CreateResponseInput!): Response!
-  updateResponse(updateResponseInput: UpdateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
 }
 
@@ -110,18 +106,5 @@ input UpdateAnswerInput {
 }
 
 input CreateResponseInput {
-  """participant Id"""
   participantId: Int!
-
-  """survey Id"""
-  surveyId: Int!
-}
-
-input UpdateResponseInput {
-  """participant Id"""
-  participantId: Int
-
-  """survey Id"""
-  surveyId: Int
-  responseId: Int!
 }

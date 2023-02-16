@@ -19,6 +19,7 @@ import { ResponseSurvey } from './responseSurvey/entities/ResponseSurvey.entity'
 @Module({
   imports: [
     SurveyModule,
+    Participant,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',

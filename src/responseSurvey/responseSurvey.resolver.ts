@@ -4,14 +4,14 @@ import { ResponseSurveyService } from './ResponseSurvey.survice';
 
 @Resolver(() => ResponseSurvey)
 export class ResponseSurveyResolver {
-  constructor(private readonly ResponseSurveyService: ResponseSurveyService) {}
+  constructor(private readonly responseSurveyService: ResponseSurveyService) {}
 
   @Mutation(() => ResponseSurvey)
   createResponseSurvey(
     @Args('surveyId', { type: () => Int }) surveyId: number,
     @Args('responseId', { type: () => Int }) responseId: number,
   ) {
-    return this.ResponseSurveyService.createResponseSurvey(
+    return this.responseSurveyService.createResponseSurvey(
       surveyId,
       responseId,
     );
