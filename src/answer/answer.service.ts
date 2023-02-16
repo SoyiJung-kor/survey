@@ -3,14 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { Question } from '../question/entities/question.entity';
 import { CreateAnswerInput } from './dto/create-answer.input';
+import { CreatePickedAnswerInput } from './dto/create-pickedAnswer.input';
 import { UpdateAnswerInput } from './dto/update-answer.input';
 import { Answer } from './entities/answer.entity';
+import { PickedAnswer } from './entities/pickedAnswer.entity';
 
 @Injectable()
 export class AnswerService {
   constructor(
     @InjectRepository(Answer)
     private answerRepository: Repository<Answer>,
+    private pickedAnswerRepository: Repository<PickedAnswer>,
     private entityManager: EntityManager,
   ) {}
 
@@ -62,5 +65,25 @@ export class AnswerService {
       );
       return this.answerRepository.findOneBy({ answerId });
     }
+  }
+
+  async createPickAnswerInput(answerId: number) {
+    const pickedAnswerInput = new CreatePickedAnswerInput();
+    const answer = this.findOne(answerId);
+    pickedAnswerInput.pickedAnswerContent = (await answer).answerContent;
+    pickedAnswerInput.pickedAnswerNumber = (await answer).answerNumber;
+    pickedAnswerInput.pickedAnswerScore = (await answer).answerScore;
+
+    return pickedAnswerInput;
+  }
+
+  async createPickedAnswer(answerId: number) {
+    const input = this.createPickAnswerInput(answerId);
+    const pickedAnswer = this.pickedAnswerRepository.create(await input);
+    pickedAnswer.answer = await this.entityManager.findOneById(
+      Answer,
+      answerId,
+    );
+    return this.entityManager.save(pickedAnswer);
   }
 }

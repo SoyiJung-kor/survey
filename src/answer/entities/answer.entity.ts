@@ -3,11 +3,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
+import { PickedAnswer } from './pickedAnswer.entity';
 
 @Entity()
 @ObjectType()
@@ -38,4 +41,8 @@ export class Answer {
     nullable: false,
   })
   question: Question;
+
+  @OneToMany(() => PickedAnswer, (pickedAnswer) => pickedAnswer.answer)
+  @JoinTable()
+  pickedAnswer: PickedAnswer[];
 }
