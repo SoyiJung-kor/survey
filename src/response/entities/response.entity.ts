@@ -4,9 +4,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { PickedAnswer } from '../../answer/entities/pickedAnswer.entity';
 import { Participant } from '../../participant/entities/participant.entity';
 import { Survey } from '../../survey/entities/survey.entity';
 
@@ -58,4 +60,7 @@ export class Response {
 
   @ManyToOne(() => Survey, (survey) => survey.responses, { nullable: false })
   survey: Survey;
+
+  @OneToMany(() => PickedAnswer, (pickedAnswer) => pickedAnswer.response)
+  pickedAnswers: PickedAnswer[];
 }

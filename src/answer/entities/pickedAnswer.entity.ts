@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Response } from '../../response/entities/response.entity';
 import { Answer } from './answer.entity';
 
 @Entity()
@@ -36,4 +37,7 @@ export class PickedAnswer {
 
   @ManyToOne(() => Answer, (answer) => answer.pickedAnswer)
   answer: Answer;
+
+  @ManyToOne(() => Response, (response) => response.pickedAnswers)
+  response: Response;
 }
