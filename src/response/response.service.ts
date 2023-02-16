@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { response } from 'express';
-import { EntityManager, FindOneOptions, Repository } from 'typeorm';
-import { Answer } from '../answer/entities/answer.entity';
+import { EntityManager, Repository } from 'typeorm';
 import { PickedAnswer } from '../answer/entities/pickedAnswer.entity';
 import { Question } from '../question/entities/question.entity';
 import { Survey } from '../survey/entities/survey.entity';
@@ -19,25 +17,13 @@ export class ResponseService {
   ) {}
 
   async create(input: CreateResponseInput) {
-    const surveyTitle = await (
-      await this.findSurvey(input.surveyId)
-    ).surveyTitle;
+    const survey = await this.findSurvey(input.surveyId);
     const question = await await this.findQuestions(input.surveyId);
-    for (let i = 0; i < question.length; i++) {
-      const response = new Response();
-      response.surveyTitle = surveyTitle;
-      response.questionNumber = question[i].questionNumber;
-      response.questionContent = question[i].questionContent;
-      response.survey = await this.entityManager.findOneById(
-        Survey,
-        input.surveyId,
-      );
-    }
-
-    return 'This action adds a new response';
   }
 
-  async updateAnswer() {}
+  async updateAnswer() {
+    return 'This action adds a new response';
+  }
 
   findAll() {
     return `This action returns all response`;
