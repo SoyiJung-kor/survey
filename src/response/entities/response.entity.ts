@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { PickedAnswer } from '../../answer/entities/pickedAnswer.entity';
 import { Participant } from '../../participant/entities/participant.entity';
+import { PickedQuestion } from '../../question/entities/pickedQuestion.entity';
 import { PickedSurvey } from '../../survey/entities/pickedSurvey.entity';
 
 @ObjectType()
@@ -42,4 +43,8 @@ export class Response {
   @OneToMany(() => PickedSurvey, (pickedSurvey) => pickedSurvey.response)
   @JoinTable()
   pickedSurvey: PickedSurvey[];
+
+  @OneToMany(() => PickedQuestion, (pickedQuestion) => pickedQuestion.response)
+  @JoinTable()
+  pickedQuestion: PickedQuestion[];
 }

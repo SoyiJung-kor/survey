@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { Answer } from '../../answer/entities/answer.entity';
 import { Survey } from '../../survey/entities/survey.entity';
+import { PickedQuestion } from './pickedQuestion.entity';
 
 @ObjectType()
 @Entity()
@@ -43,4 +44,8 @@ export class Question {
   @OneToMany(() => Answer, (answers) => answers.question, { cascade: true })
   @JoinTable()
   answers: Answer[];
+
+  @OneToMany(() => PickedQuestion, (pickedQuestion) => pickedQuestion.question)
+  @JoinTable()
+  pickedQuestion: PickedQuestion[];
 }
