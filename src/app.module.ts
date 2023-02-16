@@ -12,9 +12,9 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { SurveyModule } from './survey/survey.module';
 import { DataSource } from 'typeorm';
-import { PickedAnswer } from './pickedAnswer/entities/pickedAnswer.entity';
-import { PickedSurvey } from './pickedSurvey/entities/pickedSurvey.entity';
-import { PickedQuestion } from './pickedQuestion/entities/pickedQuestion.entity';
+import { ResponseAnswer } from './ResponseAnswer/entities/ResponseAnswer.entity';
+import { ResponseQuestion } from './responseQuestion/entities/response-question.entity';
+import { ResponseSurvey } from './responseSurvey/entities/ResponseSurvey.entity';
 
 @Module({
   imports: [
@@ -32,9 +32,9 @@ import { PickedQuestion } from './pickedQuestion/entities/pickedQuestion.entity'
         Question,
         Response,
         Survey,
-        PickedAnswer,
-        PickedSurvey,
-        PickedQuestion,
+        ResponseAnswer,
+        ResponseSurvey,
+        ResponseQuestion,
       ],
       synchronize: true,
     }),

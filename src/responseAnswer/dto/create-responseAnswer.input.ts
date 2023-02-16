@@ -1,15 +1,15 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
-export class CreatePickedAnswerInput {
+export class CreateResponseAnswerInput {
   @Field(() => Int, { description: 'answer Number' })
-  pickedAnswerNumber: number;
+  ResponseAnswerNumber: number;
 
   @Field(() => String, { description: 'answer Content' })
-  pickedAnswerContent: string;
+  ResponseAnswerContent: string;
 
   @Field(() => Int, { description: 'answer Score' })
-  pickedAnswerScore: number;
+  ResponseAnswerScore: number;
 
   @Field(() => Int)
   questionId: number;

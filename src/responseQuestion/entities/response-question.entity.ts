@@ -3,29 +3,29 @@ import { Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Response } from '../../response/entities/response.entity';
 import { Question } from '../../question/entities/question.entity';
 
-export class PickedQuestion {
+export class ResponseQuestion {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  pickedQuestionId: number;
+  ResponseQuestionId: number;
 
   @Field(() => String)
   @Column()
-  pickedQuestionContent: string;
+  ResponseQuestionContent: string;
 
   @Field(() => Int)
-  pickedQuestionNumber: number;
+  ResponseQuestionNumber: number;
 
   @Field(() => Int)
   @Column()
   questionId: number;
 
-  @ManyToOne(() => Question, (question) => question.pickedQuestion)
+  @ManyToOne(() => Question, (question) => question.ResponseQuestion)
   question: Question;
 
   @Field(() => Int)
   @Column()
   responseId: number;
 
-  @ManyToOne(() => Response, (response) => response.pickedQuestions)
+  @ManyToOne(() => Response, (response) => response.responseQuestion)
   response: Response;
 }

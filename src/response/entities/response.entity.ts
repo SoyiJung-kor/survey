@@ -9,10 +9,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { PickedAnswer } from '../../pickedAnswer/entities/pickedAnswer.entity';
+import { ResponseAnswer } from '../../ResponseAnswer/entities/ResponseAnswer.entity';
 import { Participant } from '../../participant/entities/participant.entity';
-import { PickedQuestion } from '../../pickedQuestion/entities/pickedQuestion.entity';
-import { PickedSurvey } from '../../pickedSurvey/entities/pickedSurvey.entity';
+import { ResponseQuestion } from '../../responseQuestion/entities/response-question.entity';
+import { ResponseSurvey } from '../../responseSurvey/entities/ResponseSurvey.entity';
 
 @ObjectType()
 @Entity()
@@ -40,18 +40,18 @@ export class Response {
   })
   participant: Participant;
 
-  @OneToMany(() => PickedAnswer, (pickedAnswer) => pickedAnswer.response)
+  @OneToMany(() => ResponseAnswer, (responseAnswer) => responseAnswer.response)
   @JoinTable()
-  pickedAnswers: PickedAnswer[];
+  responseAnswers: ResponseAnswer[];
 
-  @OneToMany(() => PickedSurvey, (pickedSurvey) => pickedSurvey.response)
+  @OneToMany(() => ResponseSurvey, (responseSurvey) => responseSurvey.response)
   @JoinTable()
-  pickedSurvey: PickedSurvey[];
+  responseSurvey: ResponseSurvey[];
 
   @OneToMany(
-    () => PickedQuestion,
-    (pickedQuestions) => pickedQuestions.response,
+    () => ResponseQuestion,
+    (responseQuestions) => responseQuestions.response,
   )
   @JoinTable()
-  pickedQuestions: PickedQuestion[];
+  responseQuestion: ResponseQuestion[];
 }
