@@ -33,4 +33,9 @@ export class ResponseResolver {
   find(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.getResponseData(responseId);
   }
+
+  @Query(() => Response, { name: 'getSumScore' })
+  getScore(@Args('responseId', { type: () => Int }) responseId: number) {
+    return this.responseService.sumScore(responseId);
+  }
 }

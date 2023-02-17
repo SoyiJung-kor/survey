@@ -25,6 +25,7 @@ type ResponseSurvey {
 type Response {
   responseId: Int!
   isSubmit: Boolean!
+  sumScore: Int!
   participantId: Int!
 }
 
@@ -69,6 +70,7 @@ type Query {
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findResponseWithQueryBuilder(responseId: Int!): Response!
+  getSumScore(responseId: Int!): Response!
 }
 
 type Mutation {
