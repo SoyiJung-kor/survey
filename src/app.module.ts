@@ -15,11 +15,12 @@ import { DataSource } from 'typeorm';
 import { ResponseAnswer } from './ResponseAnswer/entities/ResponseAnswer.entity';
 import { ResponseQuestion } from './responseQuestion/entities/response-question.entity';
 import { ResponseSurvey } from './responseSurvey/entities/ResponseSurvey.entity';
+import { ParticipantModule } from './participant/participant.module';
 
 @Module({
   imports: [
     SurveyModule,
-    Participant,
+    ParticipantModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',

@@ -25,6 +25,10 @@ export class Response {
   @Column({ default: false })
   isSubmit: boolean;
 
+  @Field(() => Int)
+  @Column()
+  sumScore: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
