@@ -2,10 +2,38 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Participant {
+  participantId: Int!
+  email: String!
+}
+
+type ResponseQuestion {
+  ResponseQuestionId: Int!
+  ResponseQuestionContent: String!
+  ResponseQuestionNumber: Int!
+  questionId: Int!
+  responseId: Int!
+}
+
 type ResponseSurvey {
   ResponseSurveyId: Int!
   ResponseSurveyTitle: String!
   surveyId: Int!
+  responseId: Int!
+}
+
+type Response {
+  responseId: Int!
+  isSubmit: Boolean!
+  participantId: Int!
+}
+
+type ResponseAnswer {
+  ResponseAnswerId: Int!
+  ResponseAnswerNumber: Int!
+  ResponseAnswerContent: String!
+  ResponseAnswerScore: Int!
+  questionId: Int!
   responseId: Int!
 }
 
@@ -36,6 +64,11 @@ type Query {
   findQuestion(questionId: Int!): Question!
   findAllAnswers: [Answer!]!
   findAnswer(answerId: Int!): Answer!
+  findAllParticipants: [Participant!]!
+  findParticipant(participantId: Int!): Participant!
+  findAllResponses: [Response!]!
+  findResponse(responseId: Int!): Response!
+  findResponseWithQueryBuilder(responseId: Int!): Response!
 }
 
 type Mutation {
@@ -49,6 +82,13 @@ type Mutation {
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   removeAnswer(answerId: Int!): Answer!
   createResponseSurvey(surveyId: Int!, responseId: Int!): ResponseSurvey!
+  createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
+  updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!
+  removeParticipant(participantId: Int!): Participant!
+  createResponse(createResponseInput: CreateResponseInput!): Response!
+  removeResponse(responseId: Int!): Response!
+  createResponseQuestion(questionId: Int!, responseId: Int!): ResponseQuestion!
+  createResponseAnswer(answerId: Int!, responseId: Int!): ResponseAnswer!
 }
 
 input CreateSurveyInput {
@@ -101,4 +141,19 @@ input UpdateAnswerInput {
   answerScore: Int
   questionId: Int
   answerId: Int!
+}
+
+input CreateParticipantInput {
+  """participant email"""
+  email: String!
+}
+
+input UpdateParticipantInput {
+  """participant email"""
+  email: String
+  participantId: Int!
+}
+
+input CreateResponseInput {
+  participantId: Int!
 }

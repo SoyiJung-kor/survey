@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Participant } from '../participant/entities/participant.entity';
 import { CreateResponseInput } from './dto/create-response.input';
 import { Response } from './entities/response.entity';
@@ -11,10 +11,12 @@ export class ResponseService {
     @InjectRepository(Response)
     private responseRepository: Repository<Response>,
     private entityManager: EntityManager,
+    private dataSource: DataSource,
   ) {}
 
   async create(input: CreateResponseInput) {
     const response = this.responseRepository.create(input);
+    response.isSubmit = false;
     response.participant = await this.entityManager.findOneById(
       Participant,
       input.participantId,
@@ -55,5 +57,14 @@ export class ResponseService {
       );
     }
     return this.responseRepository.findOneBy({ responseId });
+  }
+
+  async getResponseData(responseId: number) {
+    const responseData = await this.dataSource.manager
+      .createQueryBuilder(Response, 'response')
+      .where('response.responseId = :id', { id: 1 })
+      .getOne();
+
+    return responseData;
   }
 }

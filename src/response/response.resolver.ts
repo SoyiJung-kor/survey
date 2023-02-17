@@ -28,4 +28,9 @@ export class ResponseResolver {
   removeResponse(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.remove(responseId);
   }
+
+  @Query(() => Response, { name: 'findResponseWithQueryBuilder' })
+  find(@Args('responseId', { type: () => Int }) responseId: number) {
+    return this.responseService.getResponseData(responseId);
+  }
 }
