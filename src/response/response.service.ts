@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { DataSource, EntityManager, Repository } from "typeorm";
 import { Participant } from "../participant/entities/participant.entity";
 import { CreateResponseInput } from "./dto/create-response.input";
+import { UpdateResponseInput } from "./dto/update-response.input";
 import { Response } from "./entities/response.entity";
 
 @Injectable()
@@ -35,6 +36,27 @@ export class ResponseService {
     return this.responseRepository.findOneBy({ id });
   }
 
+  async getResponseData(id: number) {
+    const responseData = await this.dataSource.manager
+      .createQueryBuilder(Response, "response")
+      .where("response.id = :id", { id: id })
+      .getOne();
+
+    return responseData;
+  }
+
+  async getScore(id: number) {
+    const score = await this.dataSource.manager
+      .createQueryBuilder(Response, "response")
+      .leftJoin("response.eachResponse", "eachResponse") // leftJoinAndSelect
+      .select("SUM(eachResponse.responseScore)", "totalScore")
+      .where("response.id = :id", { id: id })
+      // .getQuery();
+      .getRawOne();
+
+    return score;
+  }
+
   async remove(id: number): Promise<void> {
     const response = this.responseRepository.findOneBy({ id });
     if (!response) {
@@ -61,28 +83,25 @@ export class ResponseService {
     return this.responseRepository.findOneBy({ id });
   }
 
-  async getResponseData(id: number) {
-    const responseData = await this.dataSource.manager
-      .createQueryBuilder(Response, "response")
-      .where("response.id = :id", { id: id })
-      .getOne();
-
-    return responseData;
+  async updateSubmit(id: number, updateResponseInput: UpdateResponseInput) {
+    const response = this.responseRepository.findOneBy({ id });
+    console.log(`find One By Id : ${response}`);
+    this.responseRepository.merge(await response, updateResponseInput);
+    return this.responseRepository.update(id, await response);
   }
 
-  async getScore(id: number) {
-    const score = await this.dataSource.manager
-      .createQueryBuilder(Response, "response")
-      .leftJoin("response.eachResponse", "eachResponse") // leftJoinAndSelect
-      .select("SUM(eachResponse.responseScore)", "totalScore")
-      .where("response.id = :id", { id: id })
-      // .getQuery();
-      .getRawOne();
-
-    const final = score.totalScore;
-    return score;
+  async getSumScore(id: number) {
+    const Score = await this.getScore(id);
+    const SumScore = +Score.totalScore;
+    // 한줄로 바꿀수 있나?
+    // validator 넣어줄수 있지?
+    await this.dataSource.manager
+      .createQueryBuilder()
+      .update(Response)
+      .set({ sumScore: `${SumScore}` })
+      .where("id = :id", { id: id })
+      .execute();
   }
-
   // async submit(id: number) {
   //   const submit = await this.dataSource.manager
   //   .createQueryBuilder(Response, "response")
@@ -100,19 +119,6 @@ export class ResponseService {
   // .set({ this.sumScore: `${score}`})
   // .where("id =:id", {id: id })
   // .execute();
-
-  async getSumScore(id: number) {
-    const Score = await this.getScore(id);
-    const SumScore = +Score.totalScore;
-    // 한줄로 바꿀수 있나?
-    // validator 넣어줄수 있지?
-    await this.dataSource.manager
-      .createQueryBuilder()
-      .update(Response)
-      .set({ sumScore: `${SumScore}` })
-      .where("id = :id", { id: id })
-      .execute();
-  }
 
   // async update(surveyId: number, updateSurveyInput: UpdateSurveyInput) {
   //   const survey = this.validSurveyById(surveyId);

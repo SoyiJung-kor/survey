@@ -6,6 +6,6 @@ export class UpdateResponseInput extends PartialType(CreateResponseInput) {
   @Field(() => Int)
   id: number;
 
-  @Field(() => Int)
-  sumScore: number;
+  @Field(() => Boolean)
+  isSubmit?: boolean;
 }

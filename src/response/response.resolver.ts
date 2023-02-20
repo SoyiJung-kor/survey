@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
 import { ResponseService } from "./response.service";
 import { Response } from "./entities/response.entity";
 import { CreateResponseInput } from "./dto/create-response.input";
+import { UpdateResponseInput } from "./dto/update-response.input";
 
 @Resolver(() => Response)
 export class ResponseResolver {
@@ -42,5 +43,15 @@ export class ResponseResolver {
   @Query(() => Response, { name: "getSumScore" })
   getScore(@Args("responseId", { type: () => Int }) responseId: number) {
     return this.responseService.getSumScore(responseId);
+  }
+
+  @Mutation(() => Response, { name: "updateResponse" })
+  updateResponse(
+    @Args("updateResponseInput") updateResponseInput: UpdateResponseInput
+  ) {
+    return this.responseService.updateSubmit(
+      updateResponseInput.id,
+      updateResponseInput
+    );
   }
 }

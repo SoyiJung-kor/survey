@@ -72,6 +72,7 @@ type Mutation {
   removeAnswer(answerId: Int!): Answer!
   createResponse(createResponseInput: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
+  updateResponse(updateResponseInput: UpdateResponseInput!): Response!
   createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
   updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
   removeEachResponse(id: Int!): EachResponse!
@@ -135,6 +136,13 @@ input UpdateAnswerInput {
 input CreateResponseInput {
   surveyId: Int!
   participantId: Int!
+}
+
+input UpdateResponseInput {
+  surveyId: Int
+  participantId: Int
+  id: Int!
+  isSubmit: Boolean!
 }
 
 input CreateEachResponseInput {
