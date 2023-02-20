@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
-import { CreateParticipantInput } from './dto/create-participant.input';
-import { UpdateParticipantInput } from './dto/update-participant.input';
-import { Participant } from './entities/participant.entity';
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { DataSource, EntityManager, Repository } from "typeorm";
+import { CreateParticipantInput } from "./dto/create-participant.input";
+import { UpdateParticipantInput } from "./dto/update-participant.input";
+import { Participant } from "./entities/participant.entity";
 
 @Injectable()
 export class ParticipantService {
@@ -11,6 +11,7 @@ export class ParticipantService {
     @InjectRepository(Participant)
     private participantRepository: Repository<Participant>,
     private entityManager: EntityManager,
+    private dataSource: DataSource
   ) {}
 
   create(input: CreateParticipantInput) {
@@ -22,43 +23,47 @@ export class ParticipantService {
     return this.participantRepository.find();
   }
 
-  findOne(participantId: number) {
-    this.validParticipantById(participantId);
-    return this.participantRepository.findOneBy({ participantId });
+  findOne(id: number) {
+    this.validParticipantById(id);
+    return this.participantRepository.findOneBy({ id });
   }
 
-  async update(
-    participantId: number,
-    updateParticipantInput: UpdateParticipantInput,
-  ) {
-    const participant = this.validParticipantById(participantId);
+  async update(id: number, updateParticipantInput: UpdateParticipantInput) {
+    const participant = this.validParticipantById(id);
     this.participantRepository.merge(await participant, updateParticipantInput);
-    return this.participantRepository.update(participantId, await participant);
+    return this.participantRepository.update(id, await participant);
   }
 
-  async remove(participantId: number): Promise<void> {
-    const participant = this.findOne(participantId);
+  async remove(id: number): Promise<void> {
+    const participant = this.findOne(id);
     if (!participant) {
       throw new Error("CAN'T FIND THE PARTICIPANT!");
     }
-    await this.participantRepository.delete({ participantId });
+    await this.participantRepository.delete({ id });
   }
 
-  validParticipantById(participantId: number) {
+  validParticipantById(id: number) {
     try {
-      this.participantRepository.findOneBy({ participantId });
+      this.participantRepository.findOneBy({ id });
     } catch (error) {
       throw new HttpException(
         {
           status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
+          error: "message",
         },
         HttpStatus.BAD_GATEWAY,
         {
           cause: error,
-        },
+        }
       );
     }
-    return this.participantRepository.findOneBy({ participantId });
+    return this.participantRepository.findOneBy({ id });
   }
+
+  //   async getEachRsponsebyUserId(id: number) {
+  //     await this.dataSource.manager
+  //     .createQueryBuilder(Participant, "participant")
+  //     .leftJoin("participant.response", "response")
+  //     .
+  // }
 }

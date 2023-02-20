@@ -1,8 +1,8 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { QuestionService } from './question.service';
-import { Question } from './entities/question.entity';
-import { CreateQuestionInput } from './dto/create-question.input';
-import { UpdateQuestionInput } from './dto/update-question.input';
+import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
+import { QuestionService } from "./question.service";
+import { Question } from "./entities/question.entity";
+import { CreateQuestionInput } from "./dto/create-question.input";
+import { UpdateQuestionInput } from "./dto/update-question.input";
 
 @Resolver(() => Question)
 export class QuestionResolver {
@@ -10,33 +10,33 @@ export class QuestionResolver {
 
   @Mutation(() => Question)
   createQuestion(
-    @Args('createQuestionInput') createQuestionInput: CreateQuestionInput,
+    @Args("createQuestionInput") createQuestionInput: CreateQuestionInput
   ) {
     return this.questionService.create(createQuestionInput);
   }
 
-  @Query(() => [Question], { name: 'findAllQuestions' })
+  @Query(() => [Question], { name: "findAllQuestions" })
   findAll() {
     return this.questionService.findAll();
   }
 
-  @Query(() => Question, { name: 'findQuestion' })
-  findOne(@Args('questionId', { type: () => Int }) questionId: number) {
+  @Query(() => Question, { name: "findQuestion" })
+  findOne(@Args("questionId", { type: () => Int }) questionId: number) {
     return this.questionService.findOne(questionId);
   }
 
   @Mutation(() => Question)
   updateQuestion(
-    @Args('updateQuestionInput') updateQuestionInput: UpdateQuestionInput,
+    @Args("updateQuestionInput") updateQuestionInput: UpdateQuestionInput
   ) {
     return this.questionService.update(
-      updateQuestionInput.questionId,
-      updateQuestionInput,
+      updateQuestionInput.id,
+      updateQuestionInput
     );
   }
 
   @Mutation(() => Boolean)
-  removeQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
+  removeQuestion(@Args("questionId", { type: () => Int }) questionId: number) {
     this.questionService.remove(questionId);
   }
 }

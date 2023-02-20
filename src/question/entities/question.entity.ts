@@ -1,24 +1,24 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from "@nestjs/graphql";
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinTable,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import { Answer } from '../../answer/entities/answer.entity';
-import { ResponseQuestion } from '../../responseQuestion/entities/response-question.entity';
-import { Survey } from '../../survey/entities/survey.entity';
+} from "typeorm";
+import { Answer } from "../../answer/entities/answer.entity";
+import { Survey } from "../../survey/entities/survey.entity";
 
 @ObjectType()
 @Entity()
 export class Question {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  questionId: number;
+  id: number;
 
   @Field(() => Int)
   @Column()
@@ -34,6 +34,9 @@ export class Question {
   @UpdateDateColumn()
   readonly updatedAt: Date;
 
+  @DeleteDateColumn()
+  readonly deletedAt: Date;
+
   @Field(() => Int)
   @Column()
   surveyId: number;
@@ -45,10 +48,10 @@ export class Question {
   @JoinTable()
   answers: Answer[];
 
-  @OneToMany(
-    () => ResponseQuestion,
-    (ResponseQuestion) => ResponseQuestion.question,
-  )
-  @JoinTable()
-  ResponseQuestion: ResponseQuestion[];
+  // @OneToMany(
+  //   () => ResponseQuestion,
+  //   (ResponseQuestion) => ResponseQuestion.question
+  // )
+  // @JoinTable()
+  // ResponseQuestion: ResponseQuestion[];
 }

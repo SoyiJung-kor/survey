@@ -1,51 +1,55 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { Response } from '../../response/entities/response.entity';
-import { Answer } from '../../answer/entities/answer.entity';
+// import { Field, Int, ObjectType } from "@nestjs/graphql";
+// import {
+//   Column,
+//   CreateDateColumn,
+//   DeleteDateColumn,
+//   Entity,
+//   ManyToOne,
+//   PrimaryGeneratedColumn,
+//   UpdateDateColumn,
+// } from "typeorm";
+// import { Response } from "../../response/entities/response.entity";
+// import { Answer } from "../../answer/entities/answer.entity";
 
-@Entity()
-@ObjectType()
-export class ResponseAnswer {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  ResponseAnswerId: number;
+// @Entity()
+// @ObjectType()
+// export class ResponseAnswer {
+//   @Field(() => Int)
+//   @PrimaryGeneratedColumn()
+//   id: number;
 
-  @Field(() => Int)
-  @Column()
-  ResponseAnswerNumber: number;
+//   @Field(() => Int)
+//   @Column()
+//   ResponseAnswerNumber: number;
 
-  @Field(() => String)
-  @Column()
-  ResponseAnswerContent: string;
+//   @Field(() => String)
+//   @Column()
+//   ResponseAnswerContent: string;
 
-  @Field(() => Int)
-  @Column()
-  ResponseAnswerScore: number;
+//   @Field(() => Int)
+//   @Column()
+//   ResponseAnswerScore: number;
 
-  @CreateDateColumn()
-  readonly createdAt: Date;
+//   @CreateDateColumn()
+//   readonly createdAt: Date;
 
-  @UpdateDateColumn()
-  readonly modifiedAt: Date;
+//   @UpdateDateColumn()
+//   readonly updatedAt: Date;
 
-  @ManyToOne(() => Answer, (answer) => answer.ResponseAnswer)
-  answer: Answer;
+//   @DeleteDateColumn()
+//   readonly deletedAt: Date;
 
-  @ManyToOne(() => Response, (response) => response.responseAnswers)
-  response: Response;
+//   // @ManyToOne(() => Answer, (answer) => answer.ResponseAnswer)
+//   // answer: Answer;
 
-  @Field(() => Int)
-  @Column()
-  questionId: number;
+//   // @ManyToOne(() => Response, (response) => response.responseAnswers)
+//   // response: Response;
 
-  @Field(() => Int)
-  @Column()
-  responseId: number;
-}
+//   @Field(() => Int)
+//   @Column()
+//   questionId: number;
+
+//   @Field(() => Int)
+//   @Column()
+//   responseId: number;
+// }

@@ -1,28 +1,37 @@
 import { ObjectType, Field, Int } from "@nestjs/graphql";
-import { IsEmail } from "class-validator";
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { ValidationEntity } from "../../common/entity/ValidationEntity";
 import { Response } from "../../response/entities/response.entity";
 
 @ObjectType()
 @Entity()
-export class Participant extends ValidationEntity {
+export class EachResponse {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field(() => Int)
+  @Column()
+  responseId: number;
+
   @Field(() => String)
   @Column()
-  @IsEmail()
-  email: string;
+  responseQuestion: string;
+
+  @Field(() => String)
+  @Column()
+  responseAnswer: string;
+
+  @Field(() => Int)
+  @Column()
+  responseScore: number;
 
   @CreateDateColumn()
   readonly createdAt: Date;
@@ -33,8 +42,8 @@ export class Participant extends ValidationEntity {
   @DeleteDateColumn()
   readonly deletedAt: Date;
 
-  @OneToMany(() => Response, (responses) => responses.participant, {
-    cascade: true,
+  @ManyToOne(() => Response, (response) => response.eachResponse, {
+    nullable: false,
   })
-  responses: Response[];
+  response: Response;
 }

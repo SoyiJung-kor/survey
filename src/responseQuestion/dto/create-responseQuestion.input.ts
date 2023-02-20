@@ -1,4 +1,4 @@
-import { Field, Int } from '@nestjs/graphql';
+import { Field, Int } from "@nestjs/graphql";
 
 export class CreateResponseQuestionInput {
   @Field(() => String)
