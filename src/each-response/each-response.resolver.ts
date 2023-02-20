@@ -8,7 +8,7 @@ import { UpdateEachResponseInput } from "./dto/update-each-response.input";
 export class EachResponseResolver {
   constructor(private readonly eachResponseService: EachResponseService) {}
 
-  @Mutation(() => EachResponse)
+  @Mutation(() => EachResponse, { name: "createEachResponse" })
   createEachResponse(
     @Args("createEachResponseInput")
     createEachResponseInput: CreateEachResponseInput
@@ -16,17 +16,17 @@ export class EachResponseResolver {
     return this.eachResponseService.create(createEachResponseInput);
   }
 
-  @Query(() => [EachResponse], { name: "eachResponse" })
+  @Query(() => [EachResponse], { name: "findAllEachResponse" })
   findAll() {
     return this.eachResponseService.findAll();
   }
 
-  @Query(() => EachResponse, { name: "eachResponse" })
+  @Query(() => EachResponse, { name: "findOneEachResponse" })
   findOne(@Args("id", { type: () => Int }) id: number) {
     return this.eachResponseService.findOne(id);
   }
 
-  @Mutation(() => EachResponse)
+  @Mutation(() => EachResponse, { name: "updateEachResponse" })
   updateEachResponse(
     @Args("updateEachResponseInput")
     updateEachResponseInput: UpdateEachResponseInput
@@ -37,7 +37,7 @@ export class EachResponseResolver {
     );
   }
 
-  @Mutation(() => EachResponse)
+  @Mutation(() => EachResponse, { name: "removeEachResponse" })
   removeEachResponse(@Args("id", { type: () => Int }) id: number) {
     return this.eachResponseService.remove(id);
   }

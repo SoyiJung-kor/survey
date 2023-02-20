@@ -8,7 +8,7 @@ import { UpdateParticipantInput } from "./dto/update-participant.input";
 export class ParticipantResolver {
   constructor(private readonly participantService: ParticipantService) {}
 
-  @Mutation(() => Participant)
+  @Mutation(() => Participant, { name: "createParticipant" })
   createParticipant(
     @Args("createParticipantInput")
     createParticipantInput: CreateParticipantInput
@@ -21,12 +21,12 @@ export class ParticipantResolver {
     return this.participantService.findAll();
   }
 
-  @Query(() => Participant, { name: "findParticipant" })
+  @Query(() => Participant, { name: "findOneParticipant" })
   findOne(@Args("participantId", { type: () => Int }) participantId: number) {
     return this.participantService.findOne(participantId);
   }
 
-  @Mutation(() => Participant)
+  @Mutation(() => Participant, { name: "updateParticipant" })
   updateParticipant(
     @Args("updateParticipantInput")
     updateParticipantInput: UpdateParticipantInput
@@ -37,7 +37,7 @@ export class ParticipantResolver {
     );
   }
 
-  @Mutation(() => Participant)
+  @Mutation(() => Participant, { name: "removeParticipant" })
   removeParticipant(
     @Args("participantId", { type: () => Int }) participantId: number
   ) {

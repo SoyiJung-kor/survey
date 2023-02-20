@@ -8,7 +8,7 @@ import { UpdateQuestionInput } from "./dto/update-question.input";
 export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Mutation(() => Question)
+  @Mutation(() => Question, { name: "createQuestion" })
   createQuestion(
     @Args("createQuestionInput") createQuestionInput: CreateQuestionInput
   ) {
@@ -25,7 +25,7 @@ export class QuestionResolver {
     return this.questionService.findOne(questionId);
   }
 
-  @Mutation(() => Question)
+  @Mutation(() => Question, { name: "updateQuestion" })
   updateQuestion(
     @Args("updateQuestionInput") updateQuestionInput: UpdateQuestionInput
   ) {
@@ -35,7 +35,7 @@ export class QuestionResolver {
     );
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => Boolean, { name: "removeQuestion" })
   removeQuestion(@Args("questionId", { type: () => Int }) questionId: number) {
     this.questionService.remove(questionId);
   }

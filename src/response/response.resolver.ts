@@ -34,10 +34,10 @@ export class ResponseResolver {
     return this.responseService.getResponseData(responseId);
   }
 
-  @Query(() => Response, { name: "testScore" })
-  findScore(@Args("responseId", { type: () => Int }) responseId: number) {
-    return this.responseService.getScore(responseId);
-  }
+  // @Query(() => Response, { name: "testScore" })
+  // findScore(@Args("responseId", { type: () => Int }) responseId: number) {
+  //   return this.responseService.getScore(responseId);
+  // }
 
   @Query(() => Response, { name: "getSumScore" })
   getScore(@Args("responseId", { type: () => Int }) responseId: number) {

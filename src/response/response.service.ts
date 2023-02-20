@@ -80,19 +80,26 @@ export class ResponseService {
       .getRawOne();
 
     const final = score.totalScore;
-    // console.log(final);
-
-    // console.log(score);
-
-    // const updateScore = this.dataSource.manager
-    // .createQueryBuilder()
-    // .update(Response)
-    // .set({ this.sumScore: `${score}`})
-    // .where("id =:id", {id: id })
-    // .execute();
-
     return score;
   }
+
+  // async submit(id: number) {
+  //   const submit = await this.dataSource.manager
+  //   .createQueryBuilder(Response, "response")
+  //   .leftJoin("response.eachResponse", "eachResponse")
+  //   .select("eachResponse.")
+  // }
+
+  // console.log(final);
+
+  // console.log(score);
+
+  // const updateScore = this.dataSource.manager
+  // .createQueryBuilder()
+  // .update(Response)
+  // .set({ this.sumScore: `${score}`})
+  // .where("id =:id", {id: id })
+  // .execute();
 
   async getSumScore(id: number) {
     const Score = await this.getScore(id);

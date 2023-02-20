@@ -53,11 +53,11 @@ type Query {
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findResponseWithQueryBuilder(responseId: Int!): Response!
-  testScore(responseId: Int!): Response!
   getSumScore(responseId: Int!): Response!
-  eachResponse(id: Int!): EachResponse!
+  findAllEachResponse: [EachResponse!]!
+  findOneEachResponse(id: Int!): EachResponse!
   findAllParticipants: [Participant!]!
-  findParticipant(participantId: Int!): Participant!
+  findOneParticipant(participantId: Int!): Participant!
 }
 
 type Mutation {
