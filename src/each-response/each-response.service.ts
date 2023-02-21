@@ -17,10 +17,9 @@ export class EachResponseService {
 
   async create(input: CreateEachResponseInput) {
     const eachResponse = this.eachResponseRepository.create(input);
-    eachResponse.response = await this.entityManager.findOneById(
-      Response,
-      input.responseId
-    );
+    eachResponse.response = await this.entityManager.findOneBy(Response, {
+      id: input.responseId,
+    });
     return this.entityManager.save(eachResponse);
   }
 
