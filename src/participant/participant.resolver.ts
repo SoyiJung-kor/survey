@@ -32,15 +32,13 @@ export class ParticipantResolver {
     updateParticipantInput: UpdateParticipantInput
   ) {
     return this.participantService.update(
-      updateParticipantInput.participantId,
+      updateParticipantInput.id,
       updateParticipantInput
     );
   }
 
   @Mutation(() => Participant, { name: "removeParticipant" })
-  removeParticipant(
-    @Args("participantId", { type: () => Int }) participantId: number
-  ) {
-    return this.participantService.remove(participantId);
+  removeParticipant(@Args("participantId", { type: () => Int }) id: number) {
+    return this.participantService.remove(id);
   }
 }

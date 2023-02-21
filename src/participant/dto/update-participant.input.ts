@@ -6,5 +6,5 @@ export class UpdateParticipantInput extends PartialType(
   CreateParticipantInput
 ) {
   @Field(() => Int)
-  participantId: number;
+  id: number;
 }
