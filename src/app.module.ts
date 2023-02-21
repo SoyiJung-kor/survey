@@ -37,6 +37,4 @@ import { EachResponse } from "./each-response/entities/each-response.entity";
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class AppModule {}

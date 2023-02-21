@@ -19,7 +19,6 @@ export class ResponseService {
     const response = this.responseRepository.create(input);
     response.isSubmit = false;
     response.sumScore = 0;
-    // default value 로 해놓으면 안되나?
     response.surveyId = input.surveyId;
     response.participant = await this.entityManager.findOneBy(Participant, {
       id: input.participantId,
@@ -61,12 +60,14 @@ export class ResponseService {
     const Score = await this.getScore(id);
     const SumScore = +Score.totalScore;
     console.log(`Sum Score : ${SumScore}`);
-    return await this.dataSource.manager
+    const result = await this.dataSource.manager
       .createQueryBuilder()
       .update(Response)
       .set({ sumScore: `${SumScore}` })
       .where(`id = ${id}`)
       .execute();
+
+    return result;
   }
 
   async remove(id: number): Promise<void> {
@@ -101,28 +102,4 @@ export class ResponseService {
     this.responseRepository.merge(await response, updateResponseInput);
     return this.responseRepository.update(id, await response);
   }
-
-  // async submit(id: number) {
-  //   const submit = await this.dataSource.manager
-  //   .createQueryBuilder(Response, "response")
-  //   .leftJoin("response.eachResponse", "eachResponse")
-  //   .select("eachResponse.")
-  // }
-
-  // console.log(final);
-
-  // console.log(score);
-
-  // const updateScore = this.dataSource.manager
-  // .createQueryBuilder()
-  // .update(Response)
-  // .set({ this.sumScore: `${score}`})
-  // .where("id =:id", {id: id })
-  // .execute();
-
-  // async update(surveyId: number, updateSurveyInput: UpdateSurveyInput) {
-  //   const survey = this.validSurveyById(surveyId);
-  //   this.surveyRepository.merge(await survey, updateSurveyInput);
-  //   return this.surveyRepository.update(surveyId, await survey);
-  // }
 }
