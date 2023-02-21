@@ -29,10 +29,7 @@ export class SurveyResolver {
   updateSurvey(
     @Args("updateSurveyInput") updateSurveyInput: UpdateSurveyInput
   ) {
-    return this.surveyService.update(
-      updateSurveyInput.surveyId,
-      updateSurveyInput
-    );
+    return this.surveyService.update(updateSurveyInput.id, updateSurveyInput);
   }
 
   @Mutation(() => Boolean, { name: "removeSurvey" })

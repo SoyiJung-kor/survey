@@ -19,11 +19,11 @@ export class ResponseService {
     const response = this.responseRepository.create(input);
     response.isSubmit = false;
     response.sumScore = 0;
+    // default value 로 해놓으면 안되나?
     response.surveyId = input.surveyId;
-    response.participant = await this.entityManager.findOneById(
-      Participant,
-      input.participantId
-    );
+    response.participant = await this.entityManager.findOneBy(Participant, {
+      id: input.participantId,
+    });
     return this.responseRepository.save(response);
   }
 
@@ -39,7 +39,7 @@ export class ResponseService {
   async getResponseData(id: number) {
     const responseData = await this.dataSource.manager
       .createQueryBuilder(Response, "response")
-      .where("response.id = :id", { id: id })
+      .where(`response.id = ${id}`)
       .getOne();
 
     return responseData;
@@ -50,11 +50,23 @@ export class ResponseService {
       .createQueryBuilder(Response, "response")
       .leftJoin("response.eachResponse", "eachResponse") // leftJoinAndSelect
       .select("SUM(eachResponse.responseScore)", "totalScore")
-      .where("response.id = :id", { id: id })
+      .where(`response.id = ${id}`)
       // .getQuery();
       .getRawOne();
 
     return score;
+  }
+
+  async getSumScore(id: number) {
+    const Score = await this.getScore(id);
+    const SumScore = +Score.totalScore;
+    console.log(`Sum Score : ${SumScore}`);
+    return await this.dataSource.manager
+      .createQueryBuilder()
+      .update(Response)
+      .set({ sumScore: `${SumScore}` })
+      .where(`id = ${id}`)
+      .execute();
   }
 
   async remove(id: number): Promise<void> {
@@ -90,18 +102,6 @@ export class ResponseService {
     return this.responseRepository.update(id, await response);
   }
 
-  async getSumScore(id: number) {
-    const Score = await this.getScore(id);
-    const SumScore = +Score.totalScore;
-    // 한줄로 바꿀수 있나?
-    // validator 넣어줄수 있지?
-    await this.dataSource.manager
-      .createQueryBuilder()
-      .update(Response)
-      .set({ sumScore: `${SumScore}` })
-      .where("id = :id", { id: id })
-      .execute();
-  }
   // async submit(id: number) {
   //   const submit = await this.dataSource.manager
   //   .createQueryBuilder(Response, "response")

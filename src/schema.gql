@@ -89,7 +89,7 @@ input CreateSurveyInput {
 input UpdateSurveyInput {
   """설문지 이름"""
   surveyTitle: String
-  surveyId: Int!
+  id: Int!
 }
 
 input CreateQuestionInput {

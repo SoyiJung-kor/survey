@@ -16,10 +16,9 @@ export class AnswerService {
 
   async create(input: CreateAnswerInput) {
     const answer = this.answerRepository.create(input);
-    answer.question = await this.entityManager.findOneById(
-      Question,
-      input.questionId
-    );
+    answer.question = await this.entityManager.findOneBy(Question, {
+      id: input.questionId,
+    });
     return this.entityManager.save(answer);
   }
 
@@ -61,7 +60,15 @@ export class AnswerService {
           cause: error,
         }
       );
-      return this.answerRepository.findOneBy({ id });
     }
   }
+
+  // async create(input: CreateAnswerInput) {
+  //   const answer = this.answerRepository.create(input);
+  //   answer.question = await this.entityManager.findOneById(
+  //     Question,
+  //     input.questionId
+  //   );
+  //   return this.entityManager.save(answer);
+  // }
 }
