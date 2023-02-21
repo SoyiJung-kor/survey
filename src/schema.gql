@@ -2,44 +2,8 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Participant {
-  participantId: Int!
-  email: String!
-}
-
-type ResponseQuestion {
-  ResponseQuestionId: Int!
-  ResponseQuestionContent: String!
-  ResponseQuestionNumber: Int!
-  questionId: Int!
-  responseId: Int!
-}
-
-type ResponseSurvey {
-  ResponseSurveyId: Int!
-  ResponseSurveyTitle: String!
-  surveyId: Int!
-  responseId: Int!
-}
-
-type Response {
-  responseId: Int!
-  isSubmit: Boolean!
-  sumScore: Int!
-  participantId: Int!
-}
-
-type ResponseAnswer {
-  ResponseAnswerId: Int!
-  ResponseAnswerNumber: Int!
-  ResponseAnswerContent: String!
-  ResponseAnswerScore: Int!
-  questionId: Int!
-  responseId: Int!
-}
-
 type Answer {
-  answerId: Int!
+  id: Int!
   answerNumber: Int!
   answerContent: String!
   answerScore: Int!
@@ -47,14 +11,35 @@ type Answer {
 }
 
 type Question {
-  questionId: Int!
+  id: Int!
   questionNumber: Int!
   questionContent: String!
   surveyId: Int!
 }
 
-type Survey {
+type EachResponse {
+  id: Int!
+  responseId: Int!
+  responseQuestion: String!
+  responseAnswer: String!
+  responseScore: Int!
+}
+
+type Participant {
+  id: Int!
+  email: String!
+}
+
+type Response {
+  id: Int!
+  isSubmit: Boolean!
+  sumScore: Int!
+  participantId: Int!
   surveyId: Int!
+}
+
+type Survey {
+  id: Int!
   surveyTitle: String!
 }
 
@@ -65,12 +50,14 @@ type Query {
   findQuestion(questionId: Int!): Question!
   findAllAnswers: [Answer!]!
   findAnswer(answerId: Int!): Answer!
-  findAllParticipants: [Participant!]!
-  findParticipant(participantId: Int!): Participant!
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findResponseWithQueryBuilder(responseId: Int!): Response!
   getSumScore(responseId: Int!): Response!
+  findAllEachResponse: [EachResponse!]!
+  findOneEachResponse(id: Int!): EachResponse!
+  findAllParticipants: [Participant!]!
+  findOneParticipant(participantId: Int!): Participant!
 }
 
 type Mutation {
@@ -83,14 +70,15 @@ type Mutation {
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   removeAnswer(answerId: Int!): Answer!
-  createResponseSurvey(surveyId: Int!, responseId: Int!): ResponseSurvey!
+  createResponse(createResponseInput: CreateResponseInput!): Response!
+  removeResponse(responseId: Int!): Response!
+  updateResponse(updateResponseInput: UpdateResponseInput!): Response!
+  createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
+  updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
+  removeEachResponse(id: Int!): EachResponse!
   createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
   updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!
   removeParticipant(participantId: Int!): Participant!
-  createResponse(createResponseInput: CreateResponseInput!): Response!
-  removeResponse(responseId: Int!): Response!
-  createResponseQuestion(questionId: Int!, responseId: Int!): ResponseQuestion!
-  createResponseAnswer(answerId: Int!, responseId: Int!): ResponseAnswer!
 }
 
 input CreateSurveyInput {
@@ -101,7 +89,7 @@ input CreateSurveyInput {
 input UpdateSurveyInput {
   """설문지 이름"""
   surveyTitle: String
-  surveyId: Int!
+  id: Int!
 }
 
 input CreateQuestionInput {
@@ -117,7 +105,7 @@ input UpdateQuestionInput {
   questionNumber: Int!
   questionContent: String!
   surveyId: Int!
-  questionId: Int!
+  id: Int!
 }
 
 input CreateAnswerInput {
@@ -142,7 +130,41 @@ input UpdateAnswerInput {
   """answer Score"""
   answerScore: Int
   questionId: Int
-  answerId: Int!
+  id: Int!
+}
+
+input CreateResponseInput {
+  surveyId: Int!
+  participantId: Int!
+}
+
+input UpdateResponseInput {
+  surveyId: Int
+  participantId: Int
+  id: Int!
+  isSubmit: Boolean!
+}
+
+input CreateEachResponseInput {
+  """response ID"""
+  responseId: Int!
+
+  """response Question"""
+  responseQuestion: String!
+
+  """response Answer"""
+  responseAnswer: String!
+
+  """response Score"""
+  responseScore: Int!
+}
+
+input UpdateEachResponseInput {
+  responseId: Int!
+  responseQuestion: String!
+  responseAnswer: String!
+  responseScore: Int!
+  id: Int!
 }
 
 input CreateParticipantInput {
@@ -153,9 +175,5 @@ input CreateParticipantInput {
 input UpdateParticipantInput {
   """participant email"""
   email: String
-  participantId: Int!
-}
-
-input CreateResponseInput {
-  participantId: Int!
+  id: Int!
 }

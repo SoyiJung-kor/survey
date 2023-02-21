@@ -1,16 +1,16 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
-import { CreateSurveyInput } from './dto/create-survey.input';
-import { UpdateSurveyInput } from './dto/update-survey.input';
-import { Survey } from './entities/survey.entity';
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { EntityManager, Repository } from "typeorm";
+import { CreateSurveyInput } from "./dto/create-survey.input";
+import { UpdateSurveyInput } from "./dto/update-survey.input";
+import { Survey } from "./entities/survey.entity";
 
 @Injectable()
 export class SurveyService {
   constructor(
     @InjectRepository(Survey)
     private surveyRepository: Repository<Survey>,
-    private entityManager: EntityManager,
+    private entityManager: EntityManager
   ) {}
 
   create(createSurveyInput: CreateSurveyInput) {
@@ -22,40 +22,40 @@ export class SurveyService {
     return this.surveyRepository.find();
   }
 
-  findOne(surveyId: number) {
-    this.validSurveyById(surveyId);
-    return this.surveyRepository.findOneBy({ surveyId });
+  findOne(id: number) {
+    this.validSurveyById(id);
+    return this.surveyRepository.findOneBy({ id });
   }
 
-  async update(surveyId: number, updateSurveyInput: UpdateSurveyInput) {
-    const survey = this.validSurveyById(surveyId);
+  async update(id: number, updateSurveyInput: UpdateSurveyInput) {
+    const survey = this.validSurveyById(id);
     this.surveyRepository.merge(await survey, updateSurveyInput);
-    return this.surveyRepository.update(surveyId, await survey);
+    return this.surveyRepository.update(id, await survey);
   }
 
-  async remove(surveyId: number): Promise<void> {
-    const survey = this.surveyRepository.findOneBy({ surveyId });
+  async remove(id: number): Promise<void> {
+    const survey = this.surveyRepository.findOneBy({ id });
     if (!survey) {
       throw new Error("CAN'T FIND THE SURVEY!");
     }
-    await this.surveyRepository.delete({ surveyId });
+    await this.surveyRepository.delete({ id });
   }
 
-  validSurveyById(surveyId: number) {
+  validSurveyById(id: number) {
     try {
-      this.surveyRepository.findOneBy({ surveyId });
+      this.surveyRepository.findOneBy({ id });
     } catch (error) {
       throw new HttpException(
         {
           status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
+          error: "message",
         },
         HttpStatus.BAD_GATEWAY,
         {
           cause: error,
-        },
+        }
       );
     }
-    return this.surveyRepository.findOneBy({ surveyId });
+    return this.surveyRepository.findOneBy({ id });
   }
 }

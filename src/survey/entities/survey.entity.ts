@@ -1,16 +1,15 @@
 /* eslint-disable prettier/prettier */
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
-import { ResponseSurvey } from '../../responseSurvey/entities/ResponseSurvey.entity';
-
+import { Response } from '../../response/entities/response.entity';
 
 @ObjectType()
 @Entity()
 export class Survey {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  surveyId: number;
+  id: number;
 
   @Field(() => String)
   @Column()
@@ -20,11 +19,18 @@ export class Survey {
   readonly createdAt: Date;
 
   @UpdateDateColumn()
-  readonly modifiedAt: Date;
+  readonly updatedAt: Date;
+
+  @DeleteDateColumn()
+  readonly deletedAt: Date;
 
   @OneToMany(() => Question, (question) => question.survey, { cascade : true })
   questions: Question[];
 
-  @OneToMany(() => ResponseSurvey, (responseSurvey) => responseSurvey.survey)
-  responseSurvey: ResponseSurvey[];
+  @OneToMany(() => Response, (response) => response.survey,  {cascade : true})
+  response: Response[];
+   // @OneToMany(() => ResponseSurvey, (responseSurvey) => responseSurvey.survey)
+  // responseSurvey: ResponseSurvey[];
+
+  
 }

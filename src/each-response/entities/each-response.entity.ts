@@ -5,27 +5,33 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Answer } from "../../answer/entities/answer.entity";
-import { Survey } from "../../survey/entities/survey.entity";
+import { Response } from "../../response/entities/response.entity";
 
 @ObjectType()
 @Entity()
-export class Question {
+export class EachResponse {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
   @Field(() => Int)
   @Column()
-  questionNumber: number;
+  responseId: number;
 
   @Field(() => String)
   @Column()
-  questionContent: string;
+  responseQuestion: string;
+
+  @Field(() => String)
+  @Column()
+  responseAnswer: string;
+
+  @Field(() => Int)
+  @Column()
+  responseScore: number;
 
   @CreateDateColumn()
   readonly createdAt: Date;
@@ -36,14 +42,8 @@ export class Question {
   @DeleteDateColumn()
   readonly deletedAt: Date;
 
-  @Field(() => Int)
-  @Column()
-  surveyId: number;
-
-  @ManyToOne(() => Survey, (survey) => survey.questions, { nullable: false })
-  survey: Survey;
-
-  @OneToMany(() => Answer, (answers) => answers.question)
-  answers: Answer[];
-
+  @ManyToOne(() => Response, (response) => response.eachResponse, {
+    nullable: false,
+  })
+  response: Response;
 }

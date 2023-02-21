@@ -1,19 +1,12 @@
-import { Module } from '@nestjs/common';
-import { ResponseService } from './response.service';
-import { ResponseResolver } from './response.resolver';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ResponseSurveyModule } from '../responseSurvey/responseSurvey.module';
-import { ResponseQuestionModule } from '../responseQuestion/response-question.module';
-import { ResponseAnswerModule } from '../responseAnswer/responseAnswer.module';
-import { Response } from './entities/response.entity';
+import { Module } from "@nestjs/common";
+import { ResponseService } from "./response.service";
+import { ResponseResolver } from "./response.resolver";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { Response } from "./entities/response.entity";
+import { EachResponseModule } from "../each-response/each-response.module";
 
 @Module({
-  imports: [
-    ResponseSurveyModule,
-    ResponseQuestionModule,
-    ResponseAnswerModule,
-    TypeOrmModule.forFeature([Response]),
-  ],
+  imports: [EachResponseModule, TypeOrmModule.forFeature([Response])],
   providers: [ResponseResolver, ResponseService],
   exports: [TypeOrmModule],
 })

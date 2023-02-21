@@ -1,42 +1,39 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { AnswerService } from './answer.service';
-import { Answer } from './entities/answer.entity';
-import { CreateAnswerInput } from './dto/create-answer.input';
-import { UpdateAnswerInput } from './dto/update-answer.input';
+import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
+import { AnswerService } from "./answer.service";
+import { Answer } from "./entities/answer.entity";
+import { CreateAnswerInput } from "./dto/create-answer.input";
+import { UpdateAnswerInput } from "./dto/update-answer.input";
 
 @Resolver(() => Answer)
 export class AnswerResolver {
   constructor(private readonly answerService: AnswerService) {}
 
-  @Mutation(() => Answer)
+  @Mutation(() => Answer, { name: "createAnswer" })
   createAnswer(
-    @Args('createAnswerInput') createAnswerInput: CreateAnswerInput,
+    @Args("createAnswerInput") createAnswerInput: CreateAnswerInput
   ) {
     return this.answerService.create(createAnswerInput);
   }
 
-  @Query(() => [Answer], { name: 'findAllAnswers' })
+  @Query(() => [Answer], { name: "findAllAnswers" })
   findAll() {
     return this.answerService.findAll();
   }
 
-  @Query(() => Answer, { name: 'findAnswer' })
-  findOne(@Args('answerId', { type: () => Int }) answerId: number) {
+  @Query(() => Answer, { name: "findAnswer" })
+  findOne(@Args("answerId", { type: () => Int }) answerId: number) {
     return this.answerService.findOne(answerId);
   }
 
-  @Mutation(() => Answer)
+  @Mutation(() => Answer, { name: "updateAnswer" })
   updateAnswer(
-    @Args('updateAnswerInput') updateAnswerInput: UpdateAnswerInput,
+    @Args("updateAnswerInput") updateAnswerInput: UpdateAnswerInput
   ) {
-    return this.answerService.update(
-      updateAnswerInput.answerId,
-      updateAnswerInput,
-    );
+    return this.answerService.update(updateAnswerInput.id, updateAnswerInput);
   }
 
-  @Mutation(() => Answer)
-  removeAnswer(@Args('answerId', { type: () => Int }) answerId: number) {
+  @Mutation(() => Answer, { name: "removeAnswer" })
+  removeAnswer(@Args("answerId", { type: () => Int }) answerId: number) {
     return this.answerService.remove(answerId);
   }
 }
