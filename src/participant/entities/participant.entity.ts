@@ -14,7 +14,7 @@ import { Response } from '../../response/entities/response.entity';
 export class Participant {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  participantId: number;
+  id: number;
 
   @Field(() => String)
   @Column()
@@ -26,8 +26,6 @@ export class Participant {
   @UpdateDateColumn()
   readonly modifiedAt: Date;
 
-  @OneToMany(() => Response, (responses) => responses.participant, {
-    cascade: true,
-  })
+  @OneToMany(() => Response, (responses) => responses.participant)
   responses: Response[];
 }

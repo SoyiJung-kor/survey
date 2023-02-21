@@ -72,8 +72,8 @@ export class ResponseService {
   async getScore(responseId: number) {
     const score = await this.dataSource.manager
       .createQueryBuilder(Response, 'response')
-      .leftJoinAndSelect('response.responseAnswers', 'responseAnswer')
-      .addSelect('SUM(responseAnswer.score)')
+      .leftJoin('response.responseAnswers', 'responseAnswer')
+      .select('SUM(responseAnswer.score)')
       .where('response.responseId = :id', { id: responseId })
       .getRawOne();
 

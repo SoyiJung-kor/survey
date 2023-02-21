@@ -16,10 +16,9 @@ export class AnswerService {
 
   async create(input: CreateAnswerInput) {
     const answer = this.answerRepository.create(input);
-    answer.question = await this.entityManager.findOneById(
-      Question,
-      input.questionId,
-    );
+    answer.question = await this.entityManager.findOne(Question, {
+      where: { questionId: input.questionId },
+    });
     return this.entityManager.save(answer);
   }
 

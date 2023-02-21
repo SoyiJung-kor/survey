@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToOne,
   OneToMany,
@@ -17,7 +18,7 @@ import { ResponseAnswer } from '../../ResponseAnswer/entities/ResponseAnswer.ent
 export class Answer {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  answerId: number;
+  id: number;
 
   @Field(() => Int)
   @Column()
@@ -40,13 +41,9 @@ export class Answer {
   @ManyToOne(() => Question, (question) => question.answers, {
     nullable: false,
   })
+  @JoinColumn({ name: 'questionId' })
   question: Question;
 
   @OneToMany(() => ResponseAnswer, (ResponseAnswer) => ResponseAnswer.answer)
-  @JoinTable()
   ResponseAnswer: ResponseAnswer[];
-
-  @Field(() => Int)
-  @Column()
-  questionId: number;
 }

@@ -3,7 +3,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -45,17 +44,14 @@ export class Response {
   participant: Participant;
 
   @OneToMany(() => ResponseAnswer, (responseAnswer) => responseAnswer.response)
-  @JoinTable()
   responseAnswers: ResponseAnswer[];
 
   @OneToMany(() => ResponseSurvey, (responseSurvey) => responseSurvey.response)
-  @JoinTable()
   responseSurvey: ResponseSurvey[];
 
   @OneToMany(
     () => ResponseQuestion,
     (responseQuestions) => responseQuestions.response,
   )
-  @JoinTable()
   responseQuestion: ResponseQuestion[];
 }
