@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -41,15 +42,12 @@ export class Answer {
   @ManyToOne(() => Question, (question) => question.answers, {
     nullable: false,
   })
+  @JoinColumn({ name: 'questionId' })
   question: Question;
-
-  // @OneToMany(() => ResponseAnswer, (ResponseAnswer) => ResponseAnswer.answer)
-  // @JoinTable()
-  // ResponseAnswer: ResponseAnswer[];
 
   @Field(() => Int)
   @Column()
   questionId: number;
-  //여기 보기쉽게 바 꿔야해 어떤 방법인진 생각 안남
-  // 저 위에 주석 처리 해놓은 jointable 일꺼야
+
+
 }

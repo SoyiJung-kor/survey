@@ -18,6 +18,7 @@ export class AnswerService {
     const answer = this.answerRepository.create(input);
     answer.question = await this.entityManager.findOneBy(Question, {
       id: input.questionId,
+
     });
     return this.entityManager.save(answer);
   }

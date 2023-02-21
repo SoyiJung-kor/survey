@@ -33,8 +33,6 @@ export class Participant extends ValidationEntity {
   @DeleteDateColumn()
   readonly deletedAt: Date;
 
-  @OneToMany(() => Response, (responses) => responses.participant, {
-    cascade: true,
-  })
+  @OneToMany(() => Response, (responses) => responses.participant)
   responses: Response[];
 }

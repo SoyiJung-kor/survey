@@ -4,7 +4,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinTable,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -44,14 +43,7 @@ export class Question {
   @ManyToOne(() => Survey, (survey) => survey.questions, { nullable: false })
   survey: Survey;
 
-  @OneToMany(() => Answer, (answers) => answers.question, { cascade: true })
-  @JoinTable()
+  @OneToMany(() => Answer, (answers) => answers.question)
   answers: Answer[];
 
-  // @OneToMany(
-  //   () => ResponseQuestion,
-  //   (ResponseQuestion) => ResponseQuestion.question
-  // )
-  // @JoinTable()
-  // ResponseQuestion: ResponseQuestion[];
 }

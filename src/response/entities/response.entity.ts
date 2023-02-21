@@ -53,32 +53,8 @@ export class Response {
   @ManyToOne(() => Survey, (survey) => survey.response, { nullable: false })
   survey: Survey;
 
-  // @OneToMany(() => EachResponse, (eachResponse) => eachResponse.response, {
-  //   cascade: true,
-  // })
-  // eachResponse: EachResponse[];
-
   @OneToMany(() => EachResponse, (eachresponse) => eachresponse.response)
   eachResponse: EachResponse[];
 
-  // @OneToMany(
-  //   () => ResponseQuestionAnswer,
-  //   (responseQuestionAnswer) => responseQuestionAnswer.response
-  // )
-  // responseQuestionAnswer: ResponseQuestionAnswer[];
-
-  // @OneToMany(() => ResponseAnswer, (responseAnswer) => responseAnswer.response)
-  // @JoinTable()
-  // responseAnswers: ResponseAnswer[];
-
-  // @OneToMany(() => ResponseSurvey, (responseSurvey) => responseSurvey.response)
-  // @JoinTable()
-  // responseSurvey: ResponseSurvey[];
-
-  // @OneToMany(
-  //   () => ResponseQuestion,
-  //   (responseQuestions) => responseQuestions.response
-  // )
-  // @JoinTable()
-  // responseQuestion: ResponseQuestion[];
+  
 }
