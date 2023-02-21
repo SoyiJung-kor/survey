@@ -1,5 +1,5 @@
-import { ObjectType, Field, Int } from "@nestjs/graphql";
-import { IsEmail } from "class-validator";
+import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { IsEmail } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -8,9 +8,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
-import { ValidationEntity } from "../../common/entity/ValidationEntity";
-import { Response } from "../../response/entities/response.entity";
+} from 'typeorm';
+import { ValidationEntity } from '../../common/entity/ValidationEntity';
+import { Response } from '../../response/entities/response.entity';
 
 @ObjectType()
 @Entity()

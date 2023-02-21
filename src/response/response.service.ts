@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { DataSource, EntityManager, Repository } from "typeorm";
-import { Participant } from "../participant/entities/participant.entity";
-import { CreateResponseInput } from "./dto/create-response.input";
-import { UpdateResponseInput } from "./dto/update-response.input";
-import { Response } from "./entities/response.entity";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
+import { Participant } from '../participant/entities/participant.entity';
+import { CreateResponseInput } from './dto/create-response.input';
+import { UpdateResponseInput } from './dto/update-response.input';
+import { Response } from './entities/response.entity';
 
 @Injectable()
 export class ResponseService {
@@ -12,7 +12,7 @@ export class ResponseService {
     @InjectRepository(Response)
     private responseRepository: Repository<Response>,
     private entityManager: EntityManager,
-    private dataSource: DataSource
+    private dataSource: DataSource,
   ) {}
 
   async create(input: CreateResponseInput) {
@@ -37,7 +37,7 @@ export class ResponseService {
 
   async getResponseData(id: number) {
     const responseData = await this.dataSource.manager
-      .createQueryBuilder(Response, "response")
+      .createQueryBuilder(Response, 'response')
       .where(`response.id = ${id}`)
       .getOne();
 
@@ -46,9 +46,9 @@ export class ResponseService {
 
   async getScore(id: number) {
     const score = await this.dataSource.manager
-      .createQueryBuilder(Response, "response")
-      .leftJoin("response.eachResponse", "eachResponse") // leftJoinAndSelect
-      .select("SUM(eachResponse.responseScore)", "totalScore")
+      .createQueryBuilder(Response, 'response')
+      .leftJoin('response.eachResponse', 'eachResponse') // leftJoinAndSelect
+      .select('SUM(eachResponse.responseScore)', 'totalScore')
       .where(`response.id = ${id}`)
       // .getQuery();
       .getRawOne();
@@ -85,12 +85,12 @@ export class ResponseService {
       throw new HttpException(
         {
           status: HttpStatus.BAD_GATEWAY,
-          error: "message",
+          error: 'message',
         },
         HttpStatus.BAD_GATEWAY,
         {
           cause: error,
-        }
+        },
       );
     }
     return this.responseRepository.findOneBy({ id });
@@ -102,5 +102,4 @@ export class ResponseService {
     this.responseRepository.merge(await response, updateResponseInput);
     return this.responseRepository.update(id, await response);
   }
-
 }

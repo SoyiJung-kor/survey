@@ -1,24 +1,23 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { EntityManager, Repository } from "typeorm";
-import { Question } from "../question/entities/question.entity";
-import { CreateAnswerInput } from "./dto/create-answer.input";
-import { UpdateAnswerInput } from "./dto/update-answer.input";
-import { Answer } from "./entities/answer.entity";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository } from 'typeorm';
+import { Question } from '../question/entities/question.entity';
+import { CreateAnswerInput } from './dto/create-answer.input';
+import { UpdateAnswerInput } from './dto/update-answer.input';
+import { Answer } from './entities/answer.entity';
 
 @Injectable()
 export class AnswerService {
   constructor(
     @InjectRepository(Answer)
     private answerRepository: Repository<Answer>,
-    private entityManager: EntityManager
+    private entityManager: EntityManager,
   ) {}
 
   async create(input: CreateAnswerInput) {
     const answer = this.answerRepository.create(input);
     answer.question = await this.entityManager.findOneBy(Question, {
       id: input.questionId,
-
     });
     return this.entityManager.save(answer);
   }
@@ -54,12 +53,12 @@ export class AnswerService {
       throw new HttpException(
         {
           status: HttpStatus.BAD_GATEWAY,
-          error: "message",
+          error: 'message',
         },
         HttpStatus.BAD_GATEWAY,
         {
           cause: error,
-        }
+        },
       );
     }
   }

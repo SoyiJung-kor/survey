@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
@@ -8,9 +8,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
-import { Answer } from "../../answer/entities/answer.entity";
-import { Survey } from "../../survey/entities/survey.entity";
+} from 'typeorm';
+import { Answer } from '../../answer/entities/answer.entity';
+import { Survey } from '../../survey/entities/survey.entity';
 
 @ObjectType()
 @Entity()
@@ -45,5 +45,4 @@ export class Question {
 
   @OneToMany(() => Answer, (answers) => answers.question)
   answers: Answer[];
-
 }

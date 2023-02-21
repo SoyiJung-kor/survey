@@ -1,15 +1,15 @@
-import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
-import { Question } from "../../question/entities/question.entity";
+} from 'typeorm';
+import { Question } from '../../question/entities/question.entity';
 
 @Entity()
 @ObjectType()
@@ -48,6 +48,4 @@ export class Answer {
   @Field(() => Int)
   @Column()
   questionId: number;
-
-
 }

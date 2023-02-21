@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { DataSource, EntityManager, Repository } from "typeorm";
-import { CreateParticipantInput } from "./dto/create-participant.input";
-import { UpdateParticipantInput } from "./dto/update-participant.input";
-import { Participant } from "./entities/participant.entity";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
+import { CreateParticipantInput } from './dto/create-participant.input';
+import { UpdateParticipantInput } from './dto/update-participant.input';
+import { Participant } from './entities/participant.entity';
 
 @Injectable()
 export class ParticipantService {
@@ -11,7 +11,7 @@ export class ParticipantService {
     @InjectRepository(Participant)
     private participantRepository: Repository<Participant>,
     private entityManager: EntityManager,
-    private dataSource: DataSource
+    private dataSource: DataSource,
   ) {}
 
   create(input: CreateParticipantInput) {
@@ -49,12 +49,12 @@ export class ParticipantService {
       throw new HttpException(
         {
           status: HttpStatus.BAD_GATEWAY,
-          error: "message",
+          error: 'message',
         },
         HttpStatus.BAD_GATEWAY,
         {
           cause: error,
-        }
+        },
       );
     }
     return this.participantRepository.findOneBy({ id });
