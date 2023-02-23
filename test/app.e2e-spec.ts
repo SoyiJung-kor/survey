@@ -13,7 +13,7 @@ import { Question } from '../src/question/entities/question.entity';
 import { SurveyModule } from '../src/survey/survey.module';
 import request from 'supertest';
 import { Response } from '../src/response/entities/response.entity';
-import { DataSource, getConnection } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 const gql = '/graphql';
 
@@ -53,6 +53,7 @@ describe('Graphql (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
     dataSource = moduleFixture.get<DataSource>(DataSource);
+    dataSource.manager.insert(Survey, { surveyTitle: 'Test Survey #1' });
   });
   it('be define', async () => {
     expect(app).toBeDefined;
@@ -63,44 +64,68 @@ describe('Graphql (e2e)', () => {
     await dataSource.dropDatabase();
     app.close();
   });
-
-  it.todo('createSurvey');
-
-  describe('createSurvey', () => {
-    it('find all survey', async () => {
-      const result = request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `{
+  describe('survey', () => {
+    describe('find all survey', () => {
+      it('find all surveys', async () => {
+        const result = request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
             findAllSurveys{
               id
               surveyTitle
             }
           }`,
-        })
-        .expect(200);
-      console.log(result);
-      return result;
+          })
+          .expect(200);
+        return result;
+      });
     });
-    it('create survey', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `
+    describe('create survey', () => {
+      it('create survey', async () => {
+        request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
           mutation createSurvey {
-            createSurvey(createSurveyInput:{surveyTitle:"Test Survey2"}) {
+            createSurvey(createSurveyInput:{surveyTitle:"Test Survey"}) {
               id
               surveyTitle
             }
           }
           `,
-        })
-        .expect(200);
+          })
+          .expect(200)
+          .expect('surveyTitle', 'Test Survey');
+      });
+    });
+    describe('find a survey', () => {
+      it('find a survey', async () => {
+        request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findSurvey(surveyId:1){
+              id
+              surveyTitle
+            }
+          }`,
+          })
+          .expect(200)
+          .expect('surveyTitle', 'Test Survey')
+          .expect('id', '1');
+      });
+    });
+    describe('update a survey', () => {
+      it.todo('update a survey');
+    });
+    describe('remove a survey', () => {
+      it.todo('remove a survey');
     });
   });
-  it.todo('createQuestion');
-  it.todo('createAnswer');
-  it.todo('createUser');
-  it.todo('createResponse');
-  it.todo('createEachResponse');
 });
+it.todo('Question');
+it.todo('Answer');
+it.todo('User');
+it.todo('Response');
+it.todo('EachResponse');
