@@ -167,7 +167,13 @@ describe('Graphql (e2e)', () => {
           `,
           })
           .expect(200)
-          .expect('id', '1');
+          .expect((res) => {
+            console.log(res);
+            expect(res.body.data.updateSurvey.id).toBe(1);
+            expect(res.body.data.updateSurvey.surveyTitle).toBe(
+              'Modified Survey',
+            );
+          });
       });
     });
     describe('remove a survey', () => {

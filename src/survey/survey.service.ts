@@ -10,7 +10,7 @@ export class SurveyService {
   constructor(
     @InjectRepository(Survey)
     private surveyRepository: Repository<Survey>,
-  ) {}
+  ) { }
 
   create(createSurveyInput: CreateSurveyInput) {
     const newSurvey = this.surveyRepository.create(createSurveyInput);
@@ -27,9 +27,10 @@ export class SurveyService {
   }
 
   async update(id: number, updateSurveyInput: UpdateSurveyInput) {
-    const survey = this.validSurveyById(id);
-    this.surveyRepository.merge(await survey, updateSurveyInput);
-    return this.surveyRepository.update(id, await survey);
+    const survey = await this.validSurveyById(id);
+    this.surveyRepository.merge(survey, updateSurveyInput);
+    console.log(this.surveyRepository.update(id, survey));
+    return survey;
   }
 
   async remove(id: number): Promise<void> {
