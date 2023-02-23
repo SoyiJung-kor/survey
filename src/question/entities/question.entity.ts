@@ -40,9 +40,11 @@ export class Question {
   @Column()
   surveyId: number;
 
-  @ManyToOne(() => Survey, (survey) => survey.questions, { nullable: false })
+  @ManyToOne(() => Survey, (survey) => survey.questions, {
+    onDelete: 'CASCADE',
+  })
   survey: Survey;
 
-  @OneToMany(() => Answer, (answers) => answers.question)
+  @OneToMany(() => Answer, (answers) => answers.question, { cascade: true })
   answers: Answer[];
 }

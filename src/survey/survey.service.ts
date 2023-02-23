@@ -1,16 +1,15 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { EntityManager, Repository } from "typeorm";
-import { CreateSurveyInput } from "./dto/create-survey.input";
-import { UpdateSurveyInput } from "./dto/update-survey.input";
-import { Survey } from "./entities/survey.entity";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateSurveyInput } from './dto/create-survey.input';
+import { UpdateSurveyInput } from './dto/update-survey.input';
+import { Survey } from './entities/survey.entity';
 
 @Injectable()
 export class SurveyService {
   constructor(
     @InjectRepository(Survey)
     private surveyRepository: Repository<Survey>,
-    private entityManager: EntityManager
   ) {}
 
   create(createSurveyInput: CreateSurveyInput) {
@@ -48,12 +47,12 @@ export class SurveyService {
       throw new HttpException(
         {
           status: HttpStatus.BAD_GATEWAY,
-          error: "message",
+          error: 'message',
         },
         HttpStatus.BAD_GATEWAY,
         {
           cause: error,
-        }
+        },
       );
     }
     return this.surveyRepository.findOneBy({ id });

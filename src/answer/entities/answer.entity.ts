@@ -40,7 +40,7 @@ export class Answer {
   answerScore: number;
 
   @ManyToOne(() => Question, (question) => question.answers, {
-    nullable: false,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'questionId' })
   question: Question;

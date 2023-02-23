@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
@@ -8,10 +8,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
-import { EachResponse } from "../../each-response/entities/each-response.entity";
-import { Participant } from "../../participant/entities/participant.entity";
-import { Survey } from "../../survey/entities/survey.entity";
+} from 'typeorm';
+import { EachResponse } from '../../each-response/entities/each-response.entity';
+import { Participant } from '../../participant/entities/participant.entity';
+import { Survey } from '../../survey/entities/survey.entity';
 
 @ObjectType()
 @Entity()
@@ -50,11 +50,13 @@ export class Response {
   })
   participant: Participant;
 
-  @ManyToOne(() => Survey, (survey) => survey.response, { nullable: false })
+  @ManyToOne(() => Survey, (survey) => survey.response, {
+    onDelete: 'CASCADE',
+  })
   survey: Survey;
 
-  @OneToMany(() => EachResponse, (eachresponse) => eachresponse.response)
+  @OneToMany(() => EachResponse, (eachresponse) => eachresponse.response, {
+    cascade: true,
+  })
   eachResponse: EachResponse[];
-
-  
 }

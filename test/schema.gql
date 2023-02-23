@@ -1,0 +1,179 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Answer {
+  id: Int!
+  answerNumber: Int!
+  answerContent: String!
+  answerScore: Int!
+  questionId: Int!
+}
+
+type Question {
+  id: Int!
+  questionNumber: Int!
+  questionContent: String!
+  surveyId: Int!
+}
+
+type EachResponse {
+  id: Int!
+  responseId: Int!
+  responseQuestion: String!
+  responseAnswer: String!
+  responseScore: Int!
+}
+
+type Participant {
+  id: Int!
+  email: String!
+}
+
+type Response {
+  id: Int!
+  isSubmit: Boolean!
+  sumScore: Int!
+  participantId: Int!
+  surveyId: Int!
+}
+
+type Survey {
+  id: Int!
+  surveyTitle: String!
+}
+
+type Query {
+  findAllSurveys: [Survey!]!
+  findSurvey(surveyId: Int!): Survey!
+  findAllQuestions: [Question!]!
+  findQuestion(questionId: Int!): Question!
+  findAllAnswers: [Answer!]!
+  findAnswer(answerId: Int!): Answer!
+  findAllResponses: [Response!]!
+  findResponse(responseId: Int!): Response!
+  findResponseWithQueryBuilder(responseId: Int!): Response!
+  getSumScore(responseId: Int!): Response!
+  findAllEachResponse: [EachResponse!]!
+  findOneEachResponse(id: Int!): EachResponse!
+  findAllParticipants: [Participant!]!
+  findOneParticipant(participantId: Int!): Participant!
+}
+
+type Mutation {
+  createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
+  updateSurvey(updateSurveyInput: UpdateSurveyInput!): Survey!
+  removeSurvey(surveyId: Int!): Boolean!
+  createQuestion(createQuestionInput: CreateQuestionInput!): Question!
+  updateQuestion(updateQuestionInput: UpdateQuestionInput!): Question!
+  removeQuestion(questionId: Int!): Boolean!
+  createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
+  updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
+  removeAnswer(answerId: Int!): Answer!
+  createResponse(createResponseInput: CreateResponseInput!): Response!
+  removeResponse(responseId: Int!): Response!
+  updateResponse(updateResponseInput: UpdateResponseInput!): Response!
+  createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
+  updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
+  removeEachResponse(id: Int!): EachResponse!
+  createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
+  updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!
+  removeParticipant(participantId: Int!): Participant!
+}
+
+input CreateSurveyInput {
+  """설문지 이름"""
+  surveyTitle: String!
+}
+
+input UpdateSurveyInput {
+  """설문지 이름"""
+  surveyTitle: String
+  id: Int!
+}
+
+input CreateQuestionInput {
+  """question Number"""
+  questionNumber: Int!
+
+  """question Content"""
+  questionContent: String!
+  surveyId: Int!
+}
+
+input UpdateQuestionInput {
+  questionNumber: Int!
+  questionContent: String!
+  surveyId: Int!
+  id: Int!
+}
+
+input CreateAnswerInput {
+  """answer Number"""
+  answerNumber: Int!
+
+  """answer Content"""
+  answerContent: String!
+
+  """answer Score"""
+  answerScore: Int!
+  questionId: Int!
+}
+
+input UpdateAnswerInput {
+  """answer Number"""
+  answerNumber: Int
+
+  """answer Content"""
+  answerContent: String
+
+  """answer Score"""
+  answerScore: Int
+  questionId: Int
+  id: Int!
+}
+
+input CreateResponseInput {
+  surveyId: Int!
+  participantId: Int!
+}
+
+input UpdateResponseInput {
+  surveyId: Int
+  participantId: Int
+  id: Int!
+  isSubmit: Boolean!
+}
+
+input CreateEachResponseInput {
+  """response ID"""
+  responseId: Int!
+
+  """response Question"""
+  responseQuestion: String!
+
+  """response Answer"""
+  responseAnswer: String!
+
+  """response Score"""
+  responseScore: Int!
+}
+
+input UpdateEachResponseInput {
+  responseId: Int!
+  responseQuestion: String!
+  responseAnswer: String!
+  responseScore: Int!
+  id: Int!
+}
+
+input CreateParticipantInput {
+  """participant email"""
+  email: String!
+}
+
+input UpdateParticipantInput {
+  """participant email"""
+  email: String
+  id: Int!
+}
