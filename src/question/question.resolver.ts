@@ -23,7 +23,7 @@ export class QuestionResolver {
 
   @Query(() => Question, { name: 'findQuestion' })
   findOne(@Args('questionId', { type: () => Int }) questionId: number) {
-    return this.questionService.findOne(questionId);
+    return this.questionService.findDetail(questionId);
   }
 
   @Mutation(() => Question, { name: 'updateQuestion' })

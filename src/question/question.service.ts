@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
@@ -12,7 +13,7 @@ export class QuestionService {
     @InjectRepository(Question)
     private questionRepository: Repository<Question>,
     private entityManager: EntityManager,
-  ) {}
+  ) { }
 
   async create(input: CreateQuestionInput) {
     const question = this.questionRepository.create(input);
@@ -30,6 +31,22 @@ export class QuestionService {
   findOne(id: number) {
     this.validQuestionById(id);
     return this.questionRepository.findOneBy({ id });
+  }
+
+  /**
+   * @description "선택한 질문의 답지 조회"
+   * @param id
+   * @returns
+   */
+  async findDetail(id: number) {
+    const result = await this.questionRepository
+      .createQueryBuilder('question')
+      // .leftJoinAndSelect('question.questionOption', 'questionOption')
+      .innerJoinAndSelect('question.survey', 'survey')
+      .where('question.id= :id', { id: id })
+      .getMany();
+
+    return result;
   }
 
   async update(id: number, updateQuestionInput: UpdateQuestionInput) {
