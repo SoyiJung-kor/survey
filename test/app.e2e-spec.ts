@@ -258,33 +258,32 @@ describe('Graphql (e2e)', () => {
       });
     });
     describe('find all question', () => {
-      it('find all surveys', async () => {
-        const result = request(app.getHttpServer())
+      it('find all questions', async () => {
+        return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllSurveys{
+            findAllQuestions{
               id
-              surveyTitle
+              questionNumber
+              questionContent
             }
           }`,
           })
           .expect(200);
-        return result;
       });
-      it('fail find all surveys', async () => {
-        const result = request(app.getHttpServer())
+      it('fail find all questions', async () => {
+        return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllSurveys{
+            findAllQuestions{
               id
-              survey
+              question
             }
           }`,
           })
           .expect(400);
-        return result;
       });
     });
     describe('find a question', () => {
