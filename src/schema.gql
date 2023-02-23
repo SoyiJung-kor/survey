@@ -103,9 +103,12 @@ input CreateQuestionInput {
 }
 
 input UpdateQuestionInput {
-  questionNumber: Int!
-  questionContent: String!
-  surveyId: Int!
+  """question Number"""
+  questionNumber: Int
+
+  """question Content"""
+  questionContent: String
+  surveyId: Int
   id: Int!
 }
 

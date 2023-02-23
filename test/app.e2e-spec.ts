@@ -305,7 +305,6 @@ describe('Graphql (e2e)', () => {
           })
           .expect(200)
           .expect((res) => {
-            console.log(res);
             expect(res.body.data.findQuestion.questionNumber).toBe(1);
             expect(res.body.data.findQuestion.questionContent).toBe(
               'Test Question',
@@ -315,24 +314,25 @@ describe('Graphql (e2e)', () => {
       it.todo('find a detail question');
     });
     describe('update a question', () => {
-      it('update survey', async () => {
+      it('update question', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `
-          mutation updateSurvey {
-            updateSurvey(updateSurveyInput:{surveyTitle:"Modified Survey",id:1}) {
+          mutation updateQuestion {
+            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:1}) {
               id
-              surveyTitle
+              questionContent
             }
           }
           `,
           })
           .expect(200)
           .expect((res) => {
-            expect(res.body.data.updateSurvey.id).toBe(1);
-            expect(res.body.data.updateSurvey.surveyTitle).toBe(
-              'Modified Survey',
+            console.log(res);
+            expect(res.body.data.updateQuestion.id).toBe(1);
+            expect(res.body.data.updateQuestion.questionContent).toBe(
+              'Modified Question',
             );
           });
       });
