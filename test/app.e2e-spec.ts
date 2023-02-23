@@ -298,7 +298,6 @@ describe('Graphql (e2e)', () => {
           .send({
             query: `{
             findQuestion(questionId:1){
-              id
               questionNumber
               questionContent
             }
@@ -307,17 +306,13 @@ describe('Graphql (e2e)', () => {
           .expect(200)
           .expect((res) => {
             console.log(res);
-            expect(res.body.data.findQuestion.id).toBe(1);
             expect(res.body.data.findQuestion.questionNumber).toBe(1);
             expect(res.body.data.findQuestion.questionContent).toBe(
               'Test Question',
             );
-            expect(res.body.data.findQuestion.survey.id).toBe(1);
-            expect(res.body.data.findQuestion.survey.surveyTitle).toBe(
-              'Test Survey',
-            );
           });
       });
+      it.todo('find a detail question');
     });
     describe('update a question', () => {
       it('update survey', async () => {
