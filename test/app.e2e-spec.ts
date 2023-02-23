@@ -135,12 +135,6 @@ describe('Graphql (e2e)', () => {
       });
     });
     describe('find a survey', () => {
-      // beforeEach(async () => {
-      //   const input = new CreateSurveyInput();
-      //   input.surveyTitle = 'Test Survey Mocking data';
-      //   dataSource.manager.create(Survey, input);
-      // });
-
       it('find a survey', async () => {
         return request(app.getHttpServer())
           .post(gql)
@@ -153,7 +147,9 @@ describe('Graphql (e2e)', () => {
           }`,
           })
           .expect(200)
-          .expect('id', '1');
+          .expect((res) => {
+            expect(res.body.data.findSurvey.id).toBe(1);
+          });
       });
     });
     describe('update a survey', () => {
