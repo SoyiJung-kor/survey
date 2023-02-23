@@ -14,7 +14,7 @@ type Question {
   id: Int!
   questionNumber: Int!
   questionContent: String!
-  surveyId: Int!
+  survey: Survey!
 }
 
 type EachResponse {
@@ -41,6 +41,7 @@ type Response {
 type Survey {
   id: Int!
   surveyTitle: String!
+  questions: [Question!]
 }
 
 type Query {

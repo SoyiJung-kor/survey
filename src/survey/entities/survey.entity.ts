@@ -32,13 +32,9 @@ export class Survey {
   readonly deletedAt: Date;
 
   @OneToMany(() => Question, (question) => question.survey, { cascade: true })
+  @Field(() => [Question], { nullable: true })
   questions: Question[];
 
   @OneToMany(() => Response, (response) => response.survey, { cascade: true })
   response: Response[];
 }
-
-
-
-
-
