@@ -14,7 +14,6 @@ import { SurveyModule } from '../src/survey/survey.module';
 import request from 'supertest';
 import { Response } from '../src/response/entities/response.entity';
 import { DataSource } from 'typeorm';
-import { SurveyService } from '../src/survey/survey.service';
 
 const gql = '/graphql';
 
@@ -229,7 +228,6 @@ describe('Graphql (e2e)', () => {
           })
           .expect(200)
           .expect((res) => {
-            console.log(res);
             expect(res.body.data.createQuestion.id).toBe(1);
             expect(res.body.data.createQuestion.questionNumber).toBe(1);
             expect(res.body.data.createQuestion.questionContent).toBe(
@@ -329,7 +327,6 @@ describe('Graphql (e2e)', () => {
           })
           .expect(200)
           .expect((res) => {
-            console.log(res);
             expect(res.body.data.updateQuestion.id).toBe(1);
             expect(res.body.data.updateQuestion.questionContent).toBe(
               'Modified Question',
@@ -338,34 +335,32 @@ describe('Graphql (e2e)', () => {
       });
     });
     describe('remove a question', () => {
-      it('remove survey', async () => {
+      it('remove question', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `
-          mutation removeSurvey {
-            removeSurvey(surveyId:1) {
+          mutation removeQuestion {
+            removeQuestion(questionId:1) {
               id
-              surveyTitle
             }
           }
           `,
           })
           .expect(200);
       });
-      it('remove survey', async () => {
+      it('remove question', async () => {
         const result = request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllSurveys{
+            findAllQuestions{
               id
-              surveyTitle
             }
           }`,
           })
           .expect((res) => {
-            expect(res.body.data.findAllSurveys).toHaveLength(0);
+            expect(res.body.data.findAllQuestions).toHaveLength(0);
           })
           .expect(200);
         return result;

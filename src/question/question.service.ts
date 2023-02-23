@@ -57,12 +57,13 @@ export class QuestionService {
     return question;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number) {
     const question = this.questionRepository.findOneBy({ id });
     if (!question) {
       throw new Error("CAN'T FIND THE QUENSTION!");
     }
     await this.questionRepository.delete({ id });
+    return question;
   }
 
   validQuestionById(id: number) {

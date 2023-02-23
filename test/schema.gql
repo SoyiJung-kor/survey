@@ -67,7 +67,7 @@ type Mutation {
   removeSurvey(surveyId: Int!): Survey!
   createQuestion(createQuestionInput: CreateQuestionInput!): Question!
   updateQuestion(updateQuestionInput: UpdateQuestionInput!): Question!
-  removeQuestion(questionId: Int!): Boolean!
+  removeQuestion(questionId: Int!): Question!
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   removeAnswer(answerId: Int!): Answer!
