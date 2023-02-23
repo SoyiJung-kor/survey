@@ -241,15 +241,20 @@ describe('Graphql (e2e)', () => {
             );
           });
       });
-      it('create fail survey', async () => {
+      it('create fail question', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `
-          mutation createSurvey {
-            createSurvey() {
+          mutation createQuestion {
+            createQuestion() {
               id
-              surveyTitle
+              questionContent
+              questionNumber
+              survey{
+                id
+                surveyTitle
+              }
             }
           }
           `,
@@ -287,20 +292,30 @@ describe('Graphql (e2e)', () => {
       });
     });
     describe('find a question', () => {
-      it('find a survey', async () => {
+      it('find a question', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findSurvey(surveyId:1){
+            findQuestion(questionId:1){
               id
-              surveyTitle
+              questionNumber
+              questionContent
             }
           }`,
           })
           .expect(200)
           .expect((res) => {
-            expect(res.body.data.findSurvey.id).toBe(1);
+            console.log(res);
+            expect(res.body.data.findQuestion.id).toBe(1);
+            expect(res.body.data.findQuestion.questionNumber).toBe(1);
+            expect(res.body.data.findQuestion.questionContent).toBe(
+              'Test Question',
+            );
+            expect(res.body.data.findQuestion.survey.id).toBe(1);
+            expect(res.body.data.findQuestion.survey.surveyTitle).toBe(
+              'Test Survey',
+            );
           });
       });
     });
