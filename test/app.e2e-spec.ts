@@ -14,9 +14,7 @@ import { SurveyModule } from '../src/survey/survey.module';
 import request from 'supertest';
 import { Response } from '../src/response/entities/response.entity';
 import { DataSource } from 'typeorm';
-import { response, text } from 'express';
-import assert from 'assert';
-import { CreateSurveyInput } from '../src/survey/dto/create-survey.input';
+import { SurveyService } from '../src/survey/survey.service';
 
 const gql = '/graphql';
 
@@ -209,9 +207,164 @@ describe('Graphql (e2e)', () => {
       });
     });
   });
+  describe('question', () => {
+    beforeAll(async () => {
+      const survey = dataSource.manager.create(Survey, {
+        surveyTitle: 'test Survey',
+      });
+      dataSource.manager.save(survey);
+    });
+    describe('create question', () => {
+      it('create success question', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation {
+            createQuestion(createQuestionInput:{questionNumber:1,questionContent:"Test Question",surveyId:2}) {
+              id
+              questionNumber
+              questionContent
+              surveyId
+            }
+          }
+          `,
+          })
+          .expect(200)
+          .expect((res) => {
+            console.log(res);
+            expect(res.body.data.createQuestion.id).toBe(1);
+            expect(res.body.data.createQuestion.questionNumber).toBe(1);
+            expect(res.body.data.createQuestion.questionContent).toBe(
+              'Test Question',
+            );
+            expect(res.body.data.createQuestion.surveyId).toBe(2);
+          });
+      });
+      it('create fail survey', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation createSurvey {
+            createSurvey() {
+              id
+              surveyTitle
+            }
+          }
+          `,
+          })
+          .expect(400);
+      });
+    });
+    describe('find all survey', () => {
+      it('find all surveys', async () => {
+        const result = request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findAllSurveys{
+              id
+              surveyTitle
+            }
+          }`,
+          })
+          .expect(200);
+        return result;
+      });
+      it('fail find all surveys', async () => {
+        const result = request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findAllSurveys{
+              id
+              survey
+            }
+          }`,
+          })
+          .expect(400);
+        return result;
+      });
+    });
+    describe('find a survey', () => {
+      it('find a survey', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findSurvey(surveyId:1){
+              id
+              surveyTitle
+            }
+          }`,
+          })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.data.findSurvey.id).toBe(1);
+          });
+      });
+    });
+    describe('update a survey', () => {
+      it('update survey', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation updateSurvey {
+            updateSurvey(updateSurveyInput:{surveyTitle:"Modified Survey",id:1}) {
+              id
+              surveyTitle
+            }
+          }
+          `,
+          })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.data.updateSurvey.id).toBe(1);
+            expect(res.body.data.updateSurvey.surveyTitle).toBe(
+              'Modified Survey',
+            );
+          });
+      });
+    });
+    describe('remove a survey', () => {
+      it('remove survey', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation removeSurvey {
+            removeSurvey(surveyId:1) {
+              id
+              surveyTitle
+            }
+          }
+          `,
+          })
+          .expect(200);
+      });
+      it('remove survey', async () => {
+        const result = request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findAllSurveys{
+              id
+              surveyTitle
+            }
+          }`,
+          })
+          .expect((res) => {
+            expect(res.body.data.findAllSurveys).toHaveLength(0);
+          })
+          .expect(200);
+        return result;
+      });
+    });
+  });
+  it.todo('Answer');
+  it.todo('User');
+  it.todo('Response');
+  it.todo('EachResponse');
 });
-it.todo('Question');
-it.todo('Answer');
-it.todo('User');
-it.todo('Response');
-it.todo('EachResponse');
