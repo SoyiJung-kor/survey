@@ -63,7 +63,7 @@ type Query {
 type Mutation {
   createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
   updateSurvey(updateSurveyInput: UpdateSurveyInput!): Survey!
-  removeSurvey(surveyId: Int!): Boolean!
+  removeSurvey(surveyId: Int!): Survey!
   createQuestion(createQuestionInput: CreateQuestionInput!): Question!
   updateQuestion(updateQuestionInput: UpdateQuestionInput!): Question!
   removeQuestion(questionId: Int!): Boolean!

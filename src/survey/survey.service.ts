@@ -29,16 +29,16 @@ export class SurveyService {
   async update(id: number, updateSurveyInput: UpdateSurveyInput) {
     const survey = await this.validSurveyById(id);
     this.surveyRepository.merge(survey, updateSurveyInput);
-    console.log(this.surveyRepository.update(id, survey));
     return survey;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number) {
     const survey = this.surveyRepository.findOneBy({ id });
     if (!survey) {
       throw new Error("CAN'T FIND THE SURVEY!");
     }
     await this.surveyRepository.delete({ id });
+    return survey;
   }
 
   validSurveyById(id: number) {

@@ -6,7 +6,7 @@ import { UpdateSurveyInput } from './dto/update-survey.input';
 
 @Resolver(() => Survey)
 export class SurveyResolver {
-  constructor(private readonly surveyService: SurveyService) {}
+  constructor(private readonly surveyService: SurveyService) { }
 
   @Mutation(() => Survey, { name: 'createSurvey' })
   createSurvey(
@@ -32,9 +32,8 @@ export class SurveyResolver {
     return this.surveyService.update(updateSurveyInput.id, updateSurveyInput);
   }
 
-  @Mutation(() => Boolean, { name: 'removeSurvey' })
+  @Mutation(() => Survey, { name: 'removeSurvey' })
   removeSurvey(@Args('surveyId', { type: () => Int }) surveyId: number) {
-    this.surveyService.remove(surveyId);
-    return true;
+    return this.surveyService.remove(surveyId);
   }
 }

@@ -56,7 +56,6 @@ describe('Graphql (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
     dataSource = moduleFixture.get<DataSource>(DataSource);
-    dataSource.manager.insert(Survey, { surveyTitle: 'Test Survey #1' });
   });
   it('be define', async () => {
     expect(app).toBeDefined;
@@ -68,6 +67,42 @@ describe('Graphql (e2e)', () => {
     app.close();
   });
   describe('survey', () => {
+    describe('create survey', () => {
+      it('create success survey', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation {
+            createSurvey(createSurveyInput:{surveyTitle:"Test Survey"}) {
+              id
+              surveyTitle
+            }
+          }
+          `,
+          })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.data.createSurvey.id).toBe(1);
+            expect(res.body.data.createSurvey.surveyTitle).toBe('Test Survey');
+          });
+      });
+      it('create fail survey', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation createSurvey {
+            createSurvey() {
+              id
+              surveyTitle
+            }
+          }
+          `,
+          })
+          .expect(400);
+      });
+    });
     describe('find all survey', () => {
       it('find all surveys', async () => {
         const result = request(app.getHttpServer())
@@ -96,42 +131,6 @@ describe('Graphql (e2e)', () => {
           })
           .expect(400);
         return result;
-      });
-    });
-    describe('create survey', () => {
-      it('create success survey', async () => {
-        return request(app.getHttpServer())
-          .post(gql)
-          .send({
-            query: `
-          mutation {
-            createSurvey(createSurveyInput:{surveyTitle:"Test Survey"}) {
-              id
-              surveyTitle
-            }
-          }
-          `,
-          })
-          .expect(200)
-          .expect((res) => {
-            expect(res.body.data.createSurvey.id).toBe(2);
-            expect(res.body.data.createSurvey.surveyTitle).toBe('Test Survey');
-          });
-      });
-      it('create fail survey', async () => {
-        return request(app.getHttpServer())
-          .post(gql)
-          .send({
-            query: `
-          mutation createSurvey {
-            createSurvey() {
-              id
-              surveyTitle
-            }
-          }
-          `,
-          })
-          .expect(400);
       });
     });
     describe('find a survey', () => {
@@ -168,7 +167,6 @@ describe('Graphql (e2e)', () => {
           })
           .expect(200)
           .expect((res) => {
-            console.log(res);
             expect(res.body.data.updateSurvey.id).toBe(1);
             expect(res.body.data.updateSurvey.surveyTitle).toBe(
               'Modified Survey',
@@ -191,6 +189,23 @@ describe('Graphql (e2e)', () => {
           `,
           })
           .expect(200);
+      });
+      it('remove survey', async () => {
+        const result = request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findAllSurveys{
+              id
+              surveyTitle
+            }
+          }`,
+          })
+          .expect((res) => {
+            expect(res.body.data.findAllSurveys).toHaveLength(0);
+          })
+          .expect(200);
+        return result;
       });
     });
   });
