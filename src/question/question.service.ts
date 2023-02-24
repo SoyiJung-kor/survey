@@ -1,24 +1,25 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { EntityManager, Repository } from "typeorm";
-import { Survey } from "../survey/entities/survey.entity";
-import { CreateQuestionInput } from "./dto/create-question.input";
-import { UpdateQuestionInput } from "./dto/update-question.input";
-import { Question } from "./entities/question.entity";
+/* eslint-disable prettier/prettier */
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository } from 'typeorm';
+import { Survey } from '../survey/entities/survey.entity';
+import { CreateQuestionInput } from './dto/create-question.input';
+import { UpdateQuestionInput } from './dto/update-question.input';
+import { Question } from './entities/question.entity';
 
 @Injectable()
 export class QuestionService {
   constructor(
     @InjectRepository(Question)
     private questionRepository: Repository<Question>,
-    private entityManager: EntityManager
-  ) {}
+    private entityManager: EntityManager,
+  ) { }
 
   async create(input: CreateQuestionInput) {
     const question = this.questionRepository.create(input);
     question.survey = await this.entityManager.findOneById(
       Survey,
-      input.surveyId
+      input.surveyId,
     );
     return this.entityManager.save(question);
   }
@@ -32,19 +33,37 @@ export class QuestionService {
     return this.questionRepository.findOneBy({ id });
   }
 
+  /**
+   * @description "선택한 질문의 답지 조회"
+   * @param id
+   * @returns
+   */
+  async findDetail(id: number) {
+    const result = await this.questionRepository
+      .createQueryBuilder('question')
+      // .leftJoinAndSelect('question.questionOption', 'questionOption')
+      .innerJoinAndSelect('question.survey', 'survey')
+      .where('question.id= :id', { id: id })
+      .getMany();
+
+    return result;
+  }
+
   async update(id: number, updateQuestionInput: UpdateQuestionInput) {
     this.validQuestionById(id);
     const question = this.findOne(id);
     this.questionRepository.merge(await question, updateQuestionInput);
-    return this.questionRepository.update(id, await question);
+    this.questionRepository.update(id, await question);
+    return question;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number) {
     const question = this.questionRepository.findOneBy({ id });
     if (!question) {
       throw new Error("CAN'T FIND THE QUENSTION!");
     }
     await this.questionRepository.delete({ id });
+    return question;
   }
 
   validQuestionById(id: number) {
@@ -54,12 +73,12 @@ export class QuestionService {
       throw new HttpException(
         {
           status: HttpStatus.BAD_GATEWAY,
-          error: "message",
+          error: 'message',
         },
         HttpStatus.BAD_GATEWAY,
         {
           cause: error,
-        }
+        },
       );
     }
     return this.questionRepository.findOneBy({ id });

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntityManager, Repository } from 'typeorm';
@@ -12,7 +13,7 @@ export class ParticipantService {
     private participantRepository: Repository<Participant>,
     private entityManager: EntityManager,
     private dataSource: DataSource,
-  ) {}
+  ) { }
 
   create(input: CreateParticipantInput) {
     const newParticipant = this.participantRepository.create(input);
@@ -31,15 +32,17 @@ export class ParticipantService {
   async update(id: number, updateParticipantInput: UpdateParticipantInput) {
     const participant = this.validParticipantById(id);
     this.participantRepository.merge(await participant, updateParticipantInput);
-    return this.participantRepository.update(id, await participant);
+    this.participantRepository.update(id, await participant);
+    return participant;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number) {
     const participant = this.findOne(id);
     if (!participant) {
       throw new Error("CAN'T FIND THE PARTICIPANT!");
     }
     await this.participantRepository.delete({ id });
+    return participant;
   }
 
   validParticipantById(id: number) {

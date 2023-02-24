@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
@@ -12,13 +13,14 @@ export class AnswerService {
     @InjectRepository(Answer)
     private answerRepository: Repository<Answer>,
     private entityManager: EntityManager,
-  ) {}
+  ) { }
 
   async create(input: CreateAnswerInput) {
     const answer = this.answerRepository.create(input);
-    answer.question = await this.entityManager.findOneBy(Question, {
-      id: input.questionId,
-    });
+    answer.question = await this.entityManager.findOneById(
+      Question,
+      input.questionId,
+    );
     return this.entityManager.save(answer);
   }
 
@@ -35,7 +37,8 @@ export class AnswerService {
     this.validAnswerById(id);
     const answer = this.answerRepository.findOneBy({ id });
     this.answerRepository.merge(await answer, updateAnswerInput);
-    return this.answerRepository.update(id, await answer);
+    this.answerRepository.update(id, await answer);
+    return answer;
   }
 
   async remove(id: number): Promise<void> {

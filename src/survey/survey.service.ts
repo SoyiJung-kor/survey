@@ -1,17 +1,17 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { EntityManager, Repository } from "typeorm";
-import { CreateSurveyInput } from "./dto/create-survey.input";
-import { UpdateSurveyInput } from "./dto/update-survey.input";
-import { Survey } from "./entities/survey.entity";
+/* eslint-disable prettier/prettier */
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateSurveyInput } from './dto/create-survey.input';
+import { UpdateSurveyInput } from './dto/update-survey.input';
+import { Survey } from './entities/survey.entity';
 
 @Injectable()
 export class SurveyService {
   constructor(
     @InjectRepository(Survey)
     private surveyRepository: Repository<Survey>,
-    private entityManager: EntityManager
-  ) {}
+  ) { }
 
   create(createSurveyInput: CreateSurveyInput) {
     const newSurvey = this.surveyRepository.create(createSurveyInput);
@@ -28,17 +28,18 @@ export class SurveyService {
   }
 
   async update(id: number, updateSurveyInput: UpdateSurveyInput) {
-    const survey = this.validSurveyById(id);
-    this.surveyRepository.merge(await survey, updateSurveyInput);
-    return this.surveyRepository.update(id, await survey);
+    const survey = await this.validSurveyById(id);
+    this.surveyRepository.merge(survey, updateSurveyInput);
+    return survey;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number) {
     const survey = this.surveyRepository.findOneBy({ id });
     if (!survey) {
       throw new Error("CAN'T FIND THE SURVEY!");
     }
     await this.surveyRepository.delete({ id });
+    return survey;
   }
 
   validSurveyById(id: number) {
@@ -48,12 +49,12 @@ export class SurveyService {
       throw new HttpException(
         {
           status: HttpStatus.BAD_GATEWAY,
-          error: "message",
+          error: 'message',
         },
         HttpStatus.BAD_GATEWAY,
         {
           cause: error,
-        }
+        },
       );
     }
     return this.surveyRepository.findOneBy({ id });

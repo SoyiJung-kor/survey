@@ -1,7 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Participant } from '../participant/entities/participant.entity';
+import { Survey } from '../survey/entities/survey.entity';
 import { CreateResponseInput } from './dto/create-response.input';
 import { UpdateResponseInput } from './dto/update-response.input';
 import { Response } from './entities/response.entity';
@@ -13,13 +15,13 @@ export class ResponseService {
     private responseRepository: Repository<Response>,
     private entityManager: EntityManager,
     private dataSource: DataSource,
-  ) {}
+  ) { }
 
   async create(input: CreateResponseInput) {
     const response = this.responseRepository.create(input);
-    response.isSubmit = false;
-    response.sumScore = 0;
-    response.surveyId = input.surveyId;
+    response.survey = await this.entityManager.findOneBy(Survey, {
+      id: input.surveyId,
+    });
     response.participant = await this.entityManager.findOneBy(Participant, {
       id: input.participantId,
     });
@@ -67,15 +69,16 @@ export class ResponseService {
       .where(`id = ${id}`)
       .execute();
 
-    return result;
+    return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number) {
     const response = this.responseRepository.findOneBy({ id });
     if (!response) {
       throw new Error("CAN'T FIND THE RESPONSE!");
     }
     await this.responseRepository.delete({ id });
+    return response;
   }
 
   validResponseId(id: number) {
@@ -100,6 +103,7 @@ export class ResponseService {
     const response = this.responseRepository.findOneBy({ id });
     console.log(`find One By Id : ${response}`);
     this.responseRepository.merge(await response, updateResponseInput);
-    return this.responseRepository.update(id, await response);
+    this.responseRepository.update(id, await response);
+    return response;
   }
 }

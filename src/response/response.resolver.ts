@@ -1,37 +1,38 @@
-import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
-import { ResponseService } from "./response.service";
-import { Response } from "./entities/response.entity";
-import { CreateResponseInput } from "./dto/create-response.input";
-import { UpdateResponseInput } from "./dto/update-response.input";
+/* eslint-disable prettier/prettier */
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { ResponseService } from './response.service';
+import { Response } from './entities/response.entity';
+import { CreateResponseInput } from './dto/create-response.input';
+import { UpdateResponseInput } from './dto/update-response.input';
 
 @Resolver(() => Response)
 export class ResponseResolver {
-  constructor(private readonly responseService: ResponseService) {}
+  constructor(private readonly responseService: ResponseService) { }
 
   @Mutation(() => Response)
   createResponse(
-    @Args("createResponseInput") createResponseInput: CreateResponseInput
+    @Args('createResponseInput') createResponseInput: CreateResponseInput,
   ) {
     return this.responseService.create(createResponseInput);
   }
 
-  @Query(() => [Response], { name: "findAllResponses" })
+  @Query(() => [Response], { name: 'findAllResponses' })
   findAll() {
     return this.responseService.findAll();
   }
 
-  @Query(() => Response, { name: "findResponse" })
-  findOne(@Args("responseId", { type: () => Int }) responseId: number) {
+  @Query(() => Response, { name: 'findResponse' })
+  findOne(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.findOne(responseId);
   }
 
   @Mutation(() => Response)
-  removeResponse(@Args("responseId", { type: () => Int }) responseId: number) {
+  removeResponse(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.remove(responseId);
   }
 
-  @Query(() => Response, { name: "findResponseWithQueryBuilder" })
-  find(@Args("responseId", { type: () => Int }) responseId: number) {
+  @Query(() => Response, { name: 'findResponseWithQueryBuilder' })
+  find(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.getResponseData(responseId);
   }
 
@@ -40,18 +41,18 @@ export class ResponseResolver {
   //   return this.responseService.getScore(responseId);
   // }
 
-  @Query(() => Response, { name: "getSumScore" })
-  getScore(@Args("responseId", { type: () => Int }) responseId: number) {
+  @Query(() => Response, { name: 'getSumScore' })
+  getScore(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.getSumScore(responseId);
   }
 
-  @Mutation(() => Response, { name: "updateResponse" })
+  @Mutation(() => Response, { name: 'updateResponse' })
   updateResponse(
-    @Args("updateResponseInput") updateResponseInput: UpdateResponseInput
+    @Args('updateResponseInput') updateResponseInput: UpdateResponseInput,
   ) {
     return this.responseService.updateSubmit(
       updateResponseInput.id,
-      updateResponseInput
+      updateResponseInput,
     );
   }
 }
