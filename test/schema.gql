@@ -165,10 +165,17 @@ input CreateEachResponseInput {
 }
 
 input UpdateEachResponseInput {
-  responseId: Int!
-  responseQuestion: String!
-  responseAnswer: String!
-  responseScore: Int!
+  """response ID"""
+  responseId: Int
+
+  """response Question"""
+  responseQuestion: String
+
+  """response Answer"""
+  responseAnswer: String
+
+  """response Score"""
+  responseScore: Int
   id: Int!
 }
 

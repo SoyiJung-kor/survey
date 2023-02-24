@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { DataSource, EntityManager, Repository } from "typeorm";
-import { Response } from "../response/entities/response.entity";
-import { CreateEachResponseInput } from "./dto/create-each-response.input";
-import { UpdateEachResponseInput } from "./dto/update-each-response.input";
-import { EachResponse } from "./entities/each-response.entity";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
+import { Response } from '../response/entities/response.entity';
+import { CreateEachResponseInput } from './dto/create-each-response.input';
+import { UpdateEachResponseInput } from './dto/update-each-response.input';
+import { EachResponse } from './entities/each-response.entity';
 
 @Injectable()
 export class EachResponseService {
@@ -12,8 +12,8 @@ export class EachResponseService {
     @InjectRepository(EachResponse)
     private eachResponseRepository: Repository<EachResponse>,
     private entityManager: EntityManager,
-    private dataSource: DataSource
-  ) {}
+    private dataSource: DataSource,
+  ) { }
 
   async create(input: CreateEachResponseInput) {
     const eachResponse = this.eachResponseRepository.create(input);
@@ -36,9 +36,10 @@ export class EachResponseService {
     const eachResponse = this.validEachResponseById(id);
     this.eachResponseRepository.merge(
       await eachResponse,
-      updateEachResponseInput
+      updateEachResponseInput,
     );
-    return this.eachResponseRepository.update(id, await eachResponse);
+    this.eachResponseRepository.update(id, await eachResponse);
+    return eachResponse;
   }
 
   async remove(id: number): Promise<void> {
@@ -56,12 +57,12 @@ export class EachResponseService {
       throw new HttpException(
         {
           status: HttpStatus.BAD_GATEWAY,
-          error: "message",
+          error: 'message',
         },
         HttpStatus.BAD_GATEWAY,
         {
           cause: error,
-        }
+        },
       );
     }
     return this.eachResponseRepository.findOneBy({ id });

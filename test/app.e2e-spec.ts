@@ -989,23 +989,22 @@ describe('Graphql (e2e)', () => {
       });
     });
     describe('update a each response', () => {
-      it('update response', async () => {
+      it('update each response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `
           mutation {
-            updateResponse(updateResponseInput:{id:1,isSubmit:true}) {
+            updateEachResponse(updateEachResponseInput:{id:1}) {
               id
-              isSubmit
+              responseId
             }
           }
           `,
           })
           .expect((res) => {
-            console.log(res);
-            expect(res.body.data.updateResponse.id).toBe(1);
-            expect(res.body.data.updateResponse.isSubmit).toBe(true);
+            expect(res.body.data.updateEachResponse.id).toBe(1);
+            expect(res.body.data.updateEachResponse.responseId).toBe(1);
           });
       });
     });
