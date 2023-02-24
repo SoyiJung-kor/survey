@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntityManager, Repository } from 'typeorm';
@@ -101,6 +102,7 @@ export class ResponseService {
     const response = this.responseRepository.findOneBy({ id });
     console.log(`find One By Id : ${response}`);
     this.responseRepository.merge(await response, updateResponseInput);
-    return this.responseRepository.update(id, await response);
+    this.responseRepository.update(id, await response);
+    return response;
   }
 }

@@ -804,26 +804,24 @@ describe('Graphql (e2e)', () => {
           });
       });
     });
-    describe('update a question', () => {
-      it('update question', async () => {
+    describe('update a response', () => {
+      it('update response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `
-          mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:1}) {
+          mutation {
+            updateResponse(updateResponseInput:{id:1,isSubmit:true}) {
               id
-              questionContent
+              isSubmit
             }
           }
           `,
           })
-          .expect(200)
           .expect((res) => {
-            expect(res.body.data.updateQuestion.id).toBe(1);
-            expect(res.body.data.updateQuestion.questionContent).toBe(
-              'Modified Question',
-            );
+            console.log(res);
+            expect(res.body.data.updateResponse.id).toBe(1);
+            expect(res.body.data.updateResponse.isSubmit).toBe(true);
           });
       });
     });
