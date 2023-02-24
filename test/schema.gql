@@ -2,21 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Answer {
-  id: Int!
-  answerNumber: Int!
-  answerContent: String!
-  answerScore: Int!
-  question: Question!
-}
-
-type Question {
-  id: Int!
-  questionNumber: Int!
-  questionContent: String!
-  survey: Survey!
-}
-
 type EachResponse {
   id: Int!
   responseId: Int!
@@ -43,6 +28,21 @@ type Survey {
   surveyTitle: String!
   questions: [Question!]
   response: [Response!]
+}
+
+type Question {
+  id: Int!
+  questionNumber: Int!
+  questionContent: String!
+  survey: Survey!
+}
+
+type Answer {
+  id: Int!
+  answerNumber: Int!
+  answerContent: String!
+  answerScore: Int!
+  question: Question!
 }
 
 type Query {
