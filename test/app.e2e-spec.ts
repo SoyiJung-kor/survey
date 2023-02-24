@@ -611,25 +611,25 @@ describe('Graphql (e2e)', () => {
           });
       });
     });
-    describe('update a survey', () => {
-      it('update survey', async () => {
+    describe('update a participant', () => {
+      it('update participant', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `
-          mutation updateSurvey {
-            updateSurvey(updateSurveyInput:{surveyTitle:"Modified Survey",id:1}) {
+          mutation updateParticipant {
+            updateParticipant(updateParticipantInput:{email:"modified@test.com",id:1}) {
               id
-              surveyTitle
+              email
             }
           }
           `,
           })
           .expect(200)
           .expect((res) => {
-            expect(res.body.data.updateSurvey.id).toBe(1);
-            expect(res.body.data.updateSurvey.surveyTitle).toBe(
-              'Modified Survey',
+            expect(res.body.data.updateParticipant.id).toBe(1);
+            expect(res.body.data.updateParticipant.email).toBe(
+              'modified@test.com',
             );
           });
       });
