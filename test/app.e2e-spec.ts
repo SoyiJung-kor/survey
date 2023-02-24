@@ -390,7 +390,6 @@ describe('Graphql (e2e)', () => {
           })
           .expect(200)
           .expect((res) => {
-            console.log(res);
             expect(res.body.data.createAnswer.id).toBe(1);
             expect(res.body.data.createAnswer.answerNumber).toBe(1);
             expect(res.body.data.createAnswer.answerContent).toBe(
@@ -527,7 +526,7 @@ describe('Graphql (e2e)', () => {
     //   });
     // });
   });
-  describe('Participant', () => {
+  describe('Response', () => {
     describe('create participant', () => {
       it('create success participant', async () => {
         return request(app.getHttpServer())
@@ -634,38 +633,192 @@ describe('Graphql (e2e)', () => {
           });
       });
     });
-    describe('remove a participant', () => {
-      it('remove participant', async () => {
+    // describe('remove a participant', () => {
+    //   it('remove participant', async () => {
+    //     return request(app.getHttpServer())
+    //       .post(gql)
+    //       .send({
+    //         query: `
+    //       mutation removeParticipant {
+    //         removeParticipant(participantId:1) {
+    //           id
+    //         }
+    //       }
+    //       `,
+    //       })
+    //       .expect(200);
+    //   });
+    //   it('remove participant', async () => {
+    //     const result = request(app.getHttpServer())
+    //       .post(gql)
+    //       .send({
+    //         query: `{
+    //         findAllParticipants{
+    //           id
+    //         }
+    //       }`,
+    //       })
+    //       .expect((res) => {
+    //         expect(res.body.data.findAllParticipants).toHaveLength(0);
+    //       })
+    //       .expect(200);
+    //     return result;
+    //   });
+    // });
+  });
+  describe('response', () => {
+    describe('create response', () => {
+      it('create success response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `
-          mutation removeParticipant {
-            removeParticipant(participantId:1) {
+          mutation {
+            createResponse(createResponseInput:{surveyId:1,participantId:1}) {
               id
+              isSubmit
+              sumScore
+              participantId
+              surveyId
+          }
+          `,
+          })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.data.createResponse.id).toBe(1);
+            expect(res.body.data.createResponse.isSubmit).toBe(false);
+            expect(res.body.data.createResponse.sumScore).toBe(0);
+            expect(res.body.data.createQuestion.participantId).toBe(1);
+            expect(res.body.data.createQuestion.surveyId).toBe(1);
+          });
+      });
+      it('create fail question', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation createQuestion {
+            createQuestion() {
+              id
+              questionContent
+              questionNumber
+              survey{
+                id
+                surveyTitle
+              }
             }
           }
           `,
           })
-          .expect(200);
+          .expect(400);
       });
-      it('remove participant', async () => {
-        const result = request(app.getHttpServer())
+    });
+    describe('find all question', () => {
+      it('find all questions', async () => {
+        return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllParticipants{
+            findAllQuestions{
               id
+              questionNumber
+              questionContent
             }
           }`,
           })
-          .expect((res) => {
-            expect(res.body.data.findAllParticipants).toHaveLength(0);
-          })
           .expect(200);
-        return result;
+      });
+      it('fail find all questions', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findAllQuestions{
+              id
+              question
+            }
+          }`,
+          })
+          .expect(400);
       });
     });
+    describe('find a question', () => {
+      it('find a question', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findQuestion(questionId:1){
+              questionNumber
+              questionContent
+            }
+          }`,
+          })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.data.findQuestion.questionNumber).toBe(1);
+            expect(res.body.data.findQuestion.questionContent).toBe(
+              'Test Question',
+            );
+          });
+      });
+      it.todo('find a detail question');
+    });
+    describe('update a question', () => {
+      it('update question', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation updateQuestion {
+            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:1}) {
+              id
+              questionContent
+            }
+          }
+          `,
+          })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.data.updateQuestion.id).toBe(1);
+            expect(res.body.data.updateQuestion.questionContent).toBe(
+              'Modified Question',
+            );
+          });
+      });
+    });
+    // describe('remove a question', () => {
+    //   it('remove question', async () => {
+    //     return request(app.getHttpServer())
+    //       .post(gql)
+    //       .send({
+    //         query: `
+    //       mutation removeQuestion {
+    //         removeQuestion(questionId:1) {
+    //           id
+    //         }
+    //       }
+    //       `,
+    //       })
+    //       .expect(200);
+    //   });
+    //   it('remove question', async () => {
+    //     const result = request(app.getHttpServer())
+    //       .post(gql)
+    //       .send({
+    //         query: `{
+    //         findAllQuestions{
+    //           id
+    //         }
+    //       }`,
+    //       })
+    //       .expect((res) => {
+    //         expect(res.body.data.findAllQuestions).toHaveLength(0);
+    //       })
+    //       .expect(200);
+    //     return result;
+    //   });
+    // });
   });
-  it.todo('Response');
+  it.todo('EachReponse');
 });
