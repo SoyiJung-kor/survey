@@ -39,7 +39,7 @@ describe('response', () => {
 
         const mockSurvey = new Survey();
         mockSurvey.surveyTitle = 'Mock Survey for Test';
-        dataSource.manager.save(mockSurvey);
+        await dataSource.manager.save(mockSurvey);
 
         const mockQuestion = new Question();
         mockQuestion.questionContent = 'Mock Question for Test';
