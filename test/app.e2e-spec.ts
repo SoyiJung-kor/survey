@@ -928,7 +928,7 @@ describe('Graphql (e2e)', () => {
           .expect(400);
       });
     });
-    describe('find a each response', () => {
+    describe('find all each response', () => {
       it('find all each response', async () => {
         return request(app.getHttpServer())
           .post(gql)
@@ -960,51 +960,31 @@ describe('Graphql (e2e)', () => {
       });
     });
     describe('find a each response', () => {
-      it('find a response', async () => {
+      it('find a each response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findResponse(responseId:1){
+            findOneEachResponse(id:1){
               id
-              isSubmit
-              sumScore
+              responseId
+              responseQuestion
+              responseAnswer
+              responseScore
             }
           }`,
           })
           .expect((res) => {
             console.log(res);
-            expect(res.body.data.findResponse.id).toBe(1);
-            expect(res.body.data.findResponse.isSubmit).toBe(false);
-            expect(res.body.data.findResponse.sumScore).toBe(0);
-          });
-      });
-      it('fail find a detail response', async () => {
-        return request(app.getHttpServer())
-          .post(gql)
-          .send({
-            query: `{
-            findResponse(responseId:1){
-              id
-              isSubmit
-              sumScore
-              participant{
-                id
-              }
-              survey{
-                id
-              }
-            }
-          }`,
-          })
-          .expect((res) => {
-            expect(res.body.data).toBe(null);
-            // console.log(res);
-            // expect(res.body.data.findResponse.id).toBe(1);
-            // expect(res.body.data.findResponse.isSubmit).toBe(false);
-            // expect(res.body.data.findResponse.sumScore).toBe(0);
-            // expect(res.body.data.findResponse.participant.id).toBe(!1);
-            // expect(res.body.data.findResponse.survey.id).toBe(!1);
+            expect(res.body.data.findOneEachResponse.id).toBe(1);
+            expect(res.body.data.findOneEachResponse.responseId).toBe(1);
+            expect(res.body.data.findOneEachResponse.responseQuestion).toBe(
+              'Modified Question',
+            );
+            expect(res.body.data.findOneEachResponse.responseAnswer).toBe(
+              'Modified Answer',
+            );
+            expect(res.body.data.findOneEachResponse.responseScore).toBe(5);
           });
       });
     });
