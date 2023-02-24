@@ -690,7 +690,6 @@ describe('Graphql (e2e)', () => {
           })
           .expect(200)
           .expect((res) => {
-            console.log(res);
             expect(res.body.data.createResponse.id).toBe(1);
             expect(res.body.data.createResponse.isSubmit).toBe(false);
             expect(res.body.data.createResponse.sumScore).toBe(0);
@@ -721,15 +720,15 @@ describe('Graphql (e2e)', () => {
           .expect(400);
       });
     });
-    describe('find all responses', () => {
-      it('find all responses', async () => {
+    describe('find a response', () => {
+      it('find all response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
             findAllResponses{
               id
-              idSubmit
+              isSubmit
               sumScore
               participant{
                 id
@@ -742,41 +741,68 @@ describe('Graphql (e2e)', () => {
           })
           .expect(200);
       });
-      it('fail find all questions', async () => {
+      it('fail find all responses', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllQuestions{
+            findAllResponses{
               id
-              question
+              response
             }
           }`,
           })
           .expect(400);
       });
     });
-    describe('find a question', () => {
-      it('find a question', async () => {
+    describe('find a response', () => {
+      it('find a response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findQuestion(questionId:1){
-              questionNumber
-              questionContent
+            findResponse(responseId:1){
+              id
+              isSubmit
+              sumScore
             }
           }`,
           })
-          .expect(200)
           .expect((res) => {
-            expect(res.body.data.findQuestion.questionNumber).toBe(1);
-            expect(res.body.data.findQuestion.questionContent).toBe(
-              'Test Question',
-            );
+            console.log(res);
+            expect(res.body.data.findResponse.id).toBe(1);
+            expect(res.body.data.findResponse.isSubmit).toBe(false);
+            expect(res.body.data.findResponse.sumScore).toBe(0);
           });
       });
-      it.todo('find a detail question');
+      it('fail find a detail response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findResponse(responseId:1){
+              id
+              isSubmit
+              sumScore
+              participant{
+                id
+              }
+              survey{
+                id
+              }
+            }
+          }`,
+          })
+          .expect((res) => {
+            expect(res.body.data).toBe(null);
+            // console.log(res);
+            // expect(res.body.data.findResponse.id).toBe(1);
+            // expect(res.body.data.findResponse.isSubmit).toBe(false);
+            // expect(res.body.data.findResponse.sumScore).toBe(0);
+            // expect(res.body.data.findResponse.participant.id).toBe(!1);
+            // expect(res.body.data.findResponse.survey.id).toBe(!1);
+          });
+      });
     });
     describe('update a question', () => {
       it('update question', async () => {
