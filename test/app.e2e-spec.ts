@@ -825,38 +825,37 @@ describe('Graphql (e2e)', () => {
           });
       });
     });
-    // describe('remove a question', () => {
-    //   it('remove question', async () => {
-    //     return request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `
-    //       mutation removeQuestion {
-    //         removeQuestion(questionId:1) {
-    //           id
-    //         }
-    //       }
-    //       `,
-    //       })
-    //       .expect(200);
-    //   });
-    //   it('remove question', async () => {
-    //     const result = request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `{
-    //         findAllQuestions{
-    //           id
-    //         }
-    //       }`,
-    //       })
-    //       .expect((res) => {
-    //         expect(res.body.data.findAllQuestions).toHaveLength(0);
-    //       })
-    //       .expect(200);
-    //     return result;
-    //   });
-    // });
+    describe('remove a response', () => {
+      it('remove response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation removeResponse {
+            removeResponse(responseId:1) {
+              id
+            }
+          }
+          `,
+          })
+          .expect(200);
+      });
+      it('remove response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findAllResponses{
+              id
+            }
+          }`,
+          })
+          .expect((res) => {
+            expect(res.body.data.findAllResponses).toHaveLength(0);
+          })
+          .expect(200);
+      });
+    });
   });
   it.todo('EachReponse');
 });
