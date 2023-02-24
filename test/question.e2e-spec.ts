@@ -67,7 +67,6 @@ describe('question', () => {
                 })
                 .expect(200)
                 .expect((res) => {
-                    console.log(res.body.data);
                     expect(res.body.data.createQuestion.id).toBe(1);
                     expect(res.body.data.createQuestion.questionNumber).toBe(1);
                     expect(res.body.data.createQuestion.questionContent).toBe(
@@ -143,7 +142,6 @@ describe('question', () => {
                 })
                 .expect(200)
                 .expect((res) => {
-                    console.log(res.body.data);
                     expect(res.body.data.findQuestion.questionNumber).toBe(1);
                     expect(res.body.data.findQuestion.questionContent).toBe(
                         'Test Question',
@@ -168,7 +166,6 @@ describe('question', () => {
                 })
                 .expect(200)
                 .expect((res) => {
-                    console.log(res.body.data);
                     expect(res.body.data.updateQuestion.id).toBe(1);
                     expect(res.body.data.updateQuestion.questionContent).toBe(
                         'Modified Question',
@@ -176,36 +173,36 @@ describe('question', () => {
                 });
         });
     });
-    // describe('remove a question', () => {
-    //   it('remove question', async () => {
-    //     return request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `
-    //       mutation removeQuestion {
-    //         removeQuestion(questionId:1) {
-    //           id
-    //         }
-    //       }
-    //       `,
-    //       })
-    //       .expect(200);
-    //   });
-    //   it('remove question', async () => {
-    //     const result = request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `{
-    //         findAllQuestions{
-    //           id
-    //         }
-    //       }`,
-    //       })
-    //       .expect((res) => {
-    //         expect(res.body.data.findAllQuestions).toHaveLength(0);
-    //       })
-    //       .expect(200);
-    //     return result;
-    //   });
-    // });
+    describe('remove a question', () => {
+        it('remove question', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation removeQuestion {
+            removeQuestion(questionId:1) {
+              id
+            }
+          }
+          `,
+                })
+                .expect(200);
+        });
+        it('remove question', async () => {
+            const result = request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findAllQuestions{
+              id
+            }
+          }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data.findAllQuestions).toHaveLength(0);
+                })
+                .expect(200);
+            return result;
+        });
+    });
 });

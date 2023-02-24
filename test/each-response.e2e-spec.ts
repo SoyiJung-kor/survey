@@ -67,13 +67,6 @@ describe('eachResponse', () => {
         mockResponse.participant = mockParticipant;
         await dataSource.manager.save(mockResponse);
 
-
-        console.log(mockSurvey);
-        console.log(mockQuestion);
-        console.log(mockAnswer);
-        console.log(mockParticipant);
-        console.log(mockResponse);
-
     });
 
     afterAll(async () => {

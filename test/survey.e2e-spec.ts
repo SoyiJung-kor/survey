@@ -55,7 +55,6 @@ describe('survey', () => {
                 })
                 .expect(200)
                 .expect((res) => {
-                    console.log(res.body.data);
                     expect(res.body.data.createSurvey.id).toBe(1);
                     expect(res.body.data.createSurvey.surveyTitle).toBe('Test Survey');
                 });
@@ -147,38 +146,38 @@ describe('survey', () => {
                 });
         });
     });
-    // describe('remove a survey', () => {
-    //   it('remove survey', async () => {
-    //     return request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `
-    //       mutation removeSurvey {
-    //         removeSurvey(surveyId:1) {
-    //           id
-    //           surveyTitle
-    //         }
-    //       }
-    //       `,
-    //       })
-    //       .expect(200);
-    //   });
-    //   it('remove survey', async () => {
-    //     const result = request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `{
-    //         findAllSurveys{
-    //           id
-    //           surveyTitle
-    //         }
-    //       }`,
-    //       })
-    //       .expect((res) => {
-    //         expect(res.body.data.findAllSurveys).toHaveLength(0);
-    //       })
-    //       .expect(200);
-    //     return result;
-    //   });
-    // });
+    describe('remove a survey', () => {
+        it('remove survey', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation removeSurvey {
+            removeSurvey(surveyId:1) {
+              id
+              surveyTitle
+            }
+          }
+          `,
+                })
+                .expect(200);
+        });
+        it('remove survey', async () => {
+            const result = request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findAllSurveys{
+              id
+              surveyTitle
+            }
+          }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data.findAllSurveys).toHaveLength(0);
+                })
+                .expect(200);
+            return result;
+        });
+    });
 });

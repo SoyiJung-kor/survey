@@ -46,9 +46,6 @@ describe('answer', () => {
         mockQuestion.survey = mockSurvey;
         await dataSource.manager.save(mockQuestion);
 
-        console.log(mockSurvey);
-        console.log(mockQuestion);
-        console.log((await dataSource.manager.find(Question)).length);
     });
 
     afterAll(async () => {
@@ -177,36 +174,36 @@ describe('answer', () => {
                 });
         });
     });
-    // describe('remove a answer', () => {
-    //   it('remove answer', async () => {
-    //     return request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `
-    //       mutation removeAnswer {
-    //         removeAnswer(answerId:1) {
-    //           id
-    //         }
-    //       }
-    //       `,
-    //       })
-    //       .expect(200);
-    //   });
-    //   it('remove answer', async () => {
-    //     const result = request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `{
-    //         findAllAnswers{
-    //           id
-    //         }
-    //       }`,
-    //       })
-    //       .expect((res) => {
-    //         expect(res.body.data.findAllAnswers).toHaveLength(0);
-    //       })
-    //       .expect(200);
-    //     return result;
-    //   });
-    // });
+    describe('remove a answer', () => {
+        it('remove answer', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation removeAnswer {
+            removeAnswer(answerId:1) {
+              id
+            }
+          }
+          `,
+                })
+                .expect(200);
+        });
+        it('remove answer', async () => {
+            const result = request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findAllAnswers{
+              id
+            }
+          }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data.findAllAnswers).toHaveLength(0);
+                })
+                .expect(200);
+            return result;
+        });
+    });
 });

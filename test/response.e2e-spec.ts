@@ -60,11 +60,6 @@ describe('response', () => {
         mockParticipant.email = 'mock@test.com';
         await dataSource.manager.save(mockParticipant);
 
-        console.log(mockSurvey);
-        console.log(mockQuestion);
-        console.log(mockAnswer);
-        console.log(mockParticipant);
-
     });
 
     afterAll(async () => {
@@ -247,35 +242,35 @@ describe('response', () => {
                 });
         });
     });
-    // describe('remove a response', () => {
-    //   it('remove response', async () => {
-    //     return request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `
-    //         mutation removeResponse {
-    //           removeResponse(responseId:1) {
-    //             id
-    //           }
-    //         }
-    //         `,
-    //       })
-    //       .expect(200);
-    //   });
-    //   it('remove response', async () => {
-    //     return request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `{
-    //           findAllResponses{
-    //             id
-    //           }
-    //         }`,
-    //       })
-    //       .expect((res) => {
-    //         expect(res.body.data.findAllResponses).toHaveLength(0);
-    //       })
-    //       .expect(200);
-    //   });
-    // });
+    describe('remove a response', () => {
+        it('remove response', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation removeResponse {
+              removeResponse(responseId:1) {
+                id
+              }
+            }
+            `,
+                })
+                .expect(200);
+        });
+        it('remove response', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+              findAllResponses{
+                id
+              }
+            }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data.findAllResponses).toHaveLength(0);
+                })
+                .expect(200);
+        });
+    });
 });
