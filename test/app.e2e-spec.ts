@@ -846,36 +846,248 @@ describe('Graphql (e2e)', () => {
           });
       });
     });
-    describe('remove a response', () => {
-      //   it('remove response', async () => {
-      //     return request(app.getHttpServer())
-      //       .post(gql)
-      //       .send({
-      //         query: `
-      //       mutation removeResponse {
-      //         removeResponse(responseId:1) {
-      //           id
-      //         }
-      //       }
-      //       `,
-      //       })
-      //       .expect(200);
-      //   });
-      //   it('remove response', async () => {
-      //     return request(app.getHttpServer())
-      //       .post(gql)
-      //       .send({
-      //         query: `{
-      //         findAllResponses{
-      //           id
-      //         }
-      //       }`,
-      //       })
-      //       .expect((res) => {
-      //         expect(res.body.data.findAllResponses).toHaveLength(0);
-      //       })
-      //       .expect(200);
-      //   });
+    // describe('remove a response', () => {
+    //   it('remove response', async () => {
+    //     return request(app.getHttpServer())
+    //       .post(gql)
+    //       .send({
+    //         query: `
+    //         mutation removeResponse {
+    //           removeResponse(responseId:1) {
+    //             id
+    //           }
+    //         }
+    //         `,
+    //       })
+    //       .expect(200);
+    //   });
+    //   it('remove response', async () => {
+    //     return request(app.getHttpServer())
+    //       .post(gql)
+    //       .send({
+    //         query: `{
+    //           findAllResponses{
+    //             id
+    //           }
+    //         }`,
+    //       })
+    //       .expect((res) => {
+    //         expect(res.body.data.findAllResponses).toHaveLength(0);
+    //       })
+    //       .expect(200);
+    //   });
+    // });
+  });
+  describe('eachResponse', () => {
+    describe('create each response', () => {
+      it('create success each response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation {
+            createEachResponse(createEachResponseInput:{surveyId:1,participantId:1}) {
+              id
+              isSubmit
+              sumScore
+              participant{
+                id
+              }
+              survey{
+                id
+              }
+            }
+          }
+          `,
+          })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.data.createResponse.id).toBe(1);
+            expect(res.body.data.createResponse.isSubmit).toBe(false);
+            expect(res.body.data.createResponse.sumScore).toBe(0);
+            expect(res.body.data.createResponse.participant.id).toBe(1);
+            expect(res.body.data.createResponse.survey.id).toBe(1);
+          });
+      });
+      it('create fail response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation createResponse {
+            createResponse() {
+              id
+              isSubmit
+              sumScore
+              participant{
+                id
+              }
+              survey{
+                id
+              }
+            }
+          }
+          `,
+          })
+          .expect(400);
+      });
+    });
+    describe('find a each response', () => {
+      it('find all response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findAllResponses{
+              id
+              isSubmit
+              sumScore
+              participant{
+                id
+              }
+              survey{
+                id
+              }
+            }
+          }`,
+          })
+          .expect(200);
+      });
+      it('fail find all responses', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findAllResponses{
+              id
+              response
+            }
+          }`,
+          })
+          .expect(400);
+      });
+    });
+    describe('find a each response', () => {
+      it('find a response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findResponse(responseId:1){
+              id
+              isSubmit
+              sumScore
+            }
+          }`,
+          })
+          .expect((res) => {
+            console.log(res);
+            expect(res.body.data.findResponse.id).toBe(1);
+            expect(res.body.data.findResponse.isSubmit).toBe(false);
+            expect(res.body.data.findResponse.sumScore).toBe(0);
+          });
+      });
+      it('fail find a detail response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findResponse(responseId:1){
+              id
+              isSubmit
+              sumScore
+              participant{
+                id
+              }
+              survey{
+                id
+              }
+            }
+          }`,
+          })
+          .expect((res) => {
+            expect(res.body.data).toBe(null);
+            // console.log(res);
+            // expect(res.body.data.findResponse.id).toBe(1);
+            // expect(res.body.data.findResponse.isSubmit).toBe(false);
+            // expect(res.body.data.findResponse.sumScore).toBe(0);
+            // expect(res.body.data.findResponse.participant.id).toBe(!1);
+            // expect(res.body.data.findResponse.survey.id).toBe(!1);
+          });
+      });
+    });
+    describe('update a each response', () => {
+      it('update response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation {
+            updateResponse(updateResponseInput:{id:1,isSubmit:true}) {
+              id
+              isSubmit
+            }
+          }
+          `,
+          })
+          .expect((res) => {
+            console.log(res);
+            expect(res.body.data.updateResponse.id).toBe(1);
+            expect(res.body.data.updateResponse.isSubmit).toBe(true);
+          });
+      });
+    });
+    describe('get a each sumscore', () => {
+      it('get a sumscore', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            getSumScore(responseId:1){
+              id
+              isSubmit
+              sumScore
+            }
+          }`,
+          })
+          .expect((res) => {
+            console.log(res);
+            expect(res.body.data.getSumScore.id).toBe(1);
+            expect(res.body.data.getSumScore.isSubmit).toBe(true);
+            expect(res.body.data.getSumScore.sumScore).toBe(0);
+          });
+      });
+    });
+    describe('remove a each response', () => {
+      it('remove response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+            mutation removeResponse {
+              removeResponse(responseId:1) {
+                id
+              }
+            }
+            `,
+          })
+          .expect(200);
+      });
+      it('remove response', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+              findAllResponses{
+                id
+              }
+            }`,
+          })
+          .expect((res) => {
+            expect(res.body.data.findAllResponses).toHaveLength(0);
+          })
+          .expect(200);
+      });
     });
   });
 });
