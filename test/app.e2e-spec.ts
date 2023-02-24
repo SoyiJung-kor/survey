@@ -886,45 +886,41 @@ describe('Graphql (e2e)', () => {
           .send({
             query: `
           mutation {
-            createEachResponse(createEachResponseInput:{surveyId:1,participantId:1}) {
+            createEachResponse(createEachResponseInput:{responseId:1,responseQuestion:"Modified Question",responseAnswer:"Modified Answer", responseScore:5}) {
               id
-              isSubmit
-              sumScore
-              participant{
-                id
-              }
-              survey{
-                id
-              }
+              responseId
+              responseQuestion
+              responseAnswer
+              responseScore
             }
           }
           `,
           })
           .expect(200)
           .expect((res) => {
-            expect(res.body.data.createResponse.id).toBe(1);
-            expect(res.body.data.createResponse.isSubmit).toBe(false);
-            expect(res.body.data.createResponse.sumScore).toBe(0);
-            expect(res.body.data.createResponse.participant.id).toBe(1);
-            expect(res.body.data.createResponse.survey.id).toBe(1);
+            expect(res.body.data.createEachResponse.id).toBe(1);
+            expect(res.body.data.createEachResponse.responseId).toBe(1);
+            expect(res.body.data.createEachResponse.responseQuestion).toBe(
+              'Modified Question',
+            );
+            expect(res.body.data.createEachResponse.responseAnswer).toBe(
+              'Modified Answer',
+            );
+            expect(res.body.data.createEachResponse.responseScore).toBe(5);
           });
       });
-      it('create fail response', async () => {
+      it('create fail each response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `
-          mutation createResponse {
-            createResponse() {
+          mutation createEachResponse {
+            createEachResponse() {
               id
-              isSubmit
-              sumScore
-              participant{
-                id
-              }
-              survey{
-                id
-              }
+              responseId
+              responseQuestion
+              responseAnswer
+              responseScore
             }
           }
           `,
