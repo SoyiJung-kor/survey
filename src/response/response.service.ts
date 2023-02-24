@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Participant } from '../participant/entities/participant.entity';
+import { Survey } from '../survey/entities/survey.entity';
 import { CreateResponseInput } from './dto/create-response.input';
 import { UpdateResponseInput } from './dto/update-response.input';
 import { Response } from './entities/response.entity';
@@ -13,13 +14,13 @@ export class ResponseService {
     private responseRepository: Repository<Response>,
     private entityManager: EntityManager,
     private dataSource: DataSource,
-  ) {}
+  ) { }
 
   async create(input: CreateResponseInput) {
     const response = this.responseRepository.create(input);
-    response.isSubmit = false;
-    response.sumScore = 0;
-    response.surveyId = input.surveyId;
+    response.survey = await this.entityManager.findOneBy(Survey, {
+      id: input.surveyId,
+    });
     response.participant = await this.entityManager.findOneBy(Participant, {
       id: input.participantId,
     });
