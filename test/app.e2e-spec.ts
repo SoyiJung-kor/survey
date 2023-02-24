@@ -590,21 +590,24 @@ describe('Graphql (e2e)', () => {
           .expect(400);
       });
     });
-    describe('find a survey', () => {
-      it('find a survey', async () => {
+    describe('find a participant', () => {
+      it('find a participant', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findSurvey(surveyId:1){
+            findOneParticipant(participantId:1){
               id
-              surveyTitle
+              email
             }
           }`,
           })
           .expect(200)
           .expect((res) => {
-            expect(res.body.data.findSurvey.id).toBe(1);
+            expect(res.body.data.findOneParticipant.id).toBe(1);
+            expect(res.body.data.findOneParticipant.email).toBe(
+              'test@test.com',
+            );
           });
       });
     });
