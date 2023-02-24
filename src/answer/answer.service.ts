@@ -37,7 +37,8 @@ export class AnswerService {
     this.validAnswerById(id);
     const answer = this.answerRepository.findOneBy({ id });
     this.answerRepository.merge(await answer, updateAnswerInput);
-    return this.answerRepository.update(id, await answer);
+    this.answerRepository.update(id, await answer);
+    return answer;
   }
 
   async remove(id: number): Promise<void> {
