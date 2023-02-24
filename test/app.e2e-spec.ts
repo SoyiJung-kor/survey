@@ -634,40 +634,38 @@ describe('Graphql (e2e)', () => {
           });
       });
     });
-    // describe('remove a survey', () => {
-    //   it('remove survey', async () => {
-    //     return request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `
-    //       mutation removeSurvey {
-    //         removeSurvey(surveyId:1) {
-    //           id
-    //           surveyTitle
-    //         }
-    //       }
-    //       `,
-    //       })
-    //       .expect(200);
-    //   });
-    //   it('remove survey', async () => {
-    //     const result = request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `{
-    //         findAllSurveys{
-    //           id
-    //           surveyTitle
-    //         }
-    //       }`,
-    //       })
-    //       .expect((res) => {
-    //         expect(res.body.data.findAllSurveys).toHaveLength(0);
-    //       })
-    //       .expect(200);
-    //     return result;
-    //   });
-    // });
+    describe('remove a participant', () => {
+      it('remove participant', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation removeParticipant {
+            removeParticipant(participantId:1) {
+              id
+            }
+          }
+          `,
+          })
+          .expect(200);
+      });
+      it('remove participant', async () => {
+        const result = request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findAllParticipants{
+              id
+            }
+          }`,
+          })
+          .expect((res) => {
+            expect(res.body.data.findAllParticipants).toHaveLength(0);
+          })
+          .expect(200);
+        return result;
+      });
+    });
   });
   it.todo('Response');
 });

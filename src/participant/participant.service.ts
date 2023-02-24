@@ -35,12 +35,13 @@ export class ParticipantService {
     return participant;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number) {
     const participant = this.findOne(id);
     if (!participant) {
       throw new Error("CAN'T FIND THE PARTICIPANT!");
     }
     await this.participantRepository.delete({ id });
+    return participant;
   }
 
   validParticipantById(id: number) {
