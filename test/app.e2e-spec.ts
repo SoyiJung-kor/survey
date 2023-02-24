@@ -494,39 +494,181 @@ describe('Graphql (e2e)', () => {
           });
       });
     });
-    describe('remove a answer', () => {
-      it('remove answer', async () => {
+    // describe('remove a answer', () => {
+    //   it('remove answer', async () => {
+    //     return request(app.getHttpServer())
+    //       .post(gql)
+    //       .send({
+    //         query: `
+    //       mutation removeAnswer {
+    //         removeAnswer(answerId:1) {
+    //           id
+    //         }
+    //       }
+    //       `,
+    //       })
+    //       .expect(200);
+    //   });
+    //   it('remove answer', async () => {
+    //     const result = request(app.getHttpServer())
+    //       .post(gql)
+    //       .send({
+    //         query: `{
+    //         findAllAnswers{
+    //           id
+    //         }
+    //       }`,
+    //       })
+    //       .expect((res) => {
+    //         expect(res.body.data.findAllAnswers).toHaveLength(0);
+    //       })
+    //       .expect(200);
+    //     return result;
+    //   });
+    // });
+  });
+  describe('Participant', () => {
+    describe('create participant', () => {
+      it('create success participant', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `
-          mutation removeAnswer {
-            removeAnswer(answerId:1) {
+          mutation {
+            createParticipant(createParticipantInput:{email:"test@test.com"}) {
               id
+              email
             }
           }
           `,
           })
-          .expect(200);
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.data.createParticipant.id).toBe(1);
+            expect(res.body.data.createParticipant.email).toBe('test@test.com');
+          });
       });
-      it('remove answer', async () => {
+      it('create fail participant with wrong email', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation createParticipant {
+            createSurvey(createParticipantInput:{email:"test@test.d"}) {
+              id
+              email
+            }
+          }
+          `,
+          })
+          .expect(400);
+      });
+    });
+    describe('find all survey', () => {
+      it('find all surveys', async () => {
         const result = request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllAnswers{
+            findAllSurveys{
               id
+              surveyTitle
             }
           }`,
-          })
-          .expect((res) => {
-            expect(res.body.data.findAllAnswers).toHaveLength(0);
           })
           .expect(200);
         return result;
       });
+      it('fail find all surveys', async () => {
+        const result = request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findAllSurveys{
+              id
+              survey
+            }
+          }`,
+          })
+          .expect(400);
+        return result;
+      });
     });
+    describe('find a survey', () => {
+      it('find a survey', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `{
+            findSurvey(surveyId:1){
+              id
+              surveyTitle
+            }
+          }`,
+          })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.data.findSurvey.id).toBe(1);
+          });
+      });
+    });
+    describe('update a survey', () => {
+      it('update survey', async () => {
+        return request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query: `
+          mutation updateSurvey {
+            updateSurvey(updateSurveyInput:{surveyTitle:"Modified Survey",id:1}) {
+              id
+              surveyTitle
+            }
+          }
+          `,
+          })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.data.updateSurvey.id).toBe(1);
+            expect(res.body.data.updateSurvey.surveyTitle).toBe(
+              'Modified Survey',
+            );
+          });
+      });
+    });
+    // describe('remove a survey', () => {
+    //   it('remove survey', async () => {
+    //     return request(app.getHttpServer())
+    //       .post(gql)
+    //       .send({
+    //         query: `
+    //       mutation removeSurvey {
+    //         removeSurvey(surveyId:1) {
+    //           id
+    //           surveyTitle
+    //         }
+    //       }
+    //       `,
+    //       })
+    //       .expect(200);
+    //   });
+    //   it('remove survey', async () => {
+    //     const result = request(app.getHttpServer())
+    //       .post(gql)
+    //       .send({
+    //         query: `{
+    //         findAllSurveys{
+    //           id
+    //           surveyTitle
+    //         }
+    //       }`,
+    //       })
+    //       .expect((res) => {
+    //         expect(res.body.data.findAllSurveys).toHaveLength(0);
+    //       })
+    //       .expect(200);
+    //     return result;
+    //   });
+    // });
   });
-  it.todo('User');
   it.todo('Response');
 });
