@@ -10,26 +10,9 @@ type EachResponse {
   responseScore: Int!
 }
 
-type Answer {
+type Participant {
   id: Int!
-  answerNumber: Int!
-  answerContent: String!
-  answerScore: Int!
-  question: Question!
-}
-
-type Question {
-  id: Int!
-  questionNumber: Int!
-  questionContent: String!
-  survey: Survey!
-}
-
-type Survey {
-  id: Int!
-  surveyTitle: String!
-  questions: [Question!]
-  response: [Response!]
+  email: String!
 }
 
 type Response {
@@ -40,9 +23,26 @@ type Response {
   survey: Survey!
 }
 
-type Participant {
+type Survey {
   id: Int!
-  email: String!
+  surveyTitle: String!
+  questions: [Question!]
+  response: [Response!]
+}
+
+type Question {
+  id: Int!
+  questionNumber: Int!
+  questionContent: String!
+  survey: Survey!
+}
+
+type Answer {
+  id: Int!
+  answerNumber: Int!
+  answerContent: String!
+  answerScore: Int!
+  question: Question!
 }
 
 type Query {
