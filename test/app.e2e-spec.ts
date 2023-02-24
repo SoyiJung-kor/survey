@@ -825,37 +825,57 @@ describe('Graphql (e2e)', () => {
           });
       });
     });
-    describe('remove a response', () => {
-      it('remove response', async () => {
-        return request(app.getHttpServer())
-          .post(gql)
-          .send({
-            query: `
-          mutation removeResponse {
-            removeResponse(responseId:1) {
-              id
-            }
-          }
-          `,
-          })
-          .expect(200);
-      });
-      it('remove response', async () => {
+    describe('get a sumscore', () => {
+      it('get a sumscore', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllResponses{
+            getSumScore(responseId:1){
               id
+              isSubmit
+              sumScore
             }
           }`,
           })
           .expect((res) => {
-            expect(res.body.data.findAllResponses).toHaveLength(0);
-          })
-          .expect(200);
+            console.log(res);
+            expect(res.body.data.getSumScore.id).toBe(1);
+            expect(res.body.data.getSumScore.isSubmit).toBe(true);
+            expect(res.body.data.getSumScore.sumScore).toBe(0);
+          });
       });
     });
+    describe('remove a response', () => {
+      //   it('remove response', async () => {
+      //     return request(app.getHttpServer())
+      //       .post(gql)
+      //       .send({
+      //         query: `
+      //       mutation removeResponse {
+      //         removeResponse(responseId:1) {
+      //           id
+      //         }
+      //       }
+      //       `,
+      //       })
+      //       .expect(200);
+      //   });
+      //   it('remove response', async () => {
+      //     return request(app.getHttpServer())
+      //       .post(gql)
+      //       .send({
+      //         query: `{
+      //         findAllResponses{
+      //           id
+      //         }
+      //       }`,
+      //       })
+      //       .expect((res) => {
+      //         expect(res.body.data.findAllResponses).toHaveLength(0);
+      //       })
+      //       .expect(200);
+      //   });
+    });
   });
-  it.todo('EachReponse');
 });

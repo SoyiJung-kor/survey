@@ -69,7 +69,7 @@ export class ResponseService {
       .where(`id = ${id}`)
       .execute();
 
-    return result;
+    return this.findOne(id);
   }
 
   async remove(id: number) {
