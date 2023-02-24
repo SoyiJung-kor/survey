@@ -1008,35 +1008,14 @@ describe('Graphql (e2e)', () => {
           });
       });
     });
-    describe('get a each sumscore', () => {
-      it('get a sumscore', async () => {
-        return request(app.getHttpServer())
-          .post(gql)
-          .send({
-            query: `{
-            getSumScore(responseId:1){
-              id
-              isSubmit
-              sumScore
-            }
-          }`,
-          })
-          .expect((res) => {
-            console.log(res);
-            expect(res.body.data.getSumScore.id).toBe(1);
-            expect(res.body.data.getSumScore.isSubmit).toBe(true);
-            expect(res.body.data.getSumScore.sumScore).toBe(0);
-          });
-      });
-    });
     describe('remove a each response', () => {
-      it('remove response', async () => {
+      it('remove each response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `
-            mutation removeResponse {
-              removeResponse(responseId:1) {
+            mutation removeEachResponse {
+              removeEachResponse(id:1) {
                 id
               }
             }
@@ -1044,18 +1023,18 @@ describe('Graphql (e2e)', () => {
           })
           .expect(200);
       });
-      it('remove response', async () => {
+      it('remove each response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-              findAllResponses{
+              findAllEachResponse{
                 id
               }
             }`,
           })
           .expect((res) => {
-            expect(res.body.data.findAllResponses).toHaveLength(0);
+            expect(res.body.data.findAllEachResponse).toHaveLength(0);
           })
           .expect(200);
       });
