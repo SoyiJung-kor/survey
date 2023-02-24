@@ -564,34 +564,30 @@ describe('Graphql (e2e)', () => {
           .expect(400);
       });
     });
-    describe('find all survey', () => {
-      it('find all surveys', async () => {
-        const result = request(app.getHttpServer())
+    describe('find all participant', () => {
+      it('find all participants', async () => {
+        return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllSurveys{
+            findAllParticipants{
               id
-              surveyTitle
+              email
             }
           }`,
           })
           .expect(200);
-        return result;
       });
-      it('fail find all surveys', async () => {
-        const result = request(app.getHttpServer())
+      it('fail find all participants', async () => {
+        return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllSurveys{
-              id
-              survey
+            findAllParticipants{
             }
           }`,
           })
           .expect(400);
-        return result;
       });
     });
     describe('find a survey', () => {
