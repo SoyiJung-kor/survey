@@ -929,34 +929,30 @@ describe('Graphql (e2e)', () => {
       });
     });
     describe('find a each response', () => {
-      it('find all response', async () => {
+      it('find all each response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllResponses{
+            findAllEachResponse{
               id
-              isSubmit
-              sumScore
-              participant{
-                id
-              }
-              survey{
-                id
-              }
+              responseId
+              responseQuestion
+              responseAnswer
+              responseScore
             }
           }`,
           })
           .expect(200);
       });
-      it('fail find all responses', async () => {
+      it('fail find all each response', async () => {
         return request(app.getHttpServer())
           .post(gql)
           .send({
             query: `{
-            findAllResponses{
+            findAllEachResponse{
               id
-              response
+              eachResponse
             }
           }`,
           })
