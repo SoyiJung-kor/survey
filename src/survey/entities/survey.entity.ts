@@ -36,5 +36,6 @@ export class Survey {
   questions: Question[];
 
   @OneToMany(() => Response, (response) => response.survey, { cascade: true })
+  @Field(() => [Response], { nullable: true })
   response: Response[];
 }

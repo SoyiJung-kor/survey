@@ -34,14 +34,15 @@ type Response {
   id: Int!
   isSubmit: Boolean!
   sumScore: Int!
-  participantId: Int!
-  surveyId: Int!
+  participant: Participant!
+  survey: Survey!
 }
 
 type Survey {
   id: Int!
   surveyTitle: String!
   questions: [Question!]
+  response: [Response!]
 }
 
 type Query {

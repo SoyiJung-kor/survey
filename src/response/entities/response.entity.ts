@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -37,22 +38,24 @@ export class Response {
   @DeleteDateColumn()
   readonly deletedAt: Date;
 
-  @Field(() => Int)
   @Column()
   participantId: number;
 
-  @Field(() => Int)
   @Column()
   surveyId: number;
 
   @ManyToOne(() => Participant, (participant) => participant.responses, {
-    nullable: false,
+    onDelete: 'CASCADE',
   })
+  @Field(() => Participant)
+  @JoinColumn({ name: 'participantId' })
   participant: Participant;
 
   @ManyToOne(() => Survey, (survey) => survey.response, {
     onDelete: 'CASCADE',
   })
+  @Field(() => Survey)
+  @JoinColumn({ name: 'surveyId' })
   survey: Survey;
 
   @OneToMany(() => EachResponse, (eachresponse) => eachresponse.response, {
