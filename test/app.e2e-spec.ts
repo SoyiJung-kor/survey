@@ -376,7 +376,7 @@ describe('Graphql (e2e)', () => {
           .send({
             query: `
           mutation {
-            createAnswer(createAnswerInput:{answerNumber:1,answerContent:"Test Answer",questionId:1}) {
+            createAnswer(createAnswerInput:{answerNumber:1,answerContent:"Test Answer",answerScore:5, questionId:1}) {
               id
               answerNumber
               answerContent
@@ -390,6 +390,7 @@ describe('Graphql (e2e)', () => {
           })
           .expect(200)
           .expect((res) => {
+            console.log(res);
             expect(res.body.data.createAnswer.id).toBe(1);
             expect(res.body.data.createAnswer.answerNumber).toBe(1);
             expect(res.body.data.createAnswer.answerContent).toBe(
@@ -397,7 +398,7 @@ describe('Graphql (e2e)', () => {
             );
             expect(res.body.data.createAnswer.question.id).toBe(1);
             expect(res.body.data.createAnswer.question.questionContent).toBe(
-              'Test Question',
+              'Modified Question',
             );
           });
       });

@@ -43,9 +43,9 @@ export class Answer {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'questionId' })
+  @Field(() => Question)
   question: Question;
 
-  @Field(() => Int)
   @Column()
   questionId: number;
 }
