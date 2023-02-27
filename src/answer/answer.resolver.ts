@@ -26,6 +26,11 @@ export class AnswerResolver {
     return this.answerService.findOne(answerId);
   }
 
+  @Query(() => [Answer])
+  findOneAnswerDetail(@Args('answerId', { type: () => Int }) answerId: number) {
+    return this.answerService.findDetail(answerId);
+  }
+
   @Mutation(() => Answer, { name: 'updateAnswer' })
   updateAnswer(
     @Args('updateAnswerInput') updateAnswerInput: UpdateAnswerInput,

@@ -404,7 +404,7 @@ describe('question', () => {
                 .send({
                     query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:100}) {
+            updateQuestion(updateQuestionInput:{id:1,questionContent:"Modified Question",surveyId:100}) {
               id
               questionContent
             }
@@ -414,7 +414,7 @@ describe('question', () => {
                 .expect(200)
                 .expect((res) => {
                     expect(res.body.data).toBeNull();
-                })
+                });
         });
     });
     describe('질문 삭제!', () => {

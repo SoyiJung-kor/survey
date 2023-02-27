@@ -41,7 +41,7 @@ export class QuestionService {
   async findDetail(id: number) {
     const result = await this.questionRepository
       .createQueryBuilder('question')
-      // .leftJoinAndSelect('question.questionOption', 'questionOption')
+      .leftJoinAndSelect('question.answers', 'answer')
       .innerJoinAndSelect('question.survey', 'survey')
       .where('question.id= :id', { id: id })
       .getMany();
@@ -51,9 +51,14 @@ export class QuestionService {
 
   async update(id: number, updateQuestionInput: UpdateQuestionInput) {
     this.validQuestionById(id);
-    const question = this.findOne(id);
-    this.questionRepository.merge(await question, updateQuestionInput);
-    this.questionRepository.update(id, await question);
+    const question = await this.findOne(id);
+    const survey = await this.entityManager.findOneBy(Survey, { id: updateQuestionInput.surveyId });
+    if (!survey) {
+      throw new Error("CAN'T FIND THE SURVEY")
+    }
+    question.survey = survey;
+    this.questionRepository.merge(question, updateQuestionInput);
+    this.questionRepository.update(id, question);
     return question;
   }
 

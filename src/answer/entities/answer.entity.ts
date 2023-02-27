@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { IsNumber, IsString, MinLength } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -29,14 +30,18 @@ export class Answer {
 
   @Field(() => Int)
   @Column()
+  @IsNumber()
   answerNumber: number;
 
   @Field(() => String)
   @Column()
+  @IsString()
+  @MinLength(2)
   answerContent: string;
 
   @Field(() => Int)
   @Column()
+  @IsNumber()
   answerScore: number;
 
   @ManyToOne(() => Question, (question) => question.answers, {

@@ -53,6 +53,7 @@ type Query {
   findOneQuestionDetail(questionId: Int!): [Question!]!
   findAllAnswers: [Answer!]!
   findAnswer(answerId: Int!): Answer!
+  findOneAnswerDetail(answerId: Int!): [Answer!]!
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findResponseWithQueryBuilder(responseId: Int!): Response!

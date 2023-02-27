@@ -33,11 +33,31 @@ export class AnswerService {
     return this.answerRepository.findOneBy({ id });
   }
 
+  /**
+  * @description "선택한 답지의 질문 조회"
+  * @param id
+  * @returns
+  */
+  async findDetail(id: number) {
+    const result = await this.answerRepository
+      .createQueryBuilder('answer')
+      .innerJoinAndSelect('answer.question', 'question')
+      .where('answer.id= :id', { id: id })
+      .getMany();
+
+    return result;
+  }
+
   async update(id: number, updateAnswerInput: UpdateAnswerInput) {
     this.validAnswerById(id);
-    const answer = this.answerRepository.findOneBy({ id });
-    this.answerRepository.merge(await answer, updateAnswerInput);
-    this.answerRepository.update(id, await answer);
+    const answer = await this.answerRepository.findOneBy({ id });
+    const question = await this.entityManager.findOneBy(Question, { id: updateAnswerInput.questionId });
+    if (!question) {
+      throw new Error("CAN'T FIND THE QUESTION!")
+    }
+    answer.question = question;
+    this.answerRepository.merge(answer, updateAnswerInput);
+    this.answerRepository.update(id, answer);
     return answer;
   }
 
@@ -65,13 +85,4 @@ export class AnswerService {
       );
     }
   }
-
-  // async create(input: CreateAnswerInput) {
-  //   const answer = this.answerRepository.create(input);
-  //   answer.question = await this.entityManager.findOneById(
-  //     Question,
-  //     input.questionId
-  //   );
-  //   return this.entityManager.save(answer);
-  // }
 }
