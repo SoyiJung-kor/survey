@@ -93,7 +93,6 @@ describe('survey', () => {
                 .expect(200)
                 .expect((res) => {
                     expect(res.body.data).toBeNull();
-                    // expect(res.body.data.createSurvey.surveyTitle).toBe('Test Survey');
                 });
         });
     });
@@ -141,7 +140,6 @@ describe('survey', () => {
                 })
                 .expect(200)
                 .expect((res) => {
-                    console.log(res.body.data.findSurvey);
                     expect(res.body.data.findSurvey.id).toBe(1);
                     expect(res.body.data.findSurvey.surveyTitle).toBe('Test Survey');
                 });
