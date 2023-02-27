@@ -36,6 +36,10 @@ export class ResponseResolver {
     return this.responseService.getResponseData(responseId);
   }
 
+  @Query(() => [Response])
+  findOneResponseDetail(@Args('responseId', { type: () => Int }) responseId: number) {
+    return this.responseService.findDetail(responseId);
+  }
   // @Query(() => Response, { name: "testScore" })
   // findScore(@Args("responseId", { type: () => Int }) responseId: number) {
   //   return this.responseService.getScore(responseId);

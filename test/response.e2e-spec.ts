@@ -122,8 +122,100 @@ describe('response', () => {
         })
         .expect(400);
     });
-    it.todo('참가자 아이디가 유효하지 않아 응답 생성 실패!');
-    it.todo('설문 아이디가 유효하지 않아 응답 생성 실패!');
+    it('존재하지 않는 참가자 아이디를 입력해서 응답 생성 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+            mutation {
+              createResponse(createResponseInput:{surveyId:1,participantId:100}) {
+                id
+                isSubmit
+                sumScore
+                participant{
+                  id
+                }
+                survey{
+                  id
+                }
+              }
+            }
+            `,
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+    it('참가자 아이디를 입력하지 않아 응답 생성 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+            mutation {
+              createResponse(createResponseInput:{surveyId:1,participantId:}) {
+                id
+                isSubmit
+                sumScore
+                participant{
+                  id
+                }
+                survey{
+                  id
+                }
+              }
+            }
+            `,
+        })
+        .expect(400);
+    });
+    it('존재하지 않는 설문 아이디를 입력해서 응답 생성 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+            mutation {
+              createResponse(createResponseInput:{surveyId:100,participantId:1}) {
+                id
+                isSubmit
+                sumScore
+                participant{
+                  id
+                }
+                survey{
+                  id
+                }
+              }
+            }
+            `,
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+    it('설문 아이디를 입력하지 않아 응답 생성 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+            mutation {
+              createResponse(createResponseInput:{surveyId:,participantId:1}) {
+                id
+                isSubmit
+                sumScore
+                participant{
+                  id
+                }
+                survey{
+                  id
+                }
+              }
+            }
+            `,
+        })
+        .expect(400);
+    });
   });
   describe('응답 전체 조회!', () => {
     it('응답 전체 조회 성공!', async () => {
@@ -179,17 +271,73 @@ describe('response', () => {
           expect(res.body.data.findResponse.sumScore).toBe(0);
         });
     });
-    it.todo('아이디가 유효하지 않아 응답 조회 실패!')
-    it.todo('query field를 잘못 넣어 응답 조회 실패!')
-    it.todo('응답 상세 조회 성공!')
-    it.todo('아이디가 유효하지 않아 상세 응답 조회 실패!')
-    it.todo('query field를 잘못 넣어 상세 응답 조회 실패!')
-    it('응답 상세 조회 실패!', async () => {
+    it('존재하지 않는 아이디를 입력해서 응답 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+              findResponse(responseId:100){
+                id
+                isSubmit
+                sumScore
+              }
+            }`,
+        })
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+    it('아이디를 입력하지 않아 응답 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+              findResponse(responseId:){
+                id
+                isSubmit
+                sumScore
+              }
+            }`,
+        })
+        .expect(400);
+    });
+    it('query field를 잘못 넣어 응답 조회 실패!', async () => {
       return request(app.getHttpServer())
         .post(gql)
         .send({
           query: `{
               findResponse(responseId:1){
+              }
+            }`,
+        })
+        .expect(400);
+    });
+    it('응답 상세 조회 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+              findOneResponseDetail(responseId:1){
+                id
+                isSubmit
+                sumScore
+                participant{
+                  id
+                }
+                survey{
+                  id
+                }
+              }
+            }`,
+        })
+        .expect(200);
+    });
+    it('응답 아이디가 존재하지 않아 상세 응답 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+              findOneResponseDetail(responseId:100){
                 id
                 isSubmit
                 sumScore
@@ -203,13 +351,39 @@ describe('response', () => {
             }`,
         })
         .expect((res) => {
-          expect(res.body.data).toBe(null);
-          // expect(res.body.data.findResponse.id).toBe(1);
-          // expect(res.body.data.findResponse.isSubmit).toBe(false);
-          // expect(res.body.data.findResponse.sumScore).toBe(0);
-          // expect(res.body.data.findResponse.participant.id).toBe(!1);
-          // expect(res.body.data.findResponse.survey.id).toBe(!1);
+          expect(res.body.data.findOneResponseDetail).toStrictEqual([]);
         });
+    });
+    it('응답 아이디를 입력하지 않아 상세 응답 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+              findOneResponseDetail(responseId:){
+                id
+                isSubmit
+                sumScore
+                participant{
+                  id
+                }
+                survey{
+                  id
+                }
+              }
+            }`,
+        })
+        .expect(400);
+    });
+    it('query field를 잘못 넣어 상세 응답 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+              findOneResponseDetail(responseId:1){
+              }
+            }`,
+        })
+        .expect(400);
     });
   });
   describe('응답 수정!', () => {
@@ -231,9 +405,68 @@ describe('response', () => {
           expect(res.body.data.updateResponse.isSubmit).toBe(true);
         });
     });
-    it.todo('아이디가 유효하지 않아 응답 수정 실패!');
-    it.todo('input data가 없어 응답 수정 실패!');
-    it.todo('input data 형식이 잘못되어 응답 수정 실패!')
+    it('존재하지 않는 아이디를 입력해서 응답 수정 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+            mutation {
+              updateResponse(updateResponseInput:{id:100,isSubmit:true}) {
+                id
+                isSubmit
+              }
+            }
+            `,
+        })
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+    it('아이디를 입력하지 않아 응답 수정 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+            mutation {
+              updateResponse(updateResponseInput:{id:,isSubmit:true}) {
+                id
+                isSubmit
+              }
+            }
+            `,
+        })
+        .expect(400);
+    });
+    it('input data가 없어 응답 수정 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+            mutation {
+              updateResponse() {
+                id
+                isSubmit
+              }
+            }
+            `,
+        })
+        .expect(400);
+    });
+    it('input data 형식이 잘못되어 응답 수정 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+            mutation {
+              updateResponse(updateResponseInput:{id:1,isSubmite:true}) {
+                id
+                isSubmit
+              }
+            }
+            `,
+        })
+        .expect(400);
+    });
   });
   describe('점수 합산!', () => {
     it('점수 합산 성공!', async () => {
@@ -254,7 +487,36 @@ describe('response', () => {
           expect(res.body.data.getSumScore.sumScore).toBe(0);
         });
     });
-    it.todo('응답 아이디가 유효하지 않아 점수 합산 실패!');
+    it('존재하지 않는 응답 아이디를 입력해서 점수 합산 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+              getSumScore(responseId:100){
+                id
+                isSubmit
+                sumScore
+              }
+            }`,
+        })
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+    it('응답 아이디를 입력하지 않아 점수 합산 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+              getSumScore(responseId:){
+                id
+                isSubmit
+                sumScore
+              }
+            }`,
+        })
+        .expect(400);
+    });
   });
   describe('응답 삭제!', () => {
     it('응답 삭제성공!', async () => {
@@ -287,6 +549,48 @@ describe('response', () => {
         .expect(200);
     });
   });
-  it.todo('응답 아이디가 유효하지 않아 응답 삭제실패!');
-  it.todo('query field가 잘못되어 응답 삭제 실패!');
+  it('존재하지 않는 응답 아이디를 입력해서 응답 삭제실패!', async () => {
+    return request(app.getHttpServer())
+      .post(gql)
+      .send({
+        query: `
+            mutation removeResponse {
+              removeResponse(responseId:100) {
+                id
+              }
+            }
+            `,
+      })
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.data).toBeNull();
+      })
+  });
+  it('응답 아이디를 입력하지 않아 응답 삭제실패!', async () => {
+    return request(app.getHttpServer())
+      .post(gql)
+      .send({
+        query: `
+            mutation removeResponse {
+              removeResponse(responseId:) {
+                id
+              }
+            }
+            `,
+      })
+      .expect(400);
+  });
+  it('query field가 잘못되어 응답 삭제 실패!', async () => {
+    return request(app.getHttpServer())
+      .post(gql)
+      .send({
+        query: `
+            mutation removeResponse {
+              removeResponse(responseId:1) {
+              }
+            }
+            `,
+      })
+      .expect(400);
+  });
 });

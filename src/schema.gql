@@ -57,6 +57,7 @@ type Query {
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findResponseWithQueryBuilder(responseId: Int!): Response!
+  findOneResponseDetail(responseId: Int!): [Response!]!
   getSumScore(responseId: Int!): Response!
   findAllEachResponse: [EachResponse!]!
   findOneEachResponse(id: Int!): EachResponse!

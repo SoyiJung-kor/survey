@@ -37,6 +37,18 @@ export class ResponseService {
     return this.responseRepository.findOneBy({ id });
   }
 
+  async findDetail(id: number) {
+    const result = await this.responseRepository
+      .createQueryBuilder('response')
+      .leftJoinAndSelect('response.eachResponse', 'eachResponse')
+      .innerJoinAndSelect('response.participant', 'participant')
+      .innerJoinAndSelect('response.survey', 'survey')
+      .where('response.id= :id', { id: id })
+      .getMany();
+
+    return result;
+  }
+
   async getResponseData(id: number) {
     const responseData = await this.dataSource.manager
       .createQueryBuilder(Response, 'response')
