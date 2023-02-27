@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TestingModule, Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +13,7 @@ import { SurveyModule } from '../src/survey/survey.module';
 const gql = '/graphql';
 import request from 'supertest';
 import { Question } from '../src/question/entities/question.entity';
+import { HttpExceptionFilter } from '../src/common/utils/http_exception_filter';
 
 describe('answer', () => {
     let app: INestApplication;
@@ -32,6 +33,8 @@ describe('answer', () => {
         }).compile();
 
         app = moduleFixture.createNestApplication();
+        app.useGlobalFilters(new HttpExceptionFilter());
+        app.useGlobalPipes(new ValidationPipe());
         await app.init();
         dataSource = moduleFixture.get<DataSource>(DataSource);
 
@@ -52,8 +55,8 @@ describe('answer', () => {
         await dataSource.dropDatabase();
         app.close();
     });
-    describe('create answer', () => {
-        it('create success answer', async () => {
+    describe('답지 생성', () => {
+        it('답지생성 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -82,7 +85,7 @@ describe('answer', () => {
                     );
                 });
         });
-        it('create fail answer', async () => {
+        it('인풋데이터가 없어서 답지 생성 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -102,9 +105,15 @@ describe('answer', () => {
                 })
                 .expect(400);
         });
+        it.todo('답지 번호가 숫자가 아니라서 답지 생성 실패!')
+        it.todo('답지 번호가 없어서 답지 생성 실패!')
+        it.todo('답지 내용이 없어서 답지 생성 실패!')
+        it.todo('답지 내용이 너무 짧아서 답지 생성 실패!')
+        it.todo('답지 점수가 숫자가 아니라서 답지 생성 실패!')
+        it.todo('답지 점수가 없어서 답지 생성 실패!')
     });
-    describe('find all answer', () => {
-        it('find all answers', async () => {
+    describe('전체 답지 조회', () => {
+        it('전체 답지 조회 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -118,7 +127,7 @@ describe('answer', () => {
                 })
                 .expect(200);
         });
-        it('fail find all answers', async () => {
+        it('query field를 잘못 넣어서 전체 답지 조회 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -132,8 +141,8 @@ describe('answer', () => {
                 .expect(400);
         });
     });
-    describe('find a answer', () => {
-        it('find a answer', async () => {
+    describe('단일 답지 조회', () => {
+        it('아이디로 단일 답지 조회 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -150,6 +159,11 @@ describe('answer', () => {
                     expect(res.body.data.findAnswer.answerContent).toBe('Test Answer');
                 });
         });
+        it.todo('없는 아이디를 입력해서 단일 답지 조회 실패!');
+        it.todo('잘못된 query field로 인해 단일 답지 조회 실패!');
+        it.todo('답지 상세조회 성공!');
+        it.todo('없는 아이디를 입력해서 답지 상세조회 실패!');
+        it.todo('잘못된 query field를 입력해서 답지 상세조회 실패!');
     });
     describe('update a answer', () => {
         it('update answer', async () => {
@@ -173,6 +187,12 @@ describe('answer', () => {
                     );
                 });
         });
+        it.todo('없는 답지 아이디를 입력해서 수정 실패!');
+        it.todo('query field를 잘못 입력해서 수정 실패!');
+        it.todo('답지 번호가 숫자가 아니라 수정 실패!');
+        it.todo('답지 내용이 너무 짧아서 수정 실패!');
+        it.todo('질문 아이디가 유효하지 않아 수정 실패!');
+
     });
     describe('remove a answer', () => {
         it('remove answer', async () => {
@@ -205,5 +225,6 @@ describe('answer', () => {
                 .expect(200);
             return result;
         });
+        it.todo('답지 아이디가 없어 삭제 실패!')
     });
 });
