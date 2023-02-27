@@ -74,6 +74,26 @@ describe('survey', () => {
                 })
                 .expect(400);
         });
+        it('설문지 제목이 너무 짧아서 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation {
+            createSurvey(createSurveyInput:{surveyTitle:"l"}) {
+              id
+              surveyTitle
+            }
+          }
+          `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    console.log(res);
+                    expect(res.body.data.createSurvey.id).toBe(1);
+                    expect(res.body.data.createSurvey.surveyTitle).toBe('Test Survey');
+                });
+        });
     });
     describe('모든 설문 조회하기!', () => {
         it('모든 설문 조회 성공!', async () => {
