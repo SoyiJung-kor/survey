@@ -46,8 +46,8 @@ describe('question', () => {
         app.close();
     });
 
-    describe('create question', () => {
-        it('create success question', async () => {
+    describe('질문 생성', () => {
+        it('질문 생성 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -78,7 +78,7 @@ describe('question', () => {
                     );
                 });
         });
-        it('create fail question', async () => {
+        it('인풋 데이터가 없어 질문 생성 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -99,8 +99,8 @@ describe('question', () => {
                 .expect(400);
         });
     });
-    describe('find all question', () => {
-        it('find all questions', async () => {
+    describe('전체 질문 조회!', () => {
+        it('전체 질문 조회 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -114,7 +114,7 @@ describe('question', () => {
                 })
                 .expect(200);
         });
-        it('fail find all questions', async () => {
+        it('query field가 잘못되어 조회 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -128,8 +128,8 @@ describe('question', () => {
                 .expect(400);
         });
     });
-    describe('find a question', () => {
-        it('find a question', async () => {
+    describe('특정 질문 조회!', () => {
+        it('아이디로 특정 질문 조회 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -148,10 +148,10 @@ describe('question', () => {
                     );
                 });
         });
-        it.todo('find a detail question');
+        it.todo('디테일한 특정 질문 조회');
     });
-    describe('update a question', () => {
-        it('update question', async () => {
+    describe('질문 수정!', () => {
+        it('질문 수정 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -173,8 +173,8 @@ describe('question', () => {
                 });
         });
     });
-    describe('remove a question', () => {
-        it('remove question', async () => {
+    describe('질문 삭제!', () => {
+        it('질문 삭제 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -188,7 +188,7 @@ describe('question', () => {
                 })
                 .expect(200);
         });
-        it('remove question', async () => {
+        it('질문을 삭제하면 db에 남은 question data가 0개다.', async () => {
             const result = request(app.getHttpServer())
                 .post(gql)
                 .send({
