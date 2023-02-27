@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TestingModule, Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,6 +11,7 @@ import { ParticipantModule } from '../src/participant/participant.module';
 import { SurveyModule } from '../src/survey/survey.module';
 const gql = '/graphql';
 import request from 'supertest';
+import { HttpExceptionFilter } from '../src/common/utils/http_exception_filter';
 
 describe('participant', () => {
     let app: INestApplication;
@@ -30,6 +31,8 @@ describe('participant', () => {
         }).compile();
 
         app = moduleFixture.createNestApplication();
+        app.useGlobalFilters(new HttpExceptionFilter());
+        app.useGlobalPipes(new ValidationPipe());
         await app.init();
         dataSource = moduleFixture.get<DataSource>(DataSource);
     });
@@ -39,8 +42,8 @@ describe('participant', () => {
         app.close();
     });
 
-    describe('create participant', () => {
-        it('create success participant', async () => {
+    describe('참가자 만들기!', () => {
+        it('참가자 만들기 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -59,7 +62,7 @@ describe('participant', () => {
                     expect(res.body.data.createParticipant.email).toBe('test@test.com');
                 });
         });
-        it('create fail participant with wrong email', async () => {
+        it('잘못된 이메일 형식을 입력해서 참가자 만들기 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -75,8 +78,8 @@ describe('participant', () => {
                 .expect(400);
         });
     });
-    describe('find all participant', () => {
-        it('find all participants', async () => {
+    describe('전체 참가자 조회!', () => {
+        it('전체 참가자 조회 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -89,7 +92,7 @@ describe('participant', () => {
                 })
                 .expect(200);
         });
-        it('fail find all participants', async () => {
+        it('query field가 없어서 전체 참가자 조회 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -101,8 +104,8 @@ describe('participant', () => {
                 .expect(400);
         });
     });
-    describe('find a participant', () => {
-        it('find a participant', async () => {
+    describe('단일 참가자 조회!', () => {
+        it('단일 참가자 조회 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -121,9 +124,12 @@ describe('participant', () => {
                     );
                 });
         });
+        it.todo('입력한 참가자 아이디에 일치하는 아이디가 없어서 단일 참가자 조회 실패!');
+        it.todo('참가자 아이디를 입력하지 않아서 단일 참가자 조회 실패!');
+        it.todo('query field를 잘못 입력해서 단일 참가자 조회 실패!');
     });
-    describe('update a participant', () => {
-        it('update participant', async () => {
+    describe('참가자 수정', () => {
+        it('참가자 수정 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -144,9 +150,12 @@ describe('participant', () => {
                     );
                 });
         });
+        it.todo('참가자 아이디가 유효하지 않아 수정 실패!');
+        it.todo('참가자 아이디를 입력하지 않아 수정 실패!');
+        it.todo('이메일이 유효하지 않아 참가자 수정 실패!');
     });
-    describe('remove a participant', () => {
-        it('remove participant', async () => {
+    describe('참가자 삭제!', () => {
+        it('참가자 삭제 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -176,5 +185,8 @@ describe('participant', () => {
                 .expect(200);
             return result;
         });
+        it.todo('참가자 아이디를 입력하지 않아 삭제 실패!');
+        it.todo('참가자 아이디가 유효하지 않아 삭제 실패!');
+        it.todo('query field가 유효하지 않아 참가자 삭제 실패!');
     });
 });
