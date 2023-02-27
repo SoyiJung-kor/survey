@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Survey } from '../src/survey/entities/survey.entity';
 import request from 'supertest';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
@@ -11,6 +11,7 @@ import { DataSource } from 'typeorm';
 import { typeORMConfig } from '../src/common/config/orm-config';
 import { ParticipantModule } from '../src/participant/participant.module';
 import { SurveyModule } from '../src/survey/survey.module';
+import { HttpExceptionFilter } from '../src/common/utils/http_exception_filter';
 const gql = '/graphql';
 
 describe('question', () => {
@@ -31,6 +32,8 @@ describe('question', () => {
         }).compile();
 
         app = moduleFixture.createNestApplication();
+        app.useGlobalFilters(new HttpExceptionFilter());
+        app.useGlobalPipes(new ValidationPipe());
         await app.init();
         dataSource = moduleFixture.get<DataSource>(DataSource);
 
@@ -98,9 +101,70 @@ describe('question', () => {
                 })
                 .expect(400);
         });
-        it.todo('질문 번호에 숫자가 아닌 문자를 입력하면 생성 실패!')
-        it.todo('질문 내용이 비어있으면 생성 실패!')
-        it.todo('설문 아이디를 입력하지 않으면 실패!')
+        it('질문 번호에 숫자가 아닌 문자를 입력하면 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation {
+            createQuestion(createQuestionInput:{questionNumber:"1",questionContent:"Test Question",surveyId:1}) {
+              id
+              questionNumber
+              questionContent
+              survey{
+                id
+                surveyTitle
+              }
+            }
+          }
+          `,
+                })
+                .expect(400);
+        });
+        it('질문 내용이 5글자 이하여서 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation {
+            createQuestion(createQuestionInput:{questionNumber:1,questionContent:" ",surveyId:1}) {
+              id
+              questionNumber
+              questionContent
+              survey{
+                id
+                surveyTitle
+              }
+            }
+          }
+          `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+
+        });
+        it('설문 아이디를 입력하지 않으면 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation {
+            createQuestion(createQuestionInput:{questionNumber:1,questionContent:"Test Question",surveyId:}) {
+              id
+              questionNumber
+              questionContent
+              survey{
+                id
+                surveyTitle
+              }
+            }
+          }
+          `,
+                })
+                .expect(400);
+        });
     });
     describe('전체 질문 조회!', () => {
         it('전체 질문 조회 성공!', async () => {
@@ -151,8 +215,46 @@ describe('question', () => {
                     );
                 });
         });
-        it.todo('query field가 잘못되어 조회 실패!');
-        it.todo('없는 id로 조회하면 실패!');
+        it('query field가 잘못되어 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation {
+            createQuestion(createQuestionInput:{questionNumber:1,questionContent:"Test Question",surveyId:1}) {
+              id
+              questionNumber
+              questionContent
+              survey{
+                id
+                survey
+              }
+            }
+          }
+          `,
+                })
+                .expect(400);
+        });
+        it('없는 id로 조회하면 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation {
+            createQuestion(createQuestionInput:{questionNumber:100,questionContent:"Test Question",surveyId:1}) {
+              id
+              questionNumber
+              questionContent
+              survey{
+                id
+                survey
+              }
+            }
+          }
+          `,
+                })
+                .expect(400);
+        });
         it.todo('디테일한 특정 질문 조회 성공!');
         it.todo('없는 id로 디테일한 특정 질문 조회 실패!');
         it.todo('잘못된 query field때문에 디테일한 특정 질문 조회 실패!');
@@ -179,11 +281,90 @@ describe('question', () => {
                     );
                 });
         });
-        it.todo('query field가 잘못되어 조회 실패!');
-        it.todo('없는 id로 조회하면 실패!');
-        it.todo('질문 번호가 숫자가 아니어서 실패!');
-        it.todo('질문 내용이 없어서 실패!');
-        it.todo('없는 설문으로 수정하려면 실패!');
+        it('query field가 잘못되어 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation updateQuestion {
+            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:1}) {
+              id
+              question
+            }
+          }
+          `,
+                })
+                .expect(400);
+        });
+        it('없는 id로 조회하면 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation updateQuestion {
+            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:100}) {
+              id
+              questionContent
+            }
+          }
+          `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
+        it('질문 번호가 숫자가 아니어서 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation updateQuestion {
+            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:"1"}) {
+              id
+              questionContent
+            }
+          }
+          `,
+                })
+                .expect(400);
+        });
+        it('질문 내용이 없어서 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation updateQuestion {
+            updateQuestion(updateQuestionInput:{questionContent:" ",id:1}) {
+              id
+              questionContent
+            }
+          }
+          `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
+        it('없는 설문으로 수정하려면 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation updateQuestion {
+            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:100}) {
+              id
+              questionContent
+            }
+          }
+          `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
     });
     describe('질문 삭제!', () => {
         it('질문 삭제 성공!', async () => {
@@ -216,7 +397,36 @@ describe('question', () => {
                 .expect(200);
             return result;
         });
-        it.todo('query field가 잘못되어 삭제 실패!');
-        it.todo('없는 id로 조회하면 실패!');
+        it('query field가 잘못되어 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation removeQuestion {
+            removeQuestion(questionId:1) {
+              
+            }
+          }
+          `,
+                })
+                .expect(400);
+        });
+        it('없는 id로 조회하면 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation removeQuestion {
+            removeQuestion(questionId:100) {
+              id
+            }
+          }
+          `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
     });
 });

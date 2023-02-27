@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { IsNumber, MinLength } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -22,10 +23,12 @@ export class Question {
 
   @Field(() => Int)
   @Column()
+  @IsNumber()
   questionNumber: number;
 
   @Field(() => String)
   @Column()
+  @MinLength(5)
   questionContent: string;
 
   @CreateDateColumn()
