@@ -144,8 +144,35 @@ describe('survey', () => {
                     expect(res.body.data.findSurvey.surveyTitle).toBe('Test Survey');
                 });
         });
-        it.todo('존재하지 않는 설문 아이디를 입력해서 조회 실패!')
-        it.todo('잘못된 query field를 입력해서 조회 실패!')
+        it('존재하지 않는 설문 아이디를 입력해서 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findSurvey(surveyId:100){
+              id
+              surveyTitle
+            }
+          }`,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('잘못된 query field를 입력해서 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findSurvey(surveyId:1){
+              id
+              survey
+            }
+          }`,
+                })
+                .expect(400)
+        });
     });
     describe('설문 수정하기!', () => {
         it('설문 수정 성공!', async () => {
