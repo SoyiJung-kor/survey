@@ -197,6 +197,24 @@ describe('survey', () => {
                 });
         });
         it.todo('잘못된 인풋때문에 설문 수정 실패!')
+        it('잘못된 인풋때문에 설문 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation updateSurvey {
+            updateSurvey(updateSurveyInput:{surveyTitle:" ",id:1}) {
+              id
+              surveyTitle
+            }
+          }
+          `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
     });
     describe('설문 삭제하기!', () => {
         it('설문 삭제 성공!', async () => {
