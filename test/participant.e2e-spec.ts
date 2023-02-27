@@ -124,9 +124,48 @@ describe('participant', () => {
                     );
                 });
         });
-        it.todo('입력한 참가자 아이디에 일치하는 아이디가 없어서 단일 참가자 조회 실패!');
-        it.todo('참가자 아이디를 입력하지 않아서 단일 참가자 조회 실패!');
-        it.todo('query field를 잘못 입력해서 단일 참가자 조회 실패!');
+        it('입력한 참가자 아이디에 일치하는 아이디가 없어서 단일 참가자 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+              findOneParticipant(participantId:100){
+                id
+                email
+              }
+            }`,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('참가자 아이디를 입력하지 않아서 단일 참가자 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+              findOneParticipant(){
+                id
+                email
+              }
+            }`,
+                })
+                .expect(400);
+        });
+        it('query field를 잘못 입력해서 단일 참가자 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+              findOneParticipant(participantId:1){
+                id
+                survey
+              }
+            }`,
+                })
+                .expect(400);
+        });
     });
     describe('참가자 수정', () => {
         it('참가자 수정 성공!', async () => {
@@ -150,7 +189,24 @@ describe('participant', () => {
                     );
                 });
         });
-        it.todo('참가자 아이디가 유효하지 않아 수정 실패!');
+        it('참가자 아이디가 유효하지 않아 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation updateParticipant {
+              updateParticipant(updateParticipantInput:{email:"modified@test.com",id:100}) {
+                id
+                email
+              }
+            }
+            `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
         it.todo('참가자 아이디를 입력하지 않아 수정 실패!');
         it.todo('이메일이 유효하지 않아 참가자 수정 실패!');
     });
