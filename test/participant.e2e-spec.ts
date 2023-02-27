@@ -207,8 +207,39 @@ describe('participant', () => {
                     expect(res.body.data).toBeNull();
                 });
         });
-        it.todo('참가자 아이디를 입력하지 않아 수정 실패!');
-        it.todo('이메일이 유효하지 않아 참가자 수정 실패!');
+        it('참가자 아이디를 입력하지 않아 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation updateParticipant {
+              updateParticipant(updateParticipantInput:{email:"modified@test.com",id:}) {
+                id
+                email
+              }
+            }
+            `,
+                })
+                .expect(400);
+        });
+        it('이메일이 유효하지 않아 참가자 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation updateParticipant {
+              updateParticipant(updateParticipantInput:{email:"modified@test.d",id:1}) {
+                id
+                email
+              }
+            }
+            `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
     });
     describe('참가자 삭제!', () => {
         it('참가자 삭제 성공!', async () => {
@@ -241,8 +272,50 @@ describe('participant', () => {
                 .expect(200);
             return result;
         });
-        it.todo('참가자 아이디를 입력하지 않아 삭제 실패!');
-        it.todo('참가자 아이디가 유효하지 않아 삭제 실패!');
-        it.todo('query field가 유효하지 않아 참가자 삭제 실패!');
+        it('참가자 아이디를 입력하지 않아 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation removeParticipant {
+            removeParticipant(participantId:) {
+              id
+            }
+          }
+          `,
+                })
+                .expect(400);
+        });
+        it('참가자 아이디가 유효하지 않아 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation removeParticipant {
+            removeParticipant(participantId:100) {
+              id
+            }
+          }
+          `,
+                })
+                .expect(200).
+                expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
+        it('query field가 유효하지 않아 참가자 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation removeParticipant {
+            removeParticipant(participantId:1) {
+              
+            }
+          }
+          `,
+                })
+                .expect(400);
+        });
     });
 });
