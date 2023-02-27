@@ -50,6 +50,7 @@ type Query {
   findSurvey(surveyId: Int!): Survey!
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
+  findOneQuestionDetail(questionId: Int!): [Question!]!
   findAllAnswers: [Answer!]!
   findAnswer(answerId: Int!): Answer!
   findAllResponses: [Response!]!

@@ -220,15 +220,11 @@ describe('question', () => {
                 .post(gql)
                 .send({
                     query: `
-          mutation {
-            createQuestion(createQuestionInput:{questionNumber:1,questionContent:"Test Question",surveyId:1}) {
+          query {
+            findQuestion(questionId:1) {
               id
               questionNumber
-              questionContent
-              survey{
-                id
-                survey
-              }
+              answer
             }
           }
           `,
@@ -240,14 +236,72 @@ describe('question', () => {
                 .post(gql)
                 .send({
                     query: `
-          mutation {
-            createQuestion(createQuestionInput:{questionNumber:100,questionContent:"Test Question",surveyId:1}) {
+          query {
+            findQuestion(questionId:100) {
+              id
+              questionNumber
+              questionContent
+            }
+          }
+          `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
+        it('디테일한 특정 질문 조회 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          query {
+            findOneQuestionDetail(questionId:1) {
               id
               questionNumber
               questionContent
               survey{
                 id
-                survey
+              }
+            }
+          }
+          `,
+                })
+                .expect(200);
+        });
+        it('없는 id로 디테일한 특정 질문 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          query {
+            findOneQuestionDetail(questionId:100) {
+              id
+              questionNumber
+              questionContent
+              survey{
+                id
+              }
+            }
+          }
+          `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data.findOneQuestionDetail).toStrictEqual([]);
+                })
+        });
+        it('잘못된 query field때문에 디테일한 특정 질문 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          query {
+            findOneQuestionDetail(questionId:1) {
+              id
+              questionNumber
+              questionContent
+              survey{
               }
             }
           }
@@ -255,9 +309,6 @@ describe('question', () => {
                 })
                 .expect(400);
         });
-        it.todo('디테일한 특정 질문 조회 성공!');
-        it.todo('없는 id로 디테일한 특정 질문 조회 실패!');
-        it.todo('잘못된 query field때문에 디테일한 특정 질문 조회 실패!');
     });
     describe('질문 수정!', () => {
         it('질문 수정 성공!', async () => {
