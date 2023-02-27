@@ -21,7 +21,7 @@ export class Survey {
 
   @Field(() => String)
   @Column()
-  @MinLength(2)
+  @MinLength(2, { message: 'title is too short!' })
   surveyTitle: string;
 
   @CreateDateColumn()
