@@ -98,6 +98,9 @@ describe('question', () => {
                 })
                 .expect(400);
         });
+        it.todo('질문 번호에 숫자가 아닌 문자를 입력하면 생성 실패!')
+        it.todo('질문 내용이 비어있으면 생성 실패!')
+        it.todo('설문 아이디를 입력하지 않으면 실패!')
     });
     describe('전체 질문 조회!', () => {
         it('전체 질문 조회 성공!', async () => {
@@ -148,7 +151,11 @@ describe('question', () => {
                     );
                 });
         });
-        it.todo('디테일한 특정 질문 조회');
+        it.todo('query field가 잘못되어 조회 실패!');
+        it.todo('없는 id로 조회하면 실패!');
+        it.todo('디테일한 특정 질문 조회 성공!');
+        it.todo('없는 id로 디테일한 특정 질문 조회 실패!');
+        it.todo('잘못된 query field때문에 디테일한 특정 질문 조회 실패!');
     });
     describe('질문 수정!', () => {
         it('질문 수정 성공!', async () => {
@@ -172,6 +179,11 @@ describe('question', () => {
                     );
                 });
         });
+        it.todo('query field가 잘못되어 조회 실패!');
+        it.todo('없는 id로 조회하면 실패!');
+        it.todo('질문 번호가 숫자가 아니어서 실패!');
+        it.todo('질문 내용이 없어서 실패!');
+        it.todo('없는 설문으로 수정하려면 실패!');
     });
     describe('질문 삭제!', () => {
         it('질문 삭제 성공!', async () => {
@@ -204,5 +216,7 @@ describe('question', () => {
                 .expect(200);
             return result;
         });
+        it.todo('query field가 잘못되어 삭제 실패!');
+        it.todo('없는 id로 조회하면 실패!');
     });
 });
