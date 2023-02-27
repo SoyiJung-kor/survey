@@ -39,8 +39,8 @@ describe('survey', () => {
         app.close();
     });
 
-    describe('create survey', () => {
-        it('create success survey', async () => {
+    describe('설문지 만들기!', () => {
+        it('설문지 만들기 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -59,7 +59,7 @@ describe('survey', () => {
                     expect(res.body.data.createSurvey.surveyTitle).toBe('Test Survey');
                 });
         });
-        it('create fail survey', async () => {
+        it('설문을 만들 때, input이 없으면 실패한다.', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -75,8 +75,8 @@ describe('survey', () => {
                 .expect(400);
         });
     });
-    describe('find all survey', () => {
-        it('find all surveys', async () => {
+    describe('모든 설문 조회하기!', () => {
+        it('모든 설문 조회 성공!', async () => {
             const result = request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -90,7 +90,7 @@ describe('survey', () => {
                 .expect(200);
             return result;
         });
-        it('fail find all surveys', async () => {
+        it('잘못된 query field를 요청해서 설문 조회 실패!', async () => {
             const result = request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -105,8 +105,8 @@ describe('survey', () => {
             return result;
         });
     });
-    describe('find a survey', () => {
-        it('find a survey', async () => {
+    describe('단일 설문 조회!', () => {
+        it('단일 설문 조회 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -122,9 +122,11 @@ describe('survey', () => {
                     expect(res.body.data.findSurvey.id).toBe(1);
                 });
         });
+        it.todo('존재하지 않는 설문 아이디를 입력해서 조회 실패!')
+        it.todo('잘못된 query field를 입력해서 조회 실패!')
     });
-    describe('update a survey', () => {
-        it('update survey', async () => {
+    describe('설문 수정하기!', () => {
+        it('설문 수정 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -145,9 +147,10 @@ describe('survey', () => {
                     );
                 });
         });
+        it.todo('잘못된 인풋때문에 설문 수정 실패!')
     });
-    describe('remove a survey', () => {
-        it('remove survey', async () => {
+    describe('설문 삭제하기!', () => {
+        it('설문 삭제 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -162,7 +165,7 @@ describe('survey', () => {
                 })
                 .expect(200);
         });
-        it('remove survey', async () => {
+        it('설문을 삭제하면 디비에 남은 데이터가 없다.', async () => {
             const result = request(app.getHttpServer())
                 .post(gql)
                 .send({
