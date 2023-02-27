@@ -249,5 +249,23 @@ describe('survey', () => {
                 .expect(200);
             return result;
         });
+        it('잘못된 설문 아이디 입력하면 설문 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation removeSurvey {
+            removeSurvey(surveyId:100) {
+              id
+              surveyTitle
+            }
+          }
+          `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
     });
 });
