@@ -10,16 +10,18 @@ type EachResponse {
   responseScore: Int!
 }
 
-type Participant {
+type Answer {
   id: Int!
-  email: String!
+  answerNumber: Int!
+  answerContent: String!
+  answerScore: Int!
+  question: Question!
 }
 
-type Response {
+type Question {
   id: Int!
-  isSubmit: Boolean!
-  sumScore: Int!
-  participant: Participant!
+  questionNumber: Int!
+  questionContent: String!
   survey: Survey!
 }
 
@@ -30,19 +32,17 @@ type Survey {
   response: [Response!]
 }
 
-type Question {
+type Response {
   id: Int!
-  questionNumber: Int!
-  questionContent: String!
+  isSubmit: Boolean!
+  sumScore: Int!
+  participant: Participant!
   survey: Survey!
 }
 
-type Answer {
+type Participant {
   id: Int!
-  answerNumber: Int!
-  answerContent: String!
-  answerScore: Int!
-  question: Question!
+  email: String!
 }
 
 type Query {

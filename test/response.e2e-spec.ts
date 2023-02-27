@@ -39,7 +39,7 @@ describe('response', () => {
 
         const mockSurvey = new Survey();
         mockSurvey.surveyTitle = 'Mock Survey for Test';
-        dataSource.manager.save(mockSurvey);
+        await dataSource.manager.save(mockSurvey);
 
         const mockQuestion = new Question();
         mockQuestion.questionContent = 'Mock Question for Test';
@@ -59,11 +59,6 @@ describe('response', () => {
         const mockParticipant = new Participant();
         mockParticipant.email = 'mock@test.com';
         await dataSource.manager.save(mockParticipant);
-
-        console.log(mockSurvey);
-        console.log(mockQuestion);
-        console.log(mockAnswer);
-        console.log(mockParticipant);
 
     });
 
@@ -247,35 +242,35 @@ describe('response', () => {
                 });
         });
     });
-    // describe('remove a response', () => {
-    //   it('remove response', async () => {
-    //     return request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `
-    //         mutation removeResponse {
-    //           removeResponse(responseId:1) {
-    //             id
-    //           }
-    //         }
-    //         `,
-    //       })
-    //       .expect(200);
-    //   });
-    //   it('remove response', async () => {
-    //     return request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `{
-    //           findAllResponses{
-    //             id
-    //           }
-    //         }`,
-    //       })
-    //       .expect((res) => {
-    //         expect(res.body.data.findAllResponses).toHaveLength(0);
-    //       })
-    //       .expect(200);
-    //   });
-    // });
+    describe('remove a response', () => {
+        it('remove response', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation removeResponse {
+              removeResponse(responseId:1) {
+                id
+              }
+            }
+            `,
+                })
+                .expect(200);
+        });
+        it('remove response', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+              findAllResponses{
+                id
+              }
+            }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data.findAllResponses).toHaveLength(0);
+                })
+                .expect(200);
+        });
+    });
 });

@@ -61,7 +61,6 @@ export class ResponseService {
   async getSumScore(id: number) {
     const Score = await this.getScore(id);
     const SumScore = +Score.totalScore;
-    console.log(`Sum Score : ${SumScore}`);
     const result = await this.dataSource.manager
       .createQueryBuilder()
       .update(Response)
@@ -101,7 +100,6 @@ export class ResponseService {
 
   async updateSubmit(id: number, updateResponseInput: UpdateResponseInput) {
     const response = this.responseRepository.findOneBy({ id });
-    console.log(`find One By Id : ${response}`);
     this.responseRepository.merge(await response, updateResponseInput);
     this.responseRepository.update(id, await response);
     return response;

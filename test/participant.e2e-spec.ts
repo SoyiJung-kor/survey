@@ -145,36 +145,36 @@ describe('participant', () => {
                 });
         });
     });
-    // describe('remove a participant', () => {
-    //   it('remove participant', async () => {
-    //     return request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `
-    //       mutation removeParticipant {
-    //         removeParticipant(participantId:1) {
-    //           id
-    //         }
-    //       }
-    //       `,
-    //       })
-    //       .expect(200);
-    //   });
-    //   it('remove participant', async () => {
-    //     const result = request(app.getHttpServer())
-    //       .post(gql)
-    //       .send({
-    //         query: `{
-    //         findAllParticipants{
-    //           id
-    //         }
-    //       }`,
-    //       })
-    //       .expect((res) => {
-    //         expect(res.body.data.findAllParticipants).toHaveLength(0);
-    //       })
-    //       .expect(200);
-    //     return result;
-    //   });
-    // });
+    describe('remove a participant', () => {
+        it('remove participant', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+          mutation removeParticipant {
+            removeParticipant(participantId:1) {
+              id
+            }
+          }
+          `,
+                })
+                .expect(200);
+        });
+        it('remove participant', async () => {
+            const result = request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findAllParticipants{
+              id
+            }
+          }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data.findAllParticipants).toHaveLength(0);
+                })
+                .expect(200);
+            return result;
+        });
+    });
 });

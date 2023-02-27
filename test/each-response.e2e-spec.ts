@@ -39,7 +39,7 @@ describe('eachResponse', () => {
 
         const mockSurvey = new Survey();
         mockSurvey.surveyTitle = 'Mock Survey for Test';
-        dataSource.manager.save(mockSurvey);
+        await dataSource.manager.save(mockSurvey);
 
         const mockQuestion = new Question();
         mockQuestion.questionContent = 'Mock Question for Test';
@@ -66,13 +66,6 @@ describe('eachResponse', () => {
         mockResponse.survey = mockSurvey;
         mockResponse.participant = mockParticipant;
         await dataSource.manager.save(mockResponse);
-
-
-        console.log(mockSurvey);
-        console.log(mockQuestion);
-        console.log(mockAnswer);
-        console.log(mockParticipant);
-        console.log(mockResponse);
 
     });
 
