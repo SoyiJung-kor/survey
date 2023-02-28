@@ -34,7 +34,7 @@ export class ParticipantService {
   }
 
   async remove(id: number) {
-    const participant = this.findOne(id);
+    const participant = this.participantRepository.findOneBy({ id });
     if (!participant) {
       throw new Error("CAN'T FIND THE PARTICIPANT!");
     }

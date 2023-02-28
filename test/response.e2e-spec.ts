@@ -68,7 +68,7 @@ describe('response', () => {
 
   afterAll(async () => {
     await dataSource.dropDatabase();
-    // app.close();
+    app.close();
   });
 
   describe('응답 생성', () => {

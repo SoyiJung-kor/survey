@@ -39,7 +39,7 @@ describe('survey', () => {
 
   afterAll(async () => {
     await dataSource.dropDatabase();
-    // app.close();
+    app.close();
   });
 
   describe('설문지 만들기!', () => {

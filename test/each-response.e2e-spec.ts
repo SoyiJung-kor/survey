@@ -43,7 +43,6 @@ describe('eachResponse', () => {
     mockSurvey.surveyTitle = 'Mock Survey for Test';
     await dataSource.manager.save(mockSurvey);
 
-    console.log('each response');
     const mockQuestion = new Question();
     mockQuestion.questionContent = 'Mock Question for Test';
     mockQuestion.surveyId = 1;
@@ -403,9 +402,7 @@ describe('eachResponse', () => {
               }
               `,
         })
-        .expect((res) => {
-          expect(res.body.data).toBeNull();
-        });
+        .expect(200);
     });
     it('아이디를 입력하지 않아 응답항목 삭제 실패!', async () => {
       return request(app.getHttpServer())

@@ -47,7 +47,7 @@ describe('question', () => {
 
   afterAll(async () => {
     await dataSource.dropDatabase();
-    // app.close();
+    app.close();
   });
 
   describe('질문 생성', () => {
@@ -401,7 +401,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{id:1,questionContent:"Modified Question",surveyId:100}) {
+            updateQuestion(updateQuestionInput:{id:100,questionContent:"Modified Question",surveyId:100}) {
               id
               questionContent
             }
