@@ -11,8 +11,6 @@ export class ParticipantService {
   constructor(
     @InjectRepository(Participant)
     private participantRepository: Repository<Participant>,
-    private entityManager: EntityManager,
-    private dataSource: DataSource,
   ) { }
 
   create(input: CreateParticipantInput) {
@@ -25,12 +23,11 @@ export class ParticipantService {
   }
 
   findOne(id: number) {
-    this.validParticipantById(id);
-    return this.participantRepository.findOneBy({ id });
+    return this.validParticipant(id);
   }
 
   async update(id: number, updateParticipantInput: UpdateParticipantInput) {
-    const participant = this.validParticipantById(id);
+    const participant = this.validParticipant(id);
     this.participantRepository.merge(await participant, updateParticipantInput);
     this.participantRepository.update(id, await participant);
     return participant;
@@ -45,28 +42,11 @@ export class ParticipantService {
     return participant;
   }
 
-  validParticipantById(id: number) {
-    try {
-      this.participantRepository.findOneBy({ id });
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
-        },
-        HttpStatus.BAD_GATEWAY,
-        {
-          cause: error,
-        },
-      );
+  async validParticipant(id: number) {
+    const participant = await this.participantRepository.findOneBy({ id });
+    if (!participant) {
+      throw new Error(`CAN NOT FIND PARTICIPANT! ID: ${id}`);
     }
-    return this.participantRepository.findOneBy({ id });
+    return participant;
   }
-
-  //   async getEachRsponsebyUserId(id: number) {
-  //     await this.dataSource.manager
-  //     .createQueryBuilder(Participant, "participant")
-  //     .leftJoin("participant.response", "response")
-  //     .
-  // }
 }

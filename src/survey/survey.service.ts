@@ -23,12 +23,11 @@ export class SurveyService {
   }
 
   findOne(id: number) {
-    this.validSurveyById(id);
-    return this.surveyRepository.findOneBy({ id });
+    return this.validSurvey(id);
   }
 
   async update(id: number, updateSurveyInput: UpdateSurveyInput) {
-    const survey = await this.validSurveyById(id);
+    const survey = await this.validSurvey(id);
     this.surveyRepository.merge(survey, updateSurveyInput);
     return survey;
   }
@@ -42,21 +41,11 @@ export class SurveyService {
     return survey;
   }
 
-  validSurveyById(id: number) {
-    try {
-      this.surveyRepository.findOneBy({ id });
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
-        },
-        HttpStatus.BAD_GATEWAY,
-        {
-          cause: error,
-        },
-      );
+  async validSurvey(id: number) {
+    const survey = await this.surveyRepository.findOneBy({ id });
+    if (!survey) {
+      throw new Error(`CAN NOT FIND SURVEY! ID: ${id}`);
     }
-    return this.surveyRepository.findOneBy({ id });
+    return survey;
   }
 }

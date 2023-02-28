@@ -28,12 +28,12 @@ export class EachResponseService {
   }
 
   findOne(id: number) {
-    this.validEachResponseById(id);
-    return this.eachResponseRepository.findOneBy({ id });
+    return this.validEachResponse(id);
+
   }
 
   async update(id: number, updateEachResponseInput: UpdateEachResponseInput) {
-    const eachResponse = await this.validEachResponseById(id);
+    const eachResponse = await this.validEachResponse(id);
     if (updateEachResponseInput.responseId) {
       const response = await this.validResponse(updateEachResponseInput.responseId);
       eachResponse.response = response;
@@ -62,21 +62,11 @@ export class EachResponseService {
     await this.eachResponseRepository.delete({ id });
   }
 
-  validEachResponseById(id: number) {
-    try {
-      this.eachResponseRepository.findOneBy({ id });
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
-        },
-        HttpStatus.BAD_GATEWAY,
-        {
-          cause: error,
-        },
-      );
+  async validEachResponse(id: number) {
+    const eachResponse = await this.eachResponseRepository.findOneBy({ id });
+    if (!eachResponse) {
+      throw new Error(`CAN NOT FIND EACHRESPONSE! ID: ${id}`);
     }
-    return this.eachResponseRepository.findOneBy({ id });
+    return eachResponse;
   }
 }

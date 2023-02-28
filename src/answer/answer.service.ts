@@ -29,8 +29,7 @@ export class AnswerService {
   }
 
   findOne(id: number) {
-    this.validAnswerById(id);
-    return this.answerRepository.findOneBy({ id });
+    return this.validAnswer(id);
   }
 
   /**
@@ -49,8 +48,7 @@ export class AnswerService {
   }
 
   async update(id: number, updateAnswerInput: UpdateAnswerInput) {
-    this.validAnswerById(id);
-    const answer = await this.answerRepository.findOneBy({ id });
+    const answer = await this.validAnswer(id);
 
     if (updateAnswerInput.questionId) {
       const question = await this.validQuestion(updateAnswerInput.questionId);
@@ -77,20 +75,11 @@ export class AnswerService {
     await this.answerRepository.delete({ id });
   }
 
-  validAnswerById(id: number) {
-    try {
-      this.answerRepository.findOneBy({ id });
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
-        },
-        HttpStatus.BAD_GATEWAY,
-        {
-          cause: error,
-        },
-      );
+  async validAnswer(id: number) {
+    const answer = await this.answerRepository.findOneBy({ id });
+    if (!answer) {
+      throw new Error(`CAN NOT FIND ANSWER! ID: ${id}`);
     }
+    return answer;
   }
 }

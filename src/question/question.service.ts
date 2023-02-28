@@ -29,8 +29,7 @@ export class QuestionService {
   }
 
   findOne(id: number) {
-    this.validQuestionById(id);
-    return this.questionRepository.findOneBy({ id });
+    return this.validQuestion(id);
   }
 
   /**
@@ -50,7 +49,7 @@ export class QuestionService {
   }
 
   async update(id: number, updateQuestionInput: UpdateQuestionInput) {
-    this.validQuestionById(id);
+    this.validQuestion(id);
     const question = await this.findOne(id);
     if (updateQuestionInput.surveyId) {
       const survey = await this.validSurvey(updateQuestionInput.surveyId);
@@ -78,21 +77,11 @@ export class QuestionService {
     return question;
   }
 
-  validQuestionById(id: number) {
-    try {
-      this.questionRepository.findOneBy({ id });
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
-        },
-        HttpStatus.BAD_GATEWAY,
-        {
-          cause: error,
-        },
-      );
+  async validQuestion(id: number) {
+    const question = await this.questionRepository.findOneBy({ id });
+    if (!question) {
+      throw new Error(`CAN NOT FIND QUESTION! ID: ${id}`);
     }
-    return this.questionRepository.findOneBy({ id });
+    return question;
   }
 }

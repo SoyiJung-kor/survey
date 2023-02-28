@@ -33,8 +33,7 @@ export class ResponseService {
   }
 
   findOne(id: number) {
-    this.validResponseId(id);
-    return this.responseRepository.findOneBy({ id });
+    return this.validResponse(id);
   }
 
   async findDetail(id: number) {
@@ -61,10 +60,9 @@ export class ResponseService {
   async getScore(id: number) {
     const score = await this.dataSource.manager
       .createQueryBuilder(Response, 'response')
-      .leftJoin('response.eachResponse', 'eachResponse') // leftJoinAndSelect
+      .leftJoin('response.eachResponse', 'eachResponse')
       .select('SUM(eachResponse.responseScore)', 'totalScore')
       .where(`response.id = ${id}`)
-      // .getQuery();
       .getRawOne();
 
     return score;
@@ -92,26 +90,16 @@ export class ResponseService {
     return response;
   }
 
-  validResponseId(id: number) {
-    try {
-      this.responseRepository.findOneBy({ id });
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
-        },
-        HttpStatus.BAD_GATEWAY,
-        {
-          cause: error,
-        },
-      );
+  async validResponse(id: number) {
+    const response = await this.responseRepository.findOneBy({ id });
+    if (!response) {
+      throw new Error(`CAN NOT FIND RESPONSE! ID: ${id}`);
     }
-    return this.responseRepository.findOneBy({ id });
+    return response;
   }
 
   async updateSubmit(id: number, updateResponseInput: UpdateResponseInput) {
-    const response = this.responseRepository.findOneBy({ id });
+    const response = this.validResponse(id);
     this.responseRepository.merge(await response, updateResponseInput);
     this.responseRepository.update(id, await response);
     return response;
