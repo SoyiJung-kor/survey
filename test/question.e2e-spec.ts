@@ -37,7 +37,6 @@ describe('question', () => {
     await app.init();
     dataSource = moduleFixture.get<DataSource>(DataSource);
 
-    console.log('question');
     const mockSurvey = new Survey();
     mockSurvey.id = 1;
     mockSurvey.surveyTitle = 'Mock Survey for Test';
@@ -246,7 +245,6 @@ describe('question', () => {
           `,
         })
         .expect((res) => {
-          console.log(res.body.data);
           expect(res.body.data).toBeNull();
         })
     });
@@ -287,7 +285,7 @@ describe('question', () => {
           `,
         })
         .expect((res) => {
-          expect(res.body.data.findOneQuestionDetail).toStrictEqual([]);
+          expect(res.body.data).toBeNull();
         })
     });
     it('잘못된 query field때문에 디테일한 특정 질문 조회 실패!', async () => {

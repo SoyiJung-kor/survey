@@ -42,7 +42,7 @@ export class QuestionService {
       .createQueryBuilder('question')
       .leftJoinAndSelect('question.answers', 'answer')
       .innerJoinAndSelect('question.survey', 'survey')
-      .where('question.id= :id', { id: id })
+      .where(`question.id= :${id}`)
       .getMany();
 
     return result;

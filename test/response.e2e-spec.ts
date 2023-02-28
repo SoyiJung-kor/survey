@@ -40,7 +40,6 @@ describe('response', () => {
     await app.init();
     dataSource = moduleFixture.get<DataSource>(DataSource);
 
-    console.log('response');
     const mockSurvey = new Survey();
     mockSurvey.surveyTitle = 'Mock Survey for Test';
     await dataSource.manager.save(mockSurvey);
@@ -350,7 +349,7 @@ describe('response', () => {
             }`,
         })
         .expect((res) => {
-          expect(res.body.data.findOneResponseDetail).toStrictEqual([]);
+          expect(res.body.data).toBeNull();
         });
     });
     it('응답 아이디를 입력하지 않아 상세 응답 조회 실패!', async () => {

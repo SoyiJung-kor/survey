@@ -42,7 +42,7 @@ export class ResponseService {
       .leftJoinAndSelect('response.eachResponse', 'eachResponse')
       .innerJoinAndSelect('response.participant', 'participant')
       .innerJoinAndSelect('response.survey', 'survey')
-      .where('response.id= :id', { id: id })
+      .where(`response.id= :${id}`)
       .getMany();
 
     return result;

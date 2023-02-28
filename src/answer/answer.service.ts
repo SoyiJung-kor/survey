@@ -41,7 +41,7 @@ export class AnswerService {
     const result = await this.answerRepository
       .createQueryBuilder('answer')
       .innerJoinAndSelect('answer.question', 'question')
-      .where('answer.id= :id', { id: id })
+      .where(`answer.id= :${id}`)
       .getMany();
 
     return result;
