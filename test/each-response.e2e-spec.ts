@@ -123,7 +123,27 @@ describe('eachResponse', () => {
                 })
                 .expect(400);
         });
-        it.todo('존재하지 않는 응답 아이디를 입력해서 응답항목 생성 실패!');
+        it('존재하지 않는 응답 아이디를 입력해서 응답항목 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation {
+              createEachResponse(createEachResponseInput:{responseId:100,responseQuestion:"Modified Question",responseAnswer:"Modified Answer", responseScore:5}) {
+                id
+                responseId
+                responseQuestion
+                responseAnswer
+                responseScore
+              }
+            }
+            `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
     });
     describe('모든 응답 항목 조회!', () => {
         it('모든 응답 항목 조회 성공!', async () => {
@@ -183,9 +203,51 @@ describe('eachResponse', () => {
                     expect(res.body.data.findOneEachResponse.responseScore).toBe(5);
                 });
         });
-        it.todo('존재하지 않는 아이디를 입력해서 응답 항목 조회 실패!');
-        it.todo('아이디를 입력하지 않아 응답 항목 조회 실패!');
-        it.todo('query field를 잘못 입력해서 응답 항목 조회 실패!');
+        it('존재하지 않는 아이디를 입력해서 응답 항목 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+              findOneEachResponse(id:100){
+                id
+                responseId
+                responseQuestion
+                responseAnswer
+                responseScore
+              }
+            }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('아이디를 입력하지 않아 응답 항목 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+              findOneEachResponse(id:){
+                id
+                responseId
+                responseQuestion
+                responseAnswer
+                responseScore
+              }
+            }`,
+                })
+                .expect(400);
+        });
+        it('query field를 잘못 입력해서 응답 항목 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+              findOneEachResponse(id:1){
+              }
+            }`,
+                })
+                .expect(400);
+        });
     });
     describe('응답항목 수정!', () => {
         it('응답항목 수정 성공!', async () => {
@@ -206,12 +268,99 @@ describe('eachResponse', () => {
                     expect(res.body.data.updateEachResponse.responseId).toBe(1);
                 });
         });
-        it.todo('존재하지 않는 아이디를 입력해서 응답항목 수정 실패!');
-        it.todo('아이디를 입력하지 않아 응답항목 수정 실패!');
-        it.todo('존재하지 않는 응답아이디를 인풋으로 입력해서 응답항목 수정 실패!');
-        it.todo('인풋데이터를 입력하지 않아 응답항목 수정 실패!');
-        it.todo('인풋데이터 형식이 잘못되어 응답항목 수정 실패!');
-        it.todo('query field를 잘못 입력해서 응답항목 수정 실패!');
+        it('존재하지 않는 아이디를 입력해서 응답항목 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation {
+              updateEachResponse(updateEachResponseInput:{id:100}) {
+                id
+                responseId
+              }
+            }
+            `,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('아이디를 입력하지 않아 응답항목 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation {
+              updateEachResponse(updateEachResponseInput:{id:}) {
+                id
+                responseId
+              }
+            }
+            `,
+                })
+                .expect(400);
+        });
+        it('존재하지 않는 응답아이디를 인풋으로 입력해서 응답항목 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation {
+              updateEachResponse(updateEachResponseInput:{id:1,responseId:100}) {
+                id
+                responseId
+              }
+            }
+            `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
+        it('인풋데이터를 입력하지 않아 응답항목 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation {
+              updateEachResponse() {
+                id
+                responseId
+              }
+            }
+            `,
+                })
+                .expect(400);
+        });
+        it('인풋데이터 형식이 잘못되어 응답항목 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation {
+              updateEachResponse(updateEachResponseInput:{ids:1}) {
+                id
+                responseId
+              }
+            }
+            `,
+                })
+                .expect(400);
+        });
+        it('query field를 잘못 입력해서 응답항목 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+            mutation {
+              updateEachResponse(updateEachResponseInput:{id:1}) {
+              }
+            }
+            `,
+                })
+                .expect(400);
+        });
     });
     describe('응답항목 삭제!', () => {
         it('응답항목 삭제 성공!', async () => {
@@ -243,7 +392,36 @@ describe('eachResponse', () => {
                 })
                 .expect(200);
         });
-        it.todo('존재하지 않는 아이디를 입력해서 응답항목 삭제 실패!');
-        it.todo('아이디를 입력하지 않아 응답항목 삭제 실패!');
+        it('존재하지 않는 아이디를 입력해서 응답항목 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+              mutation removeEachResponse {
+                removeEachResponse(id:100) {
+                  id
+                }
+              }
+              `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('아이디를 입력하지 않아 응답항목 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+              mutation removeEachResponse {
+                removeEachResponse(id:) {
+                  id
+                }
+              }
+              `,
+                })
+                .expect(400);
+        });
     });
 });

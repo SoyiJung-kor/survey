@@ -33,12 +33,17 @@ export class EachResponseService {
   }
 
   async update(id: number, updateEachResponseInput: UpdateEachResponseInput) {
-    const eachResponse = this.validEachResponseById(id);
+    const eachResponse = await this.validEachResponseById(id);
+    const response = await this.entityManager.findOneBy(Response, { id: updateEachResponseInput.responseId });
+    if (!response) {
+      throw new Error("CAN'T FIND THE RESPONSE!")
+    }
+    (eachResponse).response = response;
     this.eachResponseRepository.merge(
-      await eachResponse,
+      eachResponse,
       updateEachResponseInput,
     );
-    this.eachResponseRepository.update(id, await eachResponse);
+    this.eachResponseRepository.update(id, eachResponse);
     return eachResponse;
   }
 
