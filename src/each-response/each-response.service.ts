@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, EntityManager, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Response } from '../response/entities/response.entity';
 import { CreateEachResponseInput } from './dto/create-each-response.input';
 import { UpdateEachResponseInput } from './dto/update-each-response.input';
@@ -13,7 +13,6 @@ export class EachResponseService {
     @InjectRepository(EachResponse)
     private eachResponseRepository: Repository<EachResponse>,
     private entityManager: EntityManager,
-    private dataSource: DataSource,
   ) { }
 
   async create(input: CreateEachResponseInput) {
@@ -34,13 +33,25 @@ export class EachResponseService {
   }
 
   async update(id: number, updateEachResponseInput: UpdateEachResponseInput) {
-    const eachResponse = this.validEachResponseById(id);
+    const eachResponse = await this.validEachResponseById(id);
+    if (updateEachResponseInput.responseId) {
+      const response = await this.validResponse(updateEachResponseInput.responseId);
+      eachResponse.response = response;
+    }
     this.eachResponseRepository.merge(
-      await eachResponse,
+      eachResponse,
       updateEachResponseInput,
     );
-    this.eachResponseRepository.update(id, await eachResponse);
+    this.eachResponseRepository.update(id, eachResponse);
     return eachResponse;
+  }
+  async validResponse(responseId: number) {
+    const response = await this.entityManager.findOneBy(Response, { id: responseId });
+    if (!response) {
+      throw new Error("CAN'T FIND THE RESPONSE")
+    } else {
+      return response;
+    }
   }
 
   async remove(id: number): Promise<void> {

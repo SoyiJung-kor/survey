@@ -34,4 +34,9 @@ describe('Graphql (e2e)', () => {
     expect(app).toBeDefined;
     expect(dataSource).toBeDefined;
   });
+
+  afterAll(async () => {
+    await dataSource.dropDatabase();
+    app.close();
+  });
 });

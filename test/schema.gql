@@ -50,11 +50,14 @@ type Query {
   findSurvey(surveyId: Int!): Survey!
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
+  findOneQuestionDetail(questionId: Int!): [Question!]!
   findAllAnswers: [Answer!]!
   findAnswer(answerId: Int!): Answer!
+  findOneAnswerDetail(answerId: Int!): [Answer!]!
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findResponseWithQueryBuilder(responseId: Int!): Response!
+  findOneResponseDetail(responseId: Int!): [Response!]!
   getSumScore(responseId: Int!): Response!
   findAllEachResponse: [EachResponse!]!
   findOneEachResponse(id: Int!): EachResponse!

@@ -4,7 +4,7 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
-} from "@nestjs/common";
+} from '@nestjs/common';
 
 /**
  * @Catch(HttpException)
@@ -35,11 +35,5 @@ export class HttpExceptionFilter implements ExceptionFilter {
      * @description HttpException에서 전송한 데이터를 추출할 때 사용
      */
     const res: any = exception.getResponse();
-
-    /* 클라이언트에게 정보를 전달한다. */
-    response.status(status).json({
-      success: false,
-      message: res.message,
-    });
   }
 }

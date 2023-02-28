@@ -37,6 +37,18 @@ export class ResponseService {
     return this.responseRepository.findOneBy({ id });
   }
 
+  async findDetail(id: number) {
+    const result = await this.responseRepository
+      .createQueryBuilder('response')
+      .leftJoinAndSelect('response.eachResponse', 'eachResponse')
+      .innerJoinAndSelect('response.participant', 'participant')
+      .innerJoinAndSelect('response.survey', 'survey')
+      .where('response.id= :id', { id: id })
+      .getMany();
+
+    return result;
+  }
+
   async getResponseData(id: number) {
     const responseData = await this.dataSource.manager
       .createQueryBuilder(Response, 'response')
@@ -61,7 +73,7 @@ export class ResponseService {
   async getSumScore(id: number) {
     const Score = await this.getScore(id);
     const SumScore = +Score.totalScore;
-    const result = await this.dataSource.manager
+    await this.dataSource.manager
       .createQueryBuilder()
       .update(Response)
       .set({ sumScore: `${SumScore}` })

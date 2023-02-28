@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { MinLength } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -20,6 +21,7 @@ export class Survey {
 
   @Field(() => String)
   @Column()
+  @MinLength(2, { message: 'title is too short!' })
   surveyTitle: string;
 
   @CreateDateColumn()
