@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TestingModule, Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,6 +16,7 @@ import { Participant } from '../src/participant/entities/participant.entity';
 import { Question } from '../src/question/entities/question.entity';
 import { Survey } from '../src/survey/entities/survey.entity';
 import { Response } from '../src/response/entities/response.entity';
+import { HttpExceptionFilter } from '../src/common/utils/http_exception_filter';
 describe('eachResponse', () => {
     let app: INestApplication;
     let dataSource: DataSource;
@@ -34,9 +35,10 @@ describe('eachResponse', () => {
         }).compile();
 
         app = moduleFixture.createNestApplication();
+        app.useGlobalFilters(new HttpExceptionFilter());
+        app.useGlobalPipes(new ValidationPipe());
         await app.init();
         dataSource = moduleFixture.get<DataSource>(DataSource);
-
         const mockSurvey = new Survey();
         mockSurvey.surveyTitle = 'Mock Survey for Test';
         await dataSource.manager.save(mockSurvey);
@@ -73,8 +75,8 @@ describe('eachResponse', () => {
         await dataSource.dropDatabase();
         app.close();
     });
-    describe('create each response', () => {
-        it('create success each response', async () => {
+    describe('응답항목 생성', () => {
+        it('응답항목생성성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -103,7 +105,7 @@ describe('eachResponse', () => {
                     expect(res.body.data.createEachResponse.responseScore).toBe(5);
                 });
         });
-        it('create fail each response', async () => {
+        it('인풋데이터를 입력하지 않아 응답항목생성실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -121,9 +123,10 @@ describe('eachResponse', () => {
                 })
                 .expect(400);
         });
+        it.todo('존재하지 않는 응답 아이디를 입력해서 응답항목 생성 실패!');
     });
-    describe('find all each response', () => {
-        it('find all each response', async () => {
+    describe('모든 응답 항목 조회!', () => {
+        it('모든 응답 항목 조회 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -139,7 +142,7 @@ describe('eachResponse', () => {
                 })
                 .expect(200);
         });
-        it('fail find all each response', async () => {
+        it('queryfield를 잘못 입력해서 모든 응답 항목 조회 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -153,8 +156,8 @@ describe('eachResponse', () => {
                 .expect(400);
         });
     });
-    describe('find a each response', () => {
-        it('find a each response', async () => {
+    describe('아이디로 응답 항목 조회!', () => {
+        it('아이디로 응답 항목 조회 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -180,9 +183,12 @@ describe('eachResponse', () => {
                     expect(res.body.data.findOneEachResponse.responseScore).toBe(5);
                 });
         });
+        it.todo('존재하지 않는 아이디를 입력해서 응답 항목 조회 실패!');
+        it.todo('아이디를 입력하지 않아 응답 항목 조회 실패!');
+        it.todo('query field를 잘못 입력해서 응답 항목 조회 실패!');
     });
-    describe('update a each response', () => {
-        it('update each response', async () => {
+    describe('응답항목 수정!', () => {
+        it('응답항목 수정 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -200,9 +206,15 @@ describe('eachResponse', () => {
                     expect(res.body.data.updateEachResponse.responseId).toBe(1);
                 });
         });
+        it.todo('존재하지 않는 아이디를 입력해서 응답항목 수정 실패!');
+        it.todo('아이디를 입력하지 않아 응답항목 수정 실패!');
+        it.todo('존재하지 않는 응답아이디를 인풋으로 입력해서 응답항목 수정 실패!');
+        it.todo('인풋데이터를 입력하지 않아 응답항목 수정 실패!');
+        it.todo('인풋데이터 형식이 잘못되어 응답항목 수정 실패!');
+        it.todo('query field를 잘못 입력해서 응답항목 수정 실패!');
     });
-    describe('remove a each response', () => {
-        it('remove each response', async () => {
+    describe('응답항목 삭제!', () => {
+        it('응답항목 삭제 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -216,7 +228,7 @@ describe('eachResponse', () => {
                 })
                 .expect(200);
         });
-        it('remove each response', async () => {
+        it('응답항목 삭제 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -231,5 +243,7 @@ describe('eachResponse', () => {
                 })
                 .expect(200);
         });
+        it.todo('존재하지 않는 아이디를 입력해서 응답항목 삭제 실패!');
+        it.todo('아이디를 입력하지 않아 응답항목 삭제 실패!');
     });
 });

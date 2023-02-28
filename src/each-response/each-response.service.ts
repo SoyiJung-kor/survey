@@ -13,7 +13,6 @@ export class EachResponseService {
     @InjectRepository(EachResponse)
     private eachResponseRepository: Repository<EachResponse>,
     private entityManager: EntityManager,
-    private dataSource: DataSource,
   ) { }
 
   async create(input: CreateEachResponseInput) {
