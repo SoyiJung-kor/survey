@@ -52,16 +52,23 @@ export class QuestionService {
   async update(id: number, updateQuestionInput: UpdateQuestionInput) {
     this.validQuestionById(id);
     const question = await this.findOne(id);
-    const survey = await this.entityManager.findOneBy(Survey, { id: updateQuestionInput.surveyId });
-    if (!survey) {
-      throw new Error("CAN'T FIND THE SURVEY")
+    if (updateQuestionInput.surveyId) {
+      const survey = await this.validSurvey(updateQuestionInput.surveyId);
+      question.survey = survey;
     }
-    question.survey = survey;
     this.questionRepository.merge(question, updateQuestionInput);
     this.questionRepository.update(id, question);
     return question;
   }
 
+  async validSurvey(surveyId: number) {
+    const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
+    if (!survey) {
+      throw new Error("CAN'T FIND THE SURVEY!")
+    } else {
+      return survey;
+    }
+  }
   async remove(id: number) {
     const question = this.questionRepository.findOneBy({ id });
     if (!question) {

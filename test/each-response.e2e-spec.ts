@@ -18,69 +18,70 @@ import { Survey } from '../src/survey/entities/survey.entity';
 import { Response } from '../src/response/entities/response.entity';
 import { HttpExceptionFilter } from '../src/common/utils/http_exception_filter';
 describe('eachResponse', () => {
-    let app: INestApplication;
-    let dataSource: DataSource;
+  let app: INestApplication;
+  let dataSource: DataSource;
 
-    beforeAll(async () => {
-        const moduleFixture: TestingModule = await Test.createTestingModule({
-            imports: [
-                SurveyModule,
-                ParticipantModule,
-                TypeOrmModule.forRoot(typeORMConfig),
-                GraphQLModule.forRoot<ApolloDriverConfig>({
-                    driver: ApolloDriver,
-                    autoSchemaFile: join(process.cwd(), 'test/schema.gql'),
-                }),
-            ],
-        }).compile();
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [
+        SurveyModule,
+        ParticipantModule,
+        TypeOrmModule.forRoot(typeORMConfig),
+        GraphQLModule.forRoot<ApolloDriverConfig>({
+          driver: ApolloDriver,
+          autoSchemaFile: join(process.cwd(), 'test/schema.gql'),
+        }),
+      ],
+    }).compile();
 
-        app = moduleFixture.createNestApplication();
-        app.useGlobalFilters(new HttpExceptionFilter());
-        app.useGlobalPipes(new ValidationPipe());
-        await app.init();
-        dataSource = moduleFixture.get<DataSource>(DataSource);
-        const mockSurvey = new Survey();
-        mockSurvey.surveyTitle = 'Mock Survey for Test';
-        await dataSource.manager.save(mockSurvey);
+    app = moduleFixture.createNestApplication();
+    app.useGlobalFilters(new HttpExceptionFilter());
+    app.useGlobalPipes(new ValidationPipe());
+    await app.init();
+    dataSource = moduleFixture.get<DataSource>(DataSource);
+    const mockSurvey = new Survey();
+    mockSurvey.surveyTitle = 'Mock Survey for Test';
+    await dataSource.manager.save(mockSurvey);
 
-        const mockQuestion = new Question();
-        mockQuestion.questionContent = 'Mock Question for Test';
-        mockQuestion.surveyId = 1;
-        mockQuestion.questionNumber = 1;
-        mockQuestion.survey = mockSurvey;
-        await dataSource.manager.save(mockQuestion);
+    console.log('each response');
+    const mockQuestion = new Question();
+    mockQuestion.questionContent = 'Mock Question for Test';
+    mockQuestion.surveyId = 1;
+    mockQuestion.questionNumber = 1;
+    mockQuestion.survey = mockSurvey;
+    await dataSource.manager.save(mockQuestion);
 
-        const mockAnswer = new Answer();
-        mockAnswer.answerContent = 'Mock Answer for Test';
-        mockAnswer.answerNumber = 1;
-        mockAnswer.answerScore = 5;
-        mockAnswer.questionId = 1;
-        mockAnswer.question = mockQuestion;
-        await dataSource.manager.save(mockAnswer);
+    const mockAnswer = new Answer();
+    mockAnswer.answerContent = 'Mock Answer for Test';
+    mockAnswer.answerNumber = 1;
+    mockAnswer.answerScore = 5;
+    mockAnswer.questionId = 1;
+    mockAnswer.question = mockQuestion;
+    await dataSource.manager.save(mockAnswer);
 
-        const mockParticipant = new Participant();
-        mockParticipant.email = 'mock@test.com';
-        await dataSource.manager.save(mockParticipant);
+    const mockParticipant = new Participant();
+    mockParticipant.email = 'mock@test.com';
+    await dataSource.manager.save(mockParticipant);
 
-        const mockResponse = new Response();
-        mockResponse.surveyId = 1;
-        mockResponse.participantId = 1;
-        mockResponse.survey = mockSurvey;
-        mockResponse.participant = mockParticipant;
-        await dataSource.manager.save(mockResponse);
+    const mockResponse = new Response();
+    mockResponse.surveyId = 1;
+    mockResponse.participantId = 1;
+    mockResponse.survey = mockSurvey;
+    mockResponse.participant = mockParticipant;
+    await dataSource.manager.save(mockResponse);
 
-    });
+  });
 
-    afterAll(async () => {
-        await dataSource.dropDatabase();
-        app.close();
-    });
-    describe('응답항목 생성', () => {
-        it('응답항목생성성공!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+  afterAll(async () => {
+    await dataSource.dropDatabase();
+    // app.close();
+  });
+  describe('응답항목 생성', () => {
+    it('응답항목생성성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
             mutation {
               createEachResponse(createEachResponseInput:{responseId:1,responseQuestion:"Modified Question",responseAnswer:"Modified Answer", responseScore:5}) {
                 id
@@ -91,25 +92,25 @@ describe('eachResponse', () => {
               }
             }
             `,
-                })
-                .expect(200)
-                .expect((res) => {
-                    expect(res.body.data.createEachResponse.id).toBe(1);
-                    expect(res.body.data.createEachResponse.responseId).toBe(1);
-                    expect(res.body.data.createEachResponse.responseQuestion).toBe(
-                        'Modified Question',
-                    );
-                    expect(res.body.data.createEachResponse.responseAnswer).toBe(
-                        'Modified Answer',
-                    );
-                    expect(res.body.data.createEachResponse.responseScore).toBe(5);
-                });
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data.createEachResponse.id).toBe(1);
+          expect(res.body.data.createEachResponse.responseId).toBe(1);
+          expect(res.body.data.createEachResponse.responseQuestion).toBe(
+            'Modified Question',
+          );
+          expect(res.body.data.createEachResponse.responseAnswer).toBe(
+            'Modified Answer',
+          );
+          expect(res.body.data.createEachResponse.responseScore).toBe(5);
         });
-        it('인풋데이터를 입력하지 않아 응답항목생성실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+    });
+    it('인풋데이터를 입력하지 않아 응답항목생성실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
             mutation createEachResponse {
               createEachResponse() {
                 id
@@ -120,14 +121,14 @@ describe('eachResponse', () => {
               }
             }
             `,
-                })
-                .expect(400);
-        });
-        it('존재하지 않는 응답 아이디를 입력해서 응답항목 생성 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+        })
+        .expect(400);
+    });
+    it('존재하지 않는 응답 아이디를 입력해서 응답항목 생성 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
             mutation {
               createEachResponse(createEachResponseInput:{responseId:100,responseQuestion:"Modified Question",responseAnswer:"Modified Answer", responseScore:5}) {
                 id
@@ -138,19 +139,18 @@ describe('eachResponse', () => {
               }
             }
             `,
-                })
-                .expect(200)
-                .expect((res) => {
-                    expect(res.body.data).toBeNull();
-                });
+        })
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
         });
     });
-    describe('모든 응답 항목 조회!', () => {
-        it('모든 응답 항목 조회 성공!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `{
+  });
+  describe('모든 응답 항목 조회!', () => {
+    it('모든 응답 항목 조회 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
               findAllEachResponse{
                 id
                 responseId
@@ -159,29 +159,29 @@ describe('eachResponse', () => {
                 responseScore
               }
             }`,
-                })
-                .expect(200);
-        });
-        it('queryfield를 잘못 입력해서 모든 응답 항목 조회 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `{
+        })
+        .expect(200);
+    });
+    it('queryfield를 잘못 입력해서 모든 응답 항목 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
               findAllEachResponse{
                 id
                 eachResponse
               }
             }`,
-                })
-                .expect(400);
-        });
+        })
+        .expect(400);
     });
-    describe('아이디로 응답 항목 조회!', () => {
-        it('아이디로 응답 항목 조회 성공!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `{
+  });
+  describe('아이디로 응답 항목 조회!', () => {
+    it('아이디로 응답 항목 조회 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
               findOneEachResponse(id:1){
                 id
                 responseId
@@ -190,24 +190,24 @@ describe('eachResponse', () => {
                 responseScore
               }
             }`,
-                })
-                .expect((res) => {
-                    expect(res.body.data.findOneEachResponse.id).toBe(1);
-                    expect(res.body.data.findOneEachResponse.responseId).toBe(1);
-                    expect(res.body.data.findOneEachResponse.responseQuestion).toBe(
-                        'Modified Question',
-                    );
-                    expect(res.body.data.findOneEachResponse.responseAnswer).toBe(
-                        'Modified Answer',
-                    );
-                    expect(res.body.data.findOneEachResponse.responseScore).toBe(5);
-                });
+        })
+        .expect((res) => {
+          expect(res.body.data.findOneEachResponse.id).toBe(1);
+          expect(res.body.data.findOneEachResponse.responseId).toBe(1);
+          expect(res.body.data.findOneEachResponse.responseQuestion).toBe(
+            'Modified Question',
+          );
+          expect(res.body.data.findOneEachResponse.responseAnswer).toBe(
+            'Modified Answer',
+          );
+          expect(res.body.data.findOneEachResponse.responseScore).toBe(5);
         });
-        it('존재하지 않는 아이디를 입력해서 응답 항목 조회 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `{
+    });
+    it('존재하지 않는 아이디를 입력해서 응답 항목 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
               findOneEachResponse(id:100){
                 id
                 responseId
@@ -216,16 +216,16 @@ describe('eachResponse', () => {
                 responseScore
               }
             }`,
-                })
-                .expect((res) => {
-                    expect(res.body.data).toBeNull();
-                });
+        })
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
         });
-        it('아이디를 입력하지 않아 응답 항목 조회 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `{
+    });
+    it('아이디를 입력하지 않아 응답 항목 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
               findOneEachResponse(id:){
                 id
                 responseId
@@ -234,27 +234,27 @@ describe('eachResponse', () => {
                 responseScore
               }
             }`,
-                })
-                .expect(400);
-        });
-        it('query field를 잘못 입력해서 응답 항목 조회 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `{
+        })
+        .expect(400);
+    });
+    it('query field를 잘못 입력해서 응답 항목 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
               findOneEachResponse(id:1){
               }
             }`,
-                })
-                .expect(400);
-        });
+        })
+        .expect(400);
     });
-    describe('응답항목 수정!', () => {
-        it('응답항목 수정 성공!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+  });
+  describe('응답항목 수정!', () => {
+    it('응답항목 수정 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
             mutation {
               updateEachResponse(updateEachResponseInput:{id:1}) {
                 id
@@ -262,17 +262,17 @@ describe('eachResponse', () => {
               }
             }
             `,
-                })
-                .expect((res) => {
-                    expect(res.body.data.updateEachResponse.id).toBe(1);
-                    expect(res.body.data.updateEachResponse.responseId).toBe(1);
-                });
+        })
+        .expect((res) => {
+          expect(res.body.data.updateEachResponse.id).toBe(1);
+          expect(res.body.data.updateEachResponse.responseId).toBe(1);
         });
-        it('존재하지 않는 아이디를 입력해서 응답항목 수정 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+    });
+    it('존재하지 않는 아이디를 입력해서 응답항목 수정 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
             mutation {
               updateEachResponse(updateEachResponseInput:{id:100}) {
                 id
@@ -280,16 +280,16 @@ describe('eachResponse', () => {
               }
             }
             `,
-                })
-                .expect((res) => {
-                    expect(res.body.data).toBeNull();
-                });
+        })
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
         });
-        it('아이디를 입력하지 않아 응답항목 수정 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+    });
+    it('아이디를 입력하지 않아 응답항목 수정 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
             mutation {
               updateEachResponse(updateEachResponseInput:{id:}) {
                 id
@@ -297,14 +297,14 @@ describe('eachResponse', () => {
               }
             }
             `,
-                })
-                .expect(400);
-        });
-        it('존재하지 않는 응답아이디를 인풋으로 입력해서 응답항목 수정 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+        })
+        .expect(400);
+    });
+    it('존재하지 않는 응답아이디를 인풋으로 입력해서 응답항목 수정 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
             mutation {
               updateEachResponse(updateEachResponseInput:{id:1,responseId:100}) {
                 id
@@ -312,17 +312,16 @@ describe('eachResponse', () => {
               }
             }
             `,
-                })
-                .expect(200)
-                .expect((res) => {
-                    expect(res.body.data).toBeNull();
-                })
-        });
-        it('인풋데이터를 입력하지 않아 응답항목 수정 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+        })
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        })
+    });
+    it('인풋데이터를 입력하지 않아 응답항목 수정 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
             mutation {
               updateEachResponse() {
                 id
@@ -330,14 +329,14 @@ describe('eachResponse', () => {
               }
             }
             `,
-                })
-                .expect(400);
-        });
-        it('인풋데이터 형식이 잘못되어 응답항목 수정 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+        })
+        .expect(400);
+    });
+    it('인풋데이터 형식이 잘못되어 응답항목 수정 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
             mutation {
               updateEachResponse(updateEachResponseInput:{ids:1}) {
                 id
@@ -345,83 +344,82 @@ describe('eachResponse', () => {
               }
             }
             `,
-                })
-                .expect(400);
-        });
-        it('query field를 잘못 입력해서 응답항목 수정 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+        })
+        .expect(400);
+    });
+    it('query field를 잘못 입력해서 응답항목 수정 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
             mutation {
               updateEachResponse(updateEachResponseInput:{id:1}) {
               }
             }
             `,
-                })
-                .expect(400);
-        });
+        })
+        .expect(400);
     });
-    describe('응답항목 삭제!', () => {
-        it('응답항목 삭제 성공!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+  });
+  describe('응답항목 삭제!', () => {
+    it('응답항목 삭제 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
               mutation removeEachResponse {
                 removeEachResponse(id:1) {
                   id
                 }
               }
               `,
-                })
-                .expect(200);
-        });
-        it('응답항목 삭제 성공!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `{
+        })
+        .expect(200);
+    });
+    it('응답항목 삭제 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
                 findAllEachResponse{
                   id
                 }
               }`,
-                })
-                .expect((res) => {
-                    expect(res.body.data.findAllEachResponse).toHaveLength(0);
-                })
-                .expect(200);
-        });
-        it('존재하지 않는 아이디를 입력해서 응답항목 삭제 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+        })
+        .expect((res) => {
+          expect(res.body.data.findAllEachResponse).toHaveLength(0);
+        })
+        .expect(200);
+    });
+    it('존재하지 않는 아이디를 입력해서 응답항목 삭제 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
               mutation removeEachResponse {
                 removeEachResponse(id:100) {
                   id
                 }
               }
               `,
-                })
-                .expect(200)
-                .expect((res) => {
-                    expect(res.body.data).toBeNull();
-                });
+        })
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
         });
-        it('아이디를 입력하지 않아 응답항목 삭제 실패!', async () => {
-            return request(app.getHttpServer())
-                .post(gql)
-                .send({
-                    query: `
+    });
+    it('아이디를 입력하지 않아 응답항목 삭제 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
               mutation removeEachResponse {
                 removeEachResponse(id:) {
                   id
                 }
               }
               `,
-                })
-                .expect(400);
-        });
+        })
+        .expect(400);
     });
+  });
 });

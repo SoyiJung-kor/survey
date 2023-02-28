@@ -51,14 +51,22 @@ export class AnswerService {
   async update(id: number, updateAnswerInput: UpdateAnswerInput) {
     this.validAnswerById(id);
     const answer = await this.answerRepository.findOneBy({ id });
-    const question = await this.entityManager.findOneBy(Question, { id: updateAnswerInput.questionId });
-    if (!question) {
-      throw new Error("CAN'T FIND THE QUESTION!")
+
+    if (updateAnswerInput.questionId) {
+      const question = await this.validQuestion(updateAnswerInput.questionId);
+      answer.question = question;
     }
-    answer.question = question;
     this.answerRepository.merge(answer, updateAnswerInput);
     this.answerRepository.update(id, answer);
     return answer;
+  }
+  async validQuestion(questionId: number) {
+    const question = await this.entityManager.findOneBy(Question, { id: questionId });
+    if (!question) {
+      throw new Error("CAN'T FIND THE QUESTION!")
+    } else {
+      return question;
+    }
   }
 
   async remove(id: number): Promise<void> {

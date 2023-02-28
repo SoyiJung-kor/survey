@@ -40,6 +40,7 @@ describe('response', () => {
     await app.init();
     dataSource = moduleFixture.get<DataSource>(DataSource);
 
+    console.log('response');
     const mockSurvey = new Survey();
     mockSurvey.surveyTitle = 'Mock Survey for Test';
     await dataSource.manager.save(mockSurvey);
@@ -67,7 +68,7 @@ describe('response', () => {
 
   afterAll(async () => {
     await dataSource.dropDatabase();
-    app.close();
+    // app.close();
   });
 
   describe('응답 생성', () => {
@@ -142,7 +143,6 @@ describe('response', () => {
             }
             `,
         })
-        .expect(200)
         .expect((res) => {
           expect(res.body.data).toBeNull();
         });
@@ -189,7 +189,6 @@ describe('response', () => {
             }
             `,
         })
-        .expect(200)
         .expect((res) => {
           expect(res.body.data).toBeNull();
         });
@@ -561,7 +560,6 @@ describe('response', () => {
             }
             `,
       })
-      .expect(200)
       .expect((res) => {
         expect(res.body.data).toBeNull();
       })

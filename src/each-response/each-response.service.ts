@@ -34,17 +34,24 @@ export class EachResponseService {
 
   async update(id: number, updateEachResponseInput: UpdateEachResponseInput) {
     const eachResponse = await this.validEachResponseById(id);
-    const response = await this.entityManager.findOneBy(Response, { id: updateEachResponseInput.responseId });
-    if (!response) {
-      throw new Error("CAN'T FIND THE RESPONSE!")
+    if (updateEachResponseInput.responseId) {
+      const response = await this.validResponse(updateEachResponseInput.responseId);
+      eachResponse.response = response;
     }
-    (eachResponse).response = response;
     this.eachResponseRepository.merge(
       eachResponse,
       updateEachResponseInput,
     );
     this.eachResponseRepository.update(id, eachResponse);
     return eachResponse;
+  }
+  async validResponse(responseId: number) {
+    const response = await this.entityManager.findOneBy(Response, { id: responseId });
+    if (!response) {
+      throw new Error("CAN'T FIND THE RESPONSE")
+    } else {
+      return response;
+    }
   }
 
   async remove(id: number): Promise<void> {

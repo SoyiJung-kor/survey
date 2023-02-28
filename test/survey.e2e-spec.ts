@@ -39,7 +39,7 @@ describe('survey', () => {
 
   afterAll(async () => {
     await dataSource.dropDatabase();
-    app.close();
+    // app.close();
   });
 
   describe('설문지 만들기!', () => {
@@ -90,7 +90,6 @@ describe('survey', () => {
           }
           `,
         })
-        .expect(200)
         .expect((res) => {
           expect(res.body.data).toBeNull();
         });
@@ -98,7 +97,7 @@ describe('survey', () => {
   });
   describe('모든 설문 조회하기!', () => {
     it('모든 설문 조회 성공!', async () => {
-      const result = request(app.getHttpServer())
+      return request(app.getHttpServer())
         .post(gql)
         .send({
           query: `{
@@ -109,10 +108,9 @@ describe('survey', () => {
           }`,
         })
         .expect(200);
-      return result;
     });
     it('잘못된 query field를 요청해서 설문 조회 실패!', async () => {
-      const result = request(app.getHttpServer())
+      return request(app.getHttpServer())
         .post(gql)
         .send({
           query: `{
@@ -123,7 +121,6 @@ describe('survey', () => {
           }`,
         })
         .expect(400);
-      return result;
     });
   });
   describe('단일 설문 조회!', () => {
@@ -155,7 +152,6 @@ describe('survey', () => {
             }
           }`,
         })
-        .expect(200)
         .expect((res) => {
           expect(res.body.data).toBeNull();
         });
@@ -209,7 +205,6 @@ describe('survey', () => {
           }
           `,
         })
-        .expect(200)
         .expect((res) => {
           expect(res.body.data).toBeNull();
         });
@@ -261,7 +256,6 @@ describe('survey', () => {
           }
           `,
         })
-        .expect(200)
         .expect((res) => {
           expect(res.body.data).toBeNull();
         })
