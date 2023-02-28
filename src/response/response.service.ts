@@ -73,7 +73,7 @@ export class ResponseService {
   async getSumScore(id: number) {
     const Score = await this.getScore(id);
     const SumScore = +Score.totalScore;
-    const result = await this.dataSource.manager
+    await this.dataSource.manager
       .createQueryBuilder()
       .update(Response)
       .set({ sumScore: `${SumScore}` })
