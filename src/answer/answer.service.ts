@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { Question } from '../question/entities/question.entity';
@@ -17,9 +17,9 @@ export class AnswerService {
 
   async create(input: CreateAnswerInput) {
     const answer = this.answerRepository.create(input);
-    answer.question = await this.entityManager.findOneById(
+    answer.question = await this.entityManager.findOneBy(
       Question,
-      input.questionId,
+      { id: input.questionId },
     );
     return this.entityManager.save(answer);
   }
@@ -29,8 +29,7 @@ export class AnswerService {
   }
 
   findOne(id: number) {
-    this.validAnswerById(id);
-    return this.answerRepository.findOneBy({ id });
+    return this.validAnswer(id);
   }
 
   /**
@@ -42,15 +41,14 @@ export class AnswerService {
     const result = await this.answerRepository
       .createQueryBuilder('answer')
       .innerJoinAndSelect('answer.question', 'question')
-      .where('answer.id= :id', { id: id })
+      .where(`answer.id= :${id}`)
       .getMany();
 
     return result;
   }
 
   async update(id: number, updateAnswerInput: UpdateAnswerInput) {
-    this.validAnswerById(id);
-    const answer = await this.answerRepository.findOneBy({ id });
+    const answer = await this.validAnswer(id);
 
     if (updateAnswerInput.questionId) {
       const question = await this.validQuestion(updateAnswerInput.questionId);
@@ -77,20 +75,11 @@ export class AnswerService {
     await this.answerRepository.delete({ id });
   }
 
-  validAnswerById(id: number) {
-    try {
-      this.answerRepository.findOneBy({ id });
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
-        },
-        HttpStatus.BAD_GATEWAY,
-        {
-          cause: error,
-        },
-      );
+  async validAnswer(id: number) {
+    const answer = await this.answerRepository.findOneBy({ id });
+    if (!answer) {
+      throw new Error(`CAN NOT FIND ANSWER! ID: ${id}`);
     }
+    return answer;
   }
 }

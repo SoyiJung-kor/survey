@@ -39,7 +39,7 @@ describe('participant', () => {
 
   afterAll(async () => {
     await dataSource.dropDatabase();
-    // app.close();
+    app.close();
   });
 
   describe('참가자 만들기!', () => {
@@ -254,7 +254,7 @@ describe('participant', () => {
         .expect(200);
     });
     it('remove participant', async () => {
-      const result = request(app.getHttpServer())
+      return request(app.getHttpServer())
         .post(gql)
         .send({
           query: `{
@@ -267,7 +267,6 @@ describe('participant', () => {
           expect(res.body.data.findAllParticipants).toHaveLength(0);
         })
         .expect(200);
-      return result;
     });
     it('참가자 아이디를 입력하지 않아 삭제 실패!', async () => {
       return request(app.getHttpServer())
@@ -295,9 +294,7 @@ describe('participant', () => {
           }
           `,
         })
-      expect((res) => {
-        expect(res.body.data).toBeNull();
-      })
+        .expect(200);
     });
     it('query field가 유효하지 않아 참가자 삭제 실패!', async () => {
       return request(app.getHttpServer())

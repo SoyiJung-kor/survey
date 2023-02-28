@@ -1,44 +1,45 @@
-import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
-import { EachResponseService } from "./each-response.service";
-import { EachResponse } from "./entities/each-response.entity";
-import { CreateEachResponseInput } from "./dto/create-each-response.input";
-import { UpdateEachResponseInput } from "./dto/update-each-response.input";
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { EachResponseService } from './each-response.service';
+import { EachResponse } from './entities/each-response.entity';
+import { CreateEachResponseInput } from './dto/create-each-response.input';
+import { UpdateEachResponseInput } from './dto/update-each-response.input';
 
 @Resolver(() => EachResponse)
 export class EachResponseResolver {
-  constructor(private readonly eachResponseService: EachResponseService) {}
+  // eslint-disable-next-line prettier/prettier
+  constructor(private readonly eachResponseService: EachResponseService) { }
 
-  @Mutation(() => EachResponse, { name: "createEachResponse" })
+  @Mutation(() => EachResponse, { name: 'createEachResponse' })
   createEachResponse(
-    @Args("createEachResponseInput")
-    createEachResponseInput: CreateEachResponseInput
+    @Args('createEachResponseInput')
+    createEachResponseInput: CreateEachResponseInput,
   ) {
     return this.eachResponseService.create(createEachResponseInput);
   }
 
-  @Query(() => [EachResponse], { name: "findAllEachResponse" })
+  @Query(() => [EachResponse], { name: 'findAllEachResponse' })
   findAll() {
     return this.eachResponseService.findAll();
   }
 
-  @Query(() => EachResponse, { name: "findOneEachResponse" })
-  findOne(@Args("id", { type: () => Int }) id: number) {
+  @Query(() => EachResponse, { name: 'findOneEachResponse' })
+  findOne(@Args('id', { type: () => Int }) id: number) {
     return this.eachResponseService.findOne(id);
   }
 
-  @Mutation(() => EachResponse, { name: "updateEachResponse" })
+  @Mutation(() => EachResponse, { name: 'updateEachResponse' })
   updateEachResponse(
-    @Args("updateEachResponseInput")
-    updateEachResponseInput: UpdateEachResponseInput
+    @Args('updateEachResponseInput')
+    updateEachResponseInput: UpdateEachResponseInput,
   ) {
     return this.eachResponseService.update(
       updateEachResponseInput.id,
-      updateEachResponseInput
+      updateEachResponseInput,
     );
   }
 
-  @Mutation(() => EachResponse, { name: "removeEachResponse" })
-  removeEachResponse(@Args("id", { type: () => Int }) id: number) {
+  @Mutation(() => EachResponse, { name: 'removeEachResponse' })
+  removeEachResponse(@Args('id', { type: () => Int }) id: number) {
     return this.eachResponseService.remove(id);
   }
 }

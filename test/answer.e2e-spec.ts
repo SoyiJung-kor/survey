@@ -370,7 +370,7 @@ describe('answer', () => {
             }`,
         })
         .expect((res) => {
-          expect(res.body.data.findOneAnswerDetail).toStrictEqual([]);
+          expect(res.body.data).toBeNull();
         })
     });
     it('잘못된 query field를 입력해서 답지 상세조회 실패!', async () => {

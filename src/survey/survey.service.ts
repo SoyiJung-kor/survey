@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSurveyInput } from './dto/create-survey.input';
@@ -23,40 +23,27 @@ export class SurveyService {
   }
 
   findOne(id: number) {
-    this.validSurveyById(id);
-    return this.surveyRepository.findOneBy({ id });
+    return this.validSurvey(id);
   }
 
   async update(id: number, updateSurveyInput: UpdateSurveyInput) {
-    const survey = await this.validSurveyById(id);
+    const survey = await this.validSurvey(id);
     this.surveyRepository.merge(survey, updateSurveyInput);
+    this.surveyRepository.update(id, survey);
     return survey;
   }
 
   async remove(id: number) {
-    const survey = this.surveyRepository.findOneBy({ id });
-    if (!survey) {
-      throw new Error("CAN'T FIND THE SURVEY!");
-    }
+    const survey = await this.validSurvey(id);
     await this.surveyRepository.delete({ id });
     return survey;
   }
 
-  validSurveyById(id: number) {
-    try {
-      this.surveyRepository.findOneBy({ id });
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
-        },
-        HttpStatus.BAD_GATEWAY,
-        {
-          cause: error,
-        },
-      );
+  async validSurvey(id: number) {
+    const survey = await this.surveyRepository.findOneBy({ id });
+    if (!survey) {
+      throw new Error(`CAN NOT FIND SURVEY! ID: ${id}`);
     }
-    return this.surveyRepository.findOneBy({ id });
+    return survey;
   }
 }

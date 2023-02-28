@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Answer } from '../../answer/entities/answer.entity';
 import { EachResponse } from '../../each-response/entities/each-response.entity';

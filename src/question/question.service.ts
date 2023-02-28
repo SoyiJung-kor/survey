@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { Survey } from '../survey/entities/survey.entity';
@@ -17,9 +17,9 @@ export class QuestionService {
 
   async create(input: CreateQuestionInput) {
     const question = this.questionRepository.create(input);
-    question.survey = await this.entityManager.findOneById(
+    question.survey = await this.entityManager.findOneBy(
       Survey,
-      input.surveyId,
+      { id: input.surveyId, }
     );
     return this.entityManager.save(question);
   }
@@ -29,8 +29,7 @@ export class QuestionService {
   }
 
   findOne(id: number) {
-    this.validQuestionById(id);
-    return this.questionRepository.findOneBy({ id });
+    return this.validQuestion(id);
   }
 
   /**
@@ -43,19 +42,14 @@ export class QuestionService {
       .createQueryBuilder('question')
       .leftJoinAndSelect('question.answers', 'answer')
       .innerJoinAndSelect('question.survey', 'survey')
-      .where('question.id= :id', { id: id })
+      .where(`question.id= :${id}`)
       .getMany();
 
     return result;
   }
 
   async update(id: number, updateQuestionInput: UpdateQuestionInput) {
-    this.validQuestionById(id);
-    const question = await this.findOne(id);
-    if (updateQuestionInput.surveyId) {
-      const survey = await this.validSurvey(updateQuestionInput.surveyId);
-      question.survey = survey;
-    }
+    const question = await this.validQuestion(id);
     this.questionRepository.merge(question, updateQuestionInput);
     this.questionRepository.update(id, question);
     return question;
@@ -78,21 +72,11 @@ export class QuestionService {
     return question;
   }
 
-  validQuestionById(id: number) {
-    try {
-      this.questionRepository.findOneBy({ id });
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_GATEWAY,
-          error: 'message',
-        },
-        HttpStatus.BAD_GATEWAY,
-        {
-          cause: error,
-        },
-      );
+  async validQuestion(id: number) {
+    const question = await this.questionRepository.findOneBy({ id });
+    if (!question) {
+      throw new Error(`CAN NOT FIND QUESTION! ID: ${id}`);
     }
-    return this.questionRepository.findOneBy({ id });
+    return question;
   }
 }
