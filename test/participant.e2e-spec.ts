@@ -294,10 +294,10 @@ describe('participant', () => {
             }
           }
           `,
+        }).
+        expect((res) => {
+          expect(res.body.data).toBeNull();
         })
-      expect((res) => {
-        expect(res.body.data).toBeNull();
-      })
     });
     it('query field가 유효하지 않아 참가자 삭제 실패!', async () => {
       return request(app.getHttpServer())

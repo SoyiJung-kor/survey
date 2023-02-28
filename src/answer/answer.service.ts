@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { Question } from '../question/entities/question.entity';
@@ -17,9 +17,9 @@ export class AnswerService {
 
   async create(input: CreateAnswerInput) {
     const answer = this.answerRepository.create(input);
-    answer.question = await this.entityManager.findOneById(
+    answer.question = await this.entityManager.findOneBy(
       Question,
-      input.questionId,
+      { id: input.questionId },
     );
     return this.entityManager.save(answer);
   }

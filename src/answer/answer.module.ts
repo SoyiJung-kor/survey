@@ -9,4 +9,5 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [AnswerResolver, AnswerService],
   exports: [TypeOrmModule],
 })
+// eslint-disable-next-line prettier/prettier
 export class AnswerModule { }

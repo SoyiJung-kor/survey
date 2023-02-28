@@ -246,6 +246,7 @@ describe('question', () => {
           `,
         })
         .expect((res) => {
+          console.log(res.body.data);
           expect(res.body.data).toBeNull();
         })
     });

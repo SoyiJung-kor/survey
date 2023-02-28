@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSurveyInput } from './dto/create-survey.input';
@@ -29,6 +29,7 @@ export class SurveyService {
   async update(id: number, updateSurveyInput: UpdateSurveyInput) {
     const survey = await this.validSurvey(id);
     this.surveyRepository.merge(survey, updateSurveyInput);
+    this.surveyRepository.update(id, survey);
     return survey;
   }
 

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { Survey } from '../survey/entities/survey.entity';
@@ -17,9 +17,9 @@ export class QuestionService {
 
   async create(input: CreateQuestionInput) {
     const question = this.questionRepository.create(input);
-    question.survey = await this.entityManager.findOneById(
+    question.survey = await this.entityManager.findOneBy(
       Survey,
-      input.surveyId,
+      { id: input.surveyId, }
     );
     return this.entityManager.save(question);
   }
@@ -49,12 +49,7 @@ export class QuestionService {
   }
 
   async update(id: number, updateQuestionInput: UpdateQuestionInput) {
-    this.validQuestion(id);
-    const question = await this.findOne(id);
-    if (updateQuestionInput.surveyId) {
-      const survey = await this.validSurvey(updateQuestionInput.surveyId);
-      question.survey = survey;
-    }
+    const question = await this.validQuestion(id);
     this.questionRepository.merge(question, updateQuestionInput);
     this.questionRepository.update(id, question);
     return question;
