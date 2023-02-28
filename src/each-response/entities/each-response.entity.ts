@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
@@ -7,8 +7,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
-import { Response } from "../../response/entities/response.entity";
+} from 'typeorm';
+import { Response } from '../../response/entities/response.entity';
 
 @ObjectType()
 @Entity()

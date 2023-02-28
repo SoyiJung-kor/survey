@@ -1,10 +1,10 @@
-import { Field, Int } from "@nestjs/graphql";
+import { Field, Int } from '@nestjs/graphql';
 import {
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
+} from 'typeorm';
 
 export abstract class CommonEntity {
   @Field(() => Int)
