@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Category } from '../../category/entities/category.entity';
 import { Question } from '../../question/entities/question.entity';
 import { Response } from '../../response/entities/response.entity';
 
@@ -40,4 +41,8 @@ export class Survey {
   @OneToMany(() => Response, (response) => response.survey, { cascade: true })
   @Field(() => [Response], { nullable: true })
   response: Response[];
+
+  @OneToMany(() => Category, (category) => category.survey, { cascade: true })
+  @Field(() => [Category], { nullable: true })
+  categories: Category[];
 }
