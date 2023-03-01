@@ -42,7 +42,7 @@ export class AnswerService {
       .createQueryBuilder('answer')
       .innerJoinAndSelect('answer.question', 'question')
       .where(`answer.id= :${id}`)
-      .getMany();
+      .getOne();
 
     return result;
   }
@@ -50,7 +50,7 @@ export class AnswerService {
   async update(id: number, updateAnswerInput: UpdateAnswerInput) {
     const answer = await this.validAnswer(id);
 
-    if (updateAnswerInput.questionId) {
+    if (updateAnswerInput?.questionId) {
       const question = await this.validQuestion(updateAnswerInput.questionId);
       answer.question = question;
     }

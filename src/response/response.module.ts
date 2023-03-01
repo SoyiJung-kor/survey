@@ -8,7 +8,6 @@ import { EachResponseModule } from '../each-response/each-response.module';
 @Module({
   imports: [EachResponseModule, TypeOrmModule.forFeature([Response])],
   providers: [ResponseResolver, ResponseService],
-  exports: [TypeOrmModule],
 })
 // eslint-disable-next-line prettier/prettier
 export class ResponseModule { }

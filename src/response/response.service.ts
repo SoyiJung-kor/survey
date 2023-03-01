@@ -43,7 +43,7 @@ export class ResponseService {
       .innerJoinAndSelect('response.participant', 'participant')
       .innerJoinAndSelect('response.survey', 'survey')
       .where(`response.id= :${id}`)
-      .getMany();
+      .getOne();
 
     return result;
   }

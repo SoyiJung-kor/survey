@@ -17,10 +17,9 @@ export class QuestionService {
 
   async create(input: CreateQuestionInput) {
     const question = this.questionRepository.create(input);
-    question.survey = await this.entityManager.findOneBy(
-      Survey,
-      { id: input.surveyId, }
-    );
+    const survey = new Survey()
+    survey.id = input.surveyId
+    question.survey = survey
     return this.entityManager.save(question);
   }
 

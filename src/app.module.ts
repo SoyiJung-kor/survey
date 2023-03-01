@@ -13,7 +13,7 @@ import { join } from 'path';
 import { SurveyModule } from './survey/survey.module';
 import { ParticipantModule } from './participant/participant.module';
 import { EachResponse } from './each-response/entities/each-response.entity';
-import { CategoryModule } from './category/category.module';
+import { Category } from './category/entities/category.entity';
 
 @Module({
   imports: [
@@ -26,16 +26,24 @@ import { CategoryModule } from './category/category.module';
       username: 'postgres',
       password: 'postgres',
       database: 'postgres',
-      entities: [Answer, Participant, Question, Response, Survey, EachResponse],
+      entities: [
+        Answer,
+        Participant,
+        Question,
+        Response,
+        Survey,
+        EachResponse,
+        Category,
+      ],
       synchronize: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
-    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+// eslint-disable-next-line prettier/prettier
+export class AppModule { }

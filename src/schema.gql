@@ -2,8 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Category {
+  categoryName: String!
+  survey: Survey!
+}
+
 type Answer {
-  id: Int!
   answerNumber: Int!
   answerContent: String!
   answerScore: Int!
@@ -11,14 +15,12 @@ type Answer {
 }
 
 type Question {
-  id: Int!
   questionNumber: Int!
   questionContent: String!
   survey: Survey!
 }
 
 type EachResponse {
-  id: Int!
   responseId: Int!
   responseQuestion: String!
   responseAnswer: String!
@@ -26,12 +28,10 @@ type EachResponse {
 }
 
 type Participant {
-  id: Int!
   email: String!
 }
 
 type Response {
-  id: Int!
   isSubmit: Boolean!
   sumScore: Int!
   participant: Participant!
@@ -39,10 +39,10 @@ type Response {
 }
 
 type Survey {
-  id: Int!
   surveyTitle: String!
   questions: [Question!]
   response: [Response!]
+  categories: [Category!]
 }
 
 type Query {
@@ -61,6 +61,7 @@ type Query {
   getSumScore(responseId: Int!): Response!
   findAllEachResponse: [EachResponse!]!
   findOneEachResponse(id: Int!): EachResponse!
+  category(id: Int!): Category!
   findAllParticipants: [Participant!]!
   findOneParticipant(participantId: Int!): Participant!
 }
@@ -81,6 +82,9 @@ type Mutation {
   createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
   updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
   removeEachResponse(id: Int!): EachResponse!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category!
   createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
   updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!
   removeParticipant(participantId: Int!): Participant!
@@ -179,6 +183,17 @@ input UpdateEachResponseInput {
 
   """response Score"""
   responseScore: Int
+  id: Int!
+}
+
+input CreateCategoryInput {
+  categoryName: String!
+  surveyId: Int!
+}
+
+input UpdateCategoryInput {
+  categoryName: String
+  surveyId: Int
   id: Int!
 }
 
