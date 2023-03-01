@@ -6,12 +6,12 @@ import { TestingModule, Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { DataSource } from 'typeorm';
-import { typeORMConfig } from '../src/common/config/orm-config';
 import { ParticipantModule } from '../src/participant/participant.module';
 import { SurveyModule } from '../src/survey/survey.module';
 const gql = '/graphql';
 import request from 'supertest';
 import { HttpExceptionFilter } from '../src/common/utils/http_exception_filter';
+import { testTypeORMConfig } from '../src/common/config/test-orm-config';
 
 describe('participant', () => {
   let app: INestApplication;
@@ -22,7 +22,7 @@ describe('participant', () => {
       imports: [
         SurveyModule,
         ParticipantModule,
-        TypeOrmModule.forRoot(typeORMConfig),
+        TypeOrmModule.forRoot(testTypeORMConfig),
         GraphQLModule.forRoot<ApolloDriverConfig>({
           driver: ApolloDriver,
           autoSchemaFile: join(process.cwd(), 'test/schema.gql'),
