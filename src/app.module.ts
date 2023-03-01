@@ -13,6 +13,7 @@ import { join } from 'path';
 import { SurveyModule } from './survey/survey.module';
 import { ParticipantModule } from './participant/participant.module';
 import { EachResponse } from './each-response/entities/each-response.entity';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { EachResponse } from './each-response/entities/each-response.entity';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
