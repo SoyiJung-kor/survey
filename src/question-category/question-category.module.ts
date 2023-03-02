@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
 import { QuestionCategoryService } from './question-category.service';
 import { QuestionCategoryResolver } from './question-category.resolver';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { QuestionCategory } from './entities/question-category.entity';
 
 @Module({
-  providers: [QuestionCategoryResolver, QuestionCategoryService]
+  imports: [TypeOrmModule.forFeature([QuestionCategory])],
+  providers: [QuestionCategoryResolver, QuestionCategoryService],
 })
-export class QuestionCategoryModule {}
+// eslint-disable-next-line prettier/prettier
+export class QuestionCategoryModule { }
