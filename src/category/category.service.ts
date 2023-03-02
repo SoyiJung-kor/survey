@@ -49,8 +49,13 @@ export class CategoryService {
   }
   async update(input: UpdateCategoryInput) {
     const category = await this.validCategory(input.id);
-    this.categoryRepository.merge(category, input);
-    return this.categoryRepository.update(input.id, category);
+    if (input?.surveyId) {
+      const survey = await this.validSurvey(input.surveyId);
+      category.survey = survey;
+    }
+    const newCategory = this.categoryRepository.merge(category, input);
+    this.categoryRepository.update(input.id, category);
+    return newCategory;
   }
 
   async remove(id: number) {
@@ -65,5 +70,14 @@ export class CategoryService {
       throw new Error(`CAN NOT FIND CATEGORY! ID: ${id}`);
     }
     return category;
+  }
+
+  async validSurvey(surveyId: number) {
+    const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
+    if (!survey) {
+      throw new Error(`CAN NOT FIND THE SURVEY! ID: ${surveyId}`);
+    } else {
+      return survey;
+    }
   }
 }

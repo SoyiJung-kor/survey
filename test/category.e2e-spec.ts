@@ -356,7 +356,6 @@ describe('category', () => {
         })
     });
     describe('선택한 항목 수정', () => {
-        it.todo('항목 수정 성공!');
         it('항목 수정 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -377,7 +376,6 @@ describe('category', () => {
                     expect(categoryName).toBe('Modified Category');
                 })
         });
-        it.todo('항목 아이디를 안써서 항목 수정 실패!');
         it('항목 아이디를 안써서 항목 수정 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -393,7 +391,6 @@ describe('category', () => {
                 })
                 .expect(400);
         });
-        it.todo('없는 항목 아이디를 입력해서 항목 수정 실패!');
         it('없는 항목 아이디를 입력해서 항목 수정 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -411,7 +408,6 @@ describe('category', () => {
                     expect(res.body.data).toBeNull();
                 })
         });
-        it.todo('query field를 잘못 입력해서 항목 수정 실패!');
         it('query field를 잘못 입력해서 항목 수정 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -425,9 +421,6 @@ describe('category', () => {
                 })
                 .expect(400)
         });
-        it.todo(
-            '설문 아이디를 수정, 그런데 존재하지 않는 설문 아이디를 입력해서 항목 수정 실패!',
-        );
         it('설문 아이디를 수정, 그런데 존재하지 않는 설문 아이디를 입력해서 항목 수정 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -441,11 +434,10 @@ describe('category', () => {
                 }
                 `,
                 })
-                .expect(400)
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
         });
-        it.todo(
-            '설문 아이디를 수정, 그런데 설문 아이디 입력 안해서 항목 수정 실패!',
-        );
         it('설문 아이디를 수정, 그런데 설문 아이디 입력 안해서 항목 수정 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -461,7 +453,6 @@ describe('category', () => {
                 })
                 .expect(400)
         });
-        it.todo('항목 이름 수정, 그러나 항목이름을 입력하지 않아서 항목 수정 실패');
         it('항목 이름 수정, 그러나 항목이름을 입력하지 않아서 항목 수정 실패', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -477,7 +468,6 @@ describe('category', () => {
                 })
                 .expect(400)
         });
-        it.todo('항목 이름 수정, 그러나 항목이름이 문자열이 아니라 항목 수정 실패');
         it('항목 이름 수정, 그러나 항목이름이 문자열이 아니라 항목 수정 실패', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -495,7 +485,6 @@ describe('category', () => {
         });
     });
     describe('선택한 항목 삭제', () => {
-        it.todo('항목 삭제 성공!');
         it('항목 삭제 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -510,7 +499,6 @@ describe('category', () => {
                 })
                 .expect(200)
         });
-        it.todo('항목 아이디를 안써서 항목 삭제 실패!');
         it('항목 아이디를 안써서 항목 삭제 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -525,7 +513,6 @@ describe('category', () => {
                 })
                 .expect(400)
         });
-        it.todo('없는 항목 아이디를 입력해서 항목 삭제 실패!');
         it('없는 항목 아이디를 입력해서 항목 삭제 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -542,7 +529,6 @@ describe('category', () => {
                     expect(res.body.data).toBeNull();
                 })
         });
-        it.todo('query field를 잘못 입력해서 항목 삭제 실패!');
         it('query field를 잘못 입력해서 항목 삭제 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
