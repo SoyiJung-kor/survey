@@ -37,7 +37,7 @@ export class SurveyResolver {
   }
 
   /**
-     * @description 설문에 포함된 항목 조회
+     * @description 설문에 포함된 질문 조회
      * @param id 설문 아이디
      * @returns 
      */

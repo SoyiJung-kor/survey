@@ -41,7 +41,7 @@ export class CategoryService {
     const result = await this.categoryRepository
       .createQueryBuilder('category')
       .innerJoinAndSelect('category.survey', 'survey')
-      .where(`category.id= :${id}`)
+      .where(`category.id = ${id}`)
       .getOne();
 
     return result;

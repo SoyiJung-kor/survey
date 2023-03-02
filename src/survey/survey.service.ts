@@ -37,7 +37,7 @@ export class SurveyService {
     const result = await this.surveyRepository
       .createQueryBuilder('survey')
       .leftJoinAndSelect('survey.categories', 'category')
-      .where(`survey.id= :${id}`)
+      .where(`survey.id = ${id}`)
       .getOne();
 
     return result;
@@ -52,7 +52,7 @@ export class SurveyService {
     const result = await this.surveyRepository
       .createQueryBuilder('survey')
       .leftJoinAndSelect('survey.questions', 'question')
-      .where(`survey.id= :${id}`)
+      .where(`survey.id = ${id}`)
       .getOne();
 
     return result;

@@ -42,7 +42,7 @@ export class AnswerService {
     const result = await this.answerRepository
       .createQueryBuilder('answer')
       .innerJoinAndSelect('answer.question', 'question')
-      .where(`answer.id= :${id}`)
+      .where(`answer.id= ${id}`)
       .getOne();
 
     return result;

@@ -55,11 +55,11 @@ type Survey {
 type Query {
   findAllSurveys: [Survey!]!
   findSurvey(surveyId: Int!): Survey!
-  findSurveyWithCategory(id: Int!): Category!
+  findSurveyWithCategory(id: Int!): Survey!
   findSurveyWithQuestion(id: Int!): Survey!
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
-  findOneQuestionDetail(questionId: Int!): [Question!]!
+  findOneQuestionDetail(id: Int!): Question!
   findAllAnswers: [Answer!]!
   findAnswer(id: Int!): Answer!
   findOneAnswerDetail(answerId: Int!): [Answer!]!
