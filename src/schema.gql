@@ -4,7 +4,8 @@
 
 type CategoryScore {
   id: Int!
-  gradeScore: Int!
+  highScore: Int!
+  lowScore: Int!
   categoryMessage: String!
   category: Category!
 }
@@ -104,7 +105,7 @@ type Mutation {
   createCategory(input: CreateCategoryInput!): Category!
   updateCategory(input: UpdateCategoryInput!): Category!
   removeCategory(id: Int!): Category!
-  createCategoryScore(createCategoryScoreInput: CreateCategoryScoreInput!): CategoryScore!
+  createCategoryScore(input: CreateCategoryScoreInput!): CategoryScore!
   updateCategoryScore(updateCategoryScoreInput: UpdateCategoryScoreInput!): CategoryScore!
   removeCategoryScore(id: Int!): CategoryScore!
   createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
@@ -220,13 +221,15 @@ input UpdateCategoryInput {
 }
 
 input CreateCategoryScoreInput {
-  gradeScore: Int!
+  highScore: Int!
+  lowScore: Int!
   categoryMessage: String!
   categoryId: Float!
 }
 
 input UpdateCategoryScoreInput {
-  gradeScore: Int
+  highScore: Int
+  lowScore: Int
   categoryMessage: String
   categoryId: Float
   id: Int!

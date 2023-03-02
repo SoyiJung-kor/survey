@@ -1,11 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository } from 'typeorm';
+import { Category } from '../category/entities/category.entity';
 import { CreateCategoryScoreInput } from './dto/create-category-score.input';
 import { UpdateCategoryScoreInput } from './dto/update-category-score.input';
+import { CategoryScore } from './entities/category-score.entity';
 
 @Injectable()
 export class CategoryScoreService {
-  create(createCategoryScoreInput: CreateCategoryScoreInput) {
-    return 'This action adds a new categoryScore';
+  constructor(
+    @InjectRepository(CategoryScore)
+    private categoryScoreRepository: Repository<CategoryScore>,
+    private entityManager: EntityManager,
+  ) { }
+
+  private readonly logger = new Logger(CategoryScoreService.name);
+
+  async create(input: CreateCategoryScoreInput) {
+    const newCategoryScore = this.categoryScoreRepository.create(input);
+    newCategoryScore.category = await this.entityManager.findOneBy(Category, {
+      id: input.categoryId,
+    });
+    return this.entityManager.save(newCategoryScore);
   }
 
   findAll() {

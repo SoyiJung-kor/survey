@@ -10,7 +10,12 @@ export class CategoryScore extends CommonEntity {
   @Field(() => Int)
   @Column()
   @IsNumber()
-  gradeScore: number;
+  highScore: number;
+
+  @Field(() => Int)
+  @Column()
+  @IsNumber()
+  lowScore: number;
 
   @Field(() => String)
   @Column()

@@ -11,10 +11,10 @@ export class CategoryScoreResolver {
 
   @Mutation(() => CategoryScore)
   createCategoryScore(
-    @Args('createCategoryScoreInput')
-    createCategoryScoreInput: CreateCategoryScoreInput,
+    @Args('input')
+    input: CreateCategoryScoreInput,
   ) {
-    return this.categoryScoreService.create(createCategoryScoreInput);
+    return this.categoryScoreService.create(input);
   }
 
   @Query(() => [CategoryScore], { name: 'categoryScore' })

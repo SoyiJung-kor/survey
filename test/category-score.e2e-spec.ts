@@ -41,11 +41,14 @@ describe('category', () => {
 
         const mockSurvey = new Survey();
         mockSurvey.surveyTitle = 'Mock Survey for Test';
+        mockSurvey.id = 1;
         await dataSource.manager.save(mockSurvey);
 
         const mockCategory = new Category();
+        mockCategory.id = 1;
         mockCategory.categoryName = 'Mock Category for Test';
         mockCategory.survey = mockSurvey;
+        await dataSource.manager.save(mockCategory);
     });
 
     afterAll(async () => {
@@ -60,26 +63,25 @@ describe('category', () => {
                 .send({
                     query: `
                 mutation {
-                    createCategory(input:{categoryName:"Test Category",surveyId:1}){
+                    createCategoryScore(input:{highScore:10,lowScore:0,categoryMessage:"배고픕니다.",categoryId:1}){
                         id
-                        categoryName
-                        survey{
-                            id
-                            surveyTitle
-                        }
+                        highScore
+                        lowScore
+                        categoryMessage
                     }
                 }
                 `,
                 })
                 .expect(200)
                 .expect((res) => {
-                    const createCategory = res.body.data.createCategory;
-                    const { id, categoryName, survey } = createCategory;
+                    console.log(res);
+                    const createCategoryScore = res.body.data.createCategoryScore;
+                    const { id, highScore, lowScore, categoryMessage } = createCategoryScore;
 
                     expect(id).toBe(1);
-                    expect(categoryName).toBe('Test Category');
-                    expect(survey.id).toBe(1);
-                    expect(survey.surveyTitle).toBe('Mock Survey for Test');
+                    expect(highScore).toBe(10);
+                    expect(lowScore).toBe(0);
+                    expect(categoryMessage).toBe('배고픕니다.');
                 });
         });
         it.todo('기준점수를 안적어서 기준점수 생성 실패!');

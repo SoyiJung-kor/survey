@@ -5,7 +5,11 @@ import { IsNumber, IsString } from 'class-validator';
 export class CreateCategoryScoreInput {
   @Field(() => Int)
   @IsNumber()
-  gradeScore: number;
+  highScore: number;
+
+  @Field(() => Int)
+  @IsNumber()
+  lowScore: number;
 
   @Field(() => String)
   @IsString()
