@@ -3,11 +3,13 @@
 # ------------------------------------------------------
 
 type Category {
+  id: Int!
   categoryName: String!
   survey: Survey!
 }
 
 type Answer {
+  id: Int!
   answerNumber: Int!
   answerContent: String!
   answerScore: Int!
@@ -15,12 +17,14 @@ type Answer {
 }
 
 type Question {
+  id: Int!
   questionNumber: Int!
   questionContent: String!
   survey: Survey!
 }
 
 type EachResponse {
+  id: Int!
   responseId: Int!
   responseQuestion: String!
   responseAnswer: String!
@@ -28,10 +32,12 @@ type EachResponse {
 }
 
 type Participant {
+  id: Int!
   email: String!
 }
 
 type Response {
+  id: Int!
   isSubmit: Boolean!
   sumScore: Int!
   participant: Participant!
@@ -39,6 +45,7 @@ type Response {
 }
 
 type Survey {
+  id: Int!
   surveyTitle: String!
   questions: [Question!]
   response: [Response!]
