@@ -29,13 +29,10 @@ export class CategoryScoreResolver {
 
   @Mutation(() => CategoryScore)
   updateCategoryScore(
-    @Args('updateCategoryScoreInput')
-    updateCategoryScoreInput: UpdateCategoryScoreInput,
+    @Args('input')
+    input: UpdateCategoryScoreInput,
   ) {
-    return this.categoryScoreService.update(
-      updateCategoryScoreInput.id,
-      updateCategoryScoreInput,
-    );
+    return this.categoryScoreService.update(input);
   }
 
   @Mutation(() => CategoryScore)

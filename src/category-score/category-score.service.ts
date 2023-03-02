@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
@@ -32,8 +33,18 @@ export class CategoryScoreService {
     return this.validCategoryScore(id);
   }
 
-  update(id: number, updateCategoryScoreInput: UpdateCategoryScoreInput) {
-    return `This action updates a #${id} categoryScore`;
+  async update(input: UpdateCategoryScoreInput) {
+    const categoryScore = await this.validCategoryScore(input.id);
+    if (input?.categoryId) {
+      const category = await this.validCategory(input.categoryId);
+      categoryScore.category = category;
+    }
+    const newCategoryScore = this.categoryScoreRepository.merge(
+      categoryScore,
+      input,
+    );
+    this.categoryScoreRepository.update(input.id, categoryScore);
+    return newCategoryScore;
   }
 
   remove(id: number) {

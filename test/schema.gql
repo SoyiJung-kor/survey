@@ -107,7 +107,7 @@ type Mutation {
   updateCategory(input: UpdateCategoryInput!): Category!
   removeCategory(id: Int!): Category!
   createCategoryScore(input: CreateCategoryScoreInput!): CategoryScore!
-  updateCategoryScore(updateCategoryScoreInput: UpdateCategoryScoreInput!): CategoryScore!
+  updateCategoryScore(input: UpdateCategoryScoreInput!): CategoryScore!
   removeCategoryScore(id: Int!): CategoryScore!
   createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
   updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!

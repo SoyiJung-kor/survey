@@ -299,6 +299,33 @@ describe('category', () => {
     })
     describe('기준점수 수정!', () => {
         it.todo('기준점수 수정 성공!');
+        it('기준점수 수정 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:1,highScore:10,lowScore:0,categoryMessage:"배부릅니다.",categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    console.log(res);
+                    const updateCategoryScore = res.body.data.updateCategoryScore;
+                    const { id, highScore, lowScore, categoryMessage } = updateCategoryScore;
+
+                    expect(id).toBe(1);
+                    expect(highScore).toBe(10);
+                    expect(lowScore).toBe(0);
+                    expect(categoryMessage).toBe('배부릅니다.');
+                });
+        });
         it.todo('기준점수 아이디를 안적어서 기준점수 수정 실패!');
         it.todo('없는 기준점수 아이디를 적어서 기준점수 수정 실패!');
         it.todo('기준점수 아이디가 숫자가 아니라 기준점수 수정 실패!');
