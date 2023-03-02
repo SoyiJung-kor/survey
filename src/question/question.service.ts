@@ -19,9 +19,13 @@ export class QuestionService {
 
   async create(input: CreateQuestionInput) {
     const question = this.questionRepository.create(input);
-    const survey = new Survey()
-    survey.id = input.surveyId
-    question.survey = survey
+    // const survey = new Survey()
+    // survey.id = input.surveyId
+    // question.survey = survey
+    question.survey = await this.entityManager.findOneBy(
+      Survey,
+      { id: input.surveyId },
+    );
     return this.entityManager.save(question);
   }
 
@@ -43,8 +47,8 @@ export class QuestionService {
       .createQueryBuilder('question')
       .leftJoinAndSelect('question.answers', 'answer')
       .innerJoinAndSelect('question.survey', 'survey')
-      .where(`question.id= :${id}`)
-      .getMany();
+      .where(`question.id = ${id}`)
+      .getOne();
 
     return result;
   }

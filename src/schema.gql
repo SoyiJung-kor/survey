@@ -3,11 +3,13 @@
 # ------------------------------------------------------
 
 type Category {
+  id: Int!
   categoryName: String!
   survey: Survey!
 }
 
 type Answer {
+  id: Int!
   answerNumber: Int!
   answerContent: String!
   answerScore: Int!
@@ -15,12 +17,14 @@ type Answer {
 }
 
 type Question {
+  id: Int!
   questionNumber: Int!
   questionContent: String!
   survey: Survey!
 }
 
 type EachResponse {
+  id: Int!
   responseId: Int!
   responseQuestion: String!
   responseAnswer: String!
@@ -28,10 +32,12 @@ type EachResponse {
 }
 
 type Participant {
+  id: Int!
   email: String!
 }
 
 type Response {
+  id: Int!
   isSubmit: Boolean!
   sumScore: Int!
   participant: Participant!
@@ -39,6 +45,7 @@ type Response {
 }
 
 type Survey {
+  id: Int!
   surveyTitle: String!
   questions: [Question!]
   response: [Response!]
@@ -48,11 +55,13 @@ type Survey {
 type Query {
   findAllSurveys: [Survey!]!
   findSurvey(surveyId: Int!): Survey!
+  findSurveyWithCategory(id: Int!): Survey!
+  findSurveyWithQuestion(id: Int!): Survey!
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
-  findOneQuestionDetail(questionId: Int!): [Question!]!
+  findOneQuestionDetail(id: Int!): Question!
   findAllAnswers: [Answer!]!
-  findAnswer(answerId: Int!): Answer!
+  findAnswer(id: Int!): Answer!
   findOneAnswerDetail(answerId: Int!): [Answer!]!
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
@@ -61,7 +70,8 @@ type Query {
   getSumScore(responseId: Int!): Response!
   findAllEachResponse: [EachResponse!]!
   findOneEachResponse(id: Int!): EachResponse!
-  category(id: Int!): Category!
+  findAllCategories: [Category!]!
+  findCategory(id: Int!): Category!
   findAllParticipants: [Participant!]!
   findOneParticipant(participantId: Int!): Participant!
 }
@@ -75,15 +85,15 @@ type Mutation {
   removeQuestion(questionId: Int!): Question!
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
-  removeAnswer(answerId: Int!): Answer!
+  removeAnswer(id: Int!): Answer!
   createResponse(createResponseInput: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
   updateResponse(updateResponseInput: UpdateResponseInput!): Response!
   createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
   updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
   removeEachResponse(id: Int!): EachResponse!
-  createCategory(createCategoryInput: CreateCategoryInput!): Category!
-  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  createCategory(input: CreateCategoryInput!): Category!
+  updateCategory(input: UpdateCategoryInput!): Category!
   removeCategory(id: Int!): Category!
   createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
   updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!

@@ -2,7 +2,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { MinLength } from 'class-validator';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Category } from '../../category/entities/category.entity';
-import { CommonEntity } from '../../common/entity/\bcommon.entity';
+import { CommonEntity } from '../../common/entities/\bcommon.entity';
 import { Question } from '../../question/entities/question.entity';
 import { Response } from '../../response/entities/response.entity';
 

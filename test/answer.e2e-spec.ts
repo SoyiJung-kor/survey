@@ -308,7 +308,7 @@ describe('answer', () => {
         .post(gql)
         .send({
           query: `{
-              findAnswer(answerId:1){
+              findAnswer(id:1){
                 answerNumber
                 answerContent
               }
@@ -325,7 +325,7 @@ describe('answer', () => {
         .post(gql)
         .send({
           query: `{
-              findAnswer(answerId:100){
+              findAnswer(id:100){
                 answerNumber
                 answerContent
               }
@@ -502,7 +502,7 @@ describe('answer', () => {
         .send({
           query: `
           mutation removeAnswer {
-            removeAnswer(answerId:1) {
+            removeAnswer(id:1) {
               id
             }
           }
@@ -532,7 +532,7 @@ describe('answer', () => {
         .send({
           query: `
           mutation removeAnswer {
-            removeAnswer(answerId:100) {
+            removeAnswer(id:100) {
               id
             }
           }

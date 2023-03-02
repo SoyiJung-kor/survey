@@ -9,21 +9,21 @@ import { UpdateAnswerInput } from './dto/update-answer.input';
 export class AnswerResolver {
   constructor(private readonly answerService: AnswerService) { }
 
-  @Mutation(() => Answer, { name: 'createAnswer' })
+  @Mutation(() => Answer)
   createAnswer(
     @Args('createAnswerInput') createAnswerInput: CreateAnswerInput,
   ) {
     return this.answerService.create(createAnswerInput);
   }
 
-  @Query(() => [Answer], { name: 'findAllAnswers' })
-  findAll() {
+  @Query(() => [Answer])
+  findAllAnswers() {
     return this.answerService.findAll();
   }
 
-  @Query(() => Answer, { name: 'findAnswer' })
-  findOne(@Args('answerId', { type: () => Int }) answerId: number) {
-    return this.answerService.findOne(answerId);
+  @Query(() => Answer)
+  findAnswer(@Args('id', { type: () => Int }) id: number) {
+    return this.answerService.findOne(id);
   }
 
   @Query(() => [Answer])
@@ -31,15 +31,15 @@ export class AnswerResolver {
     return this.answerService.findDetail(answerId);
   }
 
-  @Mutation(() => Answer, { name: 'updateAnswer' })
+  @Mutation(() => Answer)
   updateAnswer(
     @Args('updateAnswerInput') updateAnswerInput: UpdateAnswerInput,
   ) {
     return this.answerService.update(updateAnswerInput.id, updateAnswerInput);
   }
 
-  @Mutation(() => Answer, { name: 'removeAnswer' })
-  removeAnswer(@Args('answerId', { type: () => Int }) answerId: number) {
-    return this.answerService.remove(answerId);
+  @Mutation(() => Answer)
+  removeAnswer(@Args('id', { type: () => Int }) id: number) {
+    return this.answerService.remove(id);
   }
 }

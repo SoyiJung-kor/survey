@@ -10,6 +10,12 @@ type EachResponse {
   responseScore: Int!
 }
 
+type Category {
+  id: Int!
+  categoryName: String!
+  survey: Survey!
+}
+
 type Answer {
   id: Int!
   answerNumber: Int!
@@ -30,6 +36,7 @@ type Survey {
   surveyTitle: String!
   questions: [Question!]
   response: [Response!]
+  categories: [Category!]
 }
 
 type Response {
@@ -48,11 +55,13 @@ type Participant {
 type Query {
   findAllSurveys: [Survey!]!
   findSurvey(surveyId: Int!): Survey!
+  findSurveyWithCategory(id: Int!): Survey!
+  findSurveyWithQuestion(id: Int!): Survey!
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
-  findOneQuestionDetail(questionId: Int!): [Question!]!
+  findOneQuestionDetail(id: Int!): Question!
   findAllAnswers: [Answer!]!
-  findAnswer(answerId: Int!): Answer!
+  findAnswer(id: Int!): Answer!
   findOneAnswerDetail(answerId: Int!): [Answer!]!
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
@@ -61,6 +70,8 @@ type Query {
   getSumScore(responseId: Int!): Response!
   findAllEachResponse: [EachResponse!]!
   findOneEachResponse(id: Int!): EachResponse!
+  findAllCategories: [Category!]!
+  findCategory(id: Int!): Category!
   findAllParticipants: [Participant!]!
   findOneParticipant(participantId: Int!): Participant!
 }
@@ -74,13 +85,16 @@ type Mutation {
   removeQuestion(questionId: Int!): Question!
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
-  removeAnswer(answerId: Int!): Answer!
+  removeAnswer(id: Int!): Answer!
   createResponse(createResponseInput: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
   updateResponse(updateResponseInput: UpdateResponseInput!): Response!
   createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
   updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
   removeEachResponse(id: Int!): EachResponse!
+  createCategory(input: CreateCategoryInput!): Category!
+  updateCategory(input: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category!
   createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
   updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!
   removeParticipant(participantId: Int!): Participant!
@@ -179,6 +193,17 @@ input UpdateEachResponseInput {
 
   """response Score"""
   responseScore: Int
+  id: Int!
+}
+
+input CreateCategoryInput {
+  categoryName: String!
+  surveyId: Int!
+}
+
+input UpdateCategoryInput {
+  categoryName: String
+  surveyId: Int
   id: Int!
 }
 

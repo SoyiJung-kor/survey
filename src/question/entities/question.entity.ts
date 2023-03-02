@@ -2,7 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { IsNumber, MinLength } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Answer } from '../../answer/entities/answer.entity';
-import { CommonEntity } from '../../common/entity/\bcommon.entity';
+import { CommonEntity } from '../../common/entities/\bcommon.entity';
 import { Survey } from '../../survey/entities/survey.entity';
 
 @ObjectType()

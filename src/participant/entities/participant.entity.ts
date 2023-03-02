@@ -1,7 +1,7 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { CommonEntity } from '../../common/entity/\bcommon.entity';
+import { CommonEntity } from '../../common/entities/\bcommon.entity';
 import { Response } from '../../response/entities/response.entity';
 
 @ObjectType()

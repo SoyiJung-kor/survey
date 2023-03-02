@@ -254,7 +254,7 @@ describe('question', () => {
         .send({
           query: `
           query {
-            findOneQuestionDetail(questionId:1) {
+            findOneQuestionDetail(id:1) {
               id
               questionNumber
               questionContent
@@ -273,7 +273,7 @@ describe('question', () => {
         .send({
           query: `
           query {
-            findOneQuestionDetail(questionId:100) {
+            findOneQuestionDetail(id:100) {
               id
               questionNumber
               questionContent
@@ -294,7 +294,7 @@ describe('question', () => {
         .send({
           query: `
           query {
-            findOneQuestionDetail(questionId:1) {
+            findOneQuestionDetail(id:1) {
               id
               questionNumber
               questionContent

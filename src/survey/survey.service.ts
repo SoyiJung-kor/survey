@@ -28,6 +28,36 @@ export class SurveyService {
     return this.validSurvey(id);
   }
 
+  /**
+   * @description "설문이 갖고 있는 항목 조회"
+   * @param id 
+   * @returns 
+   */
+  async findCategory(id: number) {
+    const result = await this.surveyRepository
+      .createQueryBuilder('survey')
+      .leftJoinAndSelect('survey.categories', 'category')
+      .where(`survey.id = ${id}`)
+      .getOne();
+
+    return result;
+  }
+
+  /**
+   * @description "설문이 갖고 있는 질문 조회"
+   * @param id 
+   * @returns 
+   */
+  async findQuestion(id: number) {
+    const result = await this.surveyRepository
+      .createQueryBuilder('survey')
+      .leftJoinAndSelect('survey.questions', 'question')
+      .where(`survey.id = ${id}`)
+      .getOne();
+
+    return result;
+  }
+
   async update(id: number, updateSurveyInput: UpdateSurveyInput) {
     const survey = await this.validSurvey(id);
     this.surveyRepository.merge(survey, updateSurveyInput);
