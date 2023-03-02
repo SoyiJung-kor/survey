@@ -1,28 +1,58 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
+import { Category } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
+  constructor(
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
+  ) { }
   private readonly logger = new Logger(CategoryService.name);
 
-  create(createCategoryInput: CreateCategoryInput) {
-    return 'This action adds a new category';
+  create(input: CreateCategoryInput) {
+    const newCategory = this.categoryRepository.create(input);
+    return this.categoryRepository.save(newCategory);
   }
 
   findAll() {
-    return `This action returns all category`;
+    return this.categoryRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} category`;
+    return this.validCategory(id);
   }
 
-  update(id: number, updateCategoryInput: UpdateCategoryInput) {
-    return `This action updates a #${id} category`;
+  async findSurveyWithCategory(id: number) {
+    const result = await this.categoryRepository
+      .createQueryBuilder('category')
+      .innerJoinAndSelect('category.survey', 'survey')
+      .where(`category.id= :${id}`)
+      .getOne();
+
+    return result;
+  }
+  async update(input: UpdateCategoryInput) {
+    const category = await this.validCategory(input.id);
+    this.categoryRepository.merge(category, input);
+    return this.categoryRepository.update(input.id, category);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    const category = await this.validCategory(id);
+    await this.categoryRepository.delete(id);
+    return category;
+  }
+
+  async validCategory(id: number) {
+    const category = await this.categoryRepository.findOneBy({ id });
+    if (!category) {
+      throw new Error(`CAN NOT FIND CATEGORY! ID: ${id}`);
+    }
+    return category;
   }
 }

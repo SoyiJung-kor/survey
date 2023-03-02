@@ -6,26 +6,32 @@ import { UpdateCategoryInput } from './dto/update-category.input';
 
 @Resolver(() => Category)
 export class CategoryResolver {
-  constructor(private readonly categoryService: CategoryService) {}
+  // eslint-disable-next-line prettier/prettier
+  constructor(private readonly categoryService: CategoryService) { }
 
   @Mutation(() => Category)
-  createCategory(@Args('createCategoryInput') createCategoryInput: CreateCategoryInput) {
-    return this.categoryService.create(createCategoryInput);
+  createCategory(@Args('input') input: CreateCategoryInput) {
+    return this.categoryService.create(input);
   }
 
-  @Query(() => [Category], { name: 'category' })
-  findAll() {
+  @Query(() => [Category])
+  findAllCategories() {
     return this.categoryService.findAll();
   }
 
-  @Query(() => Category, { name: 'category' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => Category)
+  findCategory(@Args('id', { type: () => Int }) id: number) {
     return this.categoryService.findOne(id);
   }
 
+  @Query(() => Category)
+  findSurveyWithCategory(@Args('id', { type: () => Int }) id: number) {
+    return this.categoryService.findSurveyWithCategory(id);
+  }
+
   @Mutation(() => Category)
-  updateCategory(@Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput) {
-    return this.categoryService.update(updateCategoryInput.id, updateCategoryInput);
+  updateCategory(@Args('input') input: UpdateCategoryInput) {
+    return this.categoryService.update(input);
   }
 
   @Mutation(() => Category)
