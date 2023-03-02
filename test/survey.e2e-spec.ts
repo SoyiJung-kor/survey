@@ -11,6 +11,8 @@ import { ParticipantModule } from '../src/participant/participant.module';
 import { SurveyModule } from '../src/survey/survey.module';
 import { HttpExceptionFilter } from '../src/common/utils/http_exception_filter';
 import { testTypeORMConfig } from '../src/common/config/test-orm-config';
+import { Category } from '../src/category/entities/category.entity';
+import { Survey } from '../src/survey/entities/survey.entity';
 const gql = '/graphql';
 
 describe('survey', () => {
@@ -170,6 +172,31 @@ describe('survey', () => {
         .expect(400)
     });
   });
+  describe('설문에 포함된 항목 조회하기!', () => {
+    beforeEach(async () => {
+      const mockCategory = new Category();
+      mockCategory.id = 1;
+      mockCategory.categoryName = 'Mock Category';
+      mockCategory.survey = await dataSource.manager.findOneBy(Survey, { id: 1 })
+      await dataSource.manager.save(Category, mockCategory);
+    })
+    it('설문에 포함된 항목 조회하기 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+            findSurveyWithCategory(id:1){
+              id
+            }
+          }`,
+        })
+        .expect((res) => {
+          const findSurveyWithCategory = res.body.data.findSurveyWithCategory;
+          const { id } = findSurveyWithCategory;
+          expect(id).toBe(1);
+        })
+    });
+  })
   describe('설문 수정하기!', () => {
     it('설문 수정 성공!', async () => {
       return request(app.getHttpServer())
