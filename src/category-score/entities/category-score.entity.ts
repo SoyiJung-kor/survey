@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, MinLength } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Category } from '../../category/entities/category.entity';
 import { CommonEntity } from '../../common/entities/\bcommon.entity';
@@ -20,6 +20,7 @@ export class CategoryScore extends CommonEntity {
   @Field(() => String)
   @Column()
   @IsString()
+  @MinLength(2)
   categoryMessage: string;
 
   @Column()

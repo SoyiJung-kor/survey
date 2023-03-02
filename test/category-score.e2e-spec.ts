@@ -56,7 +56,6 @@ describe('category', () => {
         app.close();
     });
     describe('기준점수 생성!', () => {
-        it.todo('기준점수 생성 성공!');
         it('기준점수 생성 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -74,7 +73,6 @@ describe('category', () => {
                 })
                 .expect(200)
                 .expect((res) => {
-                    console.log(res);
                     const createCategoryScore = res.body.data.createCategoryScore;
                     const { id, highScore, lowScore, categoryMessage } = createCategoryScore;
 
@@ -84,14 +82,146 @@ describe('category', () => {
                     expect(categoryMessage).toBe('배고픕니다.');
                 });
         });
-        it.todo('기준점수를 안적어서 기준점수 생성 실패!');
-        it.todo('기준점수를 숫자로 안적어서 기준점수 생성 실패!');
-        it.todo('안내문구를 안적어서 기준점수 생성 실패!');
-        it.todo('안내문구가 너무 짧아서 기준점수 생성 실패!');
-        it.todo('안내문구가 문자열이 아니라서 기준점수 생성 실패!');
-        it.todo('항목 아이디를 안적어서 기준점수 생성 실패!');
-        it.todo('없는 항목 아이디를 적어서 기준점수 생성 실패!');
-        it.todo('항목 아이디를 숫자로 안적어서 기준점수 생성 실패!');
+        it('기준점수를 안적어서 기준점수 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    createCategoryScore(input:{highScore:,lowScore:,categoryMessage:"배고픕니다.",categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('기준점수를 숫자로 안적어서 기준점수 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    createCategoryScore(input:{highScore:"10",lowScore:"0",categoryMessage:"배고픕니다.",categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('안내문구를 안적어서 기준점수 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    createCategoryScore(input:{highScore:10,lowScore:0,categoryMessage:,categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('안내문구가 너무 짧아서 기준점수 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    createCategoryScore(input:{highScore:10,lowScore:0,categoryMessage:" ",categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('안내문구가 문자열이 아니라서 기준점수 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    createCategoryScore(input:{highScore:10,lowScore:0,categoryMessage:배고픕니다.,categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('항목 아이디를 안적어서 기준점수 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    createCategoryScore(input:{highScore:10,lowScore:0,categoryMessage:"배고픕니다.",categoryId:}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('없는 항목 아이디를 적어서 기준점수 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    createCategoryScore(input:{highScore:10,lowScore:0,categoryMessage:"배고픕니다.",categoryId:100}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('항목 아이디를 숫자로 안적어서 기준점수 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    createCategoryScore(input:{highScore:10,lowScore:0,categoryMessage:"배고픕니다.",categoryId:"1"}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
     })
     describe('전체 기준점수 조회!', () => {
         it.todo('전체 기준점수 조회 성공!');
