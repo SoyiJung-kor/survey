@@ -516,7 +516,35 @@ describe('category', () => {
                 })
                 .expect(200);
         });
-        it.todo('기준점수 아이디를 안적어서 기준점수 삭제 실패!');
-        it.todo('없는 기준점수 아이디를 적어서 기준점수 삭제 실패!');
+        it('기준점수 아이디를 안적어서 기준점수 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    removeCategoryScore(id:){
+                        id
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('없는 기준점수 아이디를 적어서 기준점수 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    removeCategoryScore(id:100){
+                        id
+                    }
+                }
+                `,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
     })
 });
