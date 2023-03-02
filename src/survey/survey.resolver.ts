@@ -9,21 +9,41 @@ import { UpdateSurveyInput } from './dto/update-survey.input';
 export class SurveyResolver {
   constructor(private readonly surveyService: SurveyService) { }
 
-  @Mutation(() => Survey, { name: 'createSurvey' })
+  @Mutation(() => Survey)
   createSurvey(
     @Args('createSurveyInput') createSurveyInput: CreateSurveyInput,
   ) {
     return this.surveyService.create(createSurveyInput);
   }
 
-  @Query(() => [Survey], { name: 'findAllSurveys' })
-  findAll() {
+  @Query(() => [Survey])
+  findAllSurveys() {
     return this.surveyService.findAll();
   }
 
-  @Query(() => Survey, { name: 'findSurvey' })
-  findOne(@Args('surveyId', { type: () => Int }) surveyId: number) {
+  @Query(() => Survey)
+  findSurvey(@Args('surveyId', { type: () => Int }) surveyId: number) {
     return this.surveyService.findOne(surveyId);
+  }
+
+  /**
+   * @description 설문에 포함된 항목 조회
+   * @param id 설문 아이디
+   * @returns 
+   */
+  @Query(() => Survey)
+  findSurveyWithCategory(@Args('id', { type: () => Int }) id: number) {
+    return this.surveyService.findCategory(id);
+  }
+
+  /**
+     * @description 설문에 포함된 항목 조회
+     * @param id 설문 아이디
+     * @returns 
+     */
+  @Query(() => Survey)
+  findSurveyWithQuestion(@Args('id', { type: () => Int }) id: number) {
+    return this.surveyService.findQuestion(id);
   }
 
   @Mutation(() => Survey, { name: 'updateSurvey' })
