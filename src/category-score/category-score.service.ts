@@ -25,11 +25,11 @@ export class CategoryScoreService {
   }
 
   findAll() {
-    return `This action returns all categoryScore`;
+    return this.categoryScoreRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} categoryScore`;
+    return this.validCategoryScore(id);
   }
 
   update(id: number, updateCategoryScoreInput: UpdateCategoryScoreInput) {
@@ -38,5 +38,24 @@ export class CategoryScoreService {
 
   remove(id: number) {
     return `This action removes a #${id} categoryScore`;
+  }
+
+  async validCategoryScore(id: number) {
+    const categoryScore = await this.categoryScoreRepository.findOneBy({ id });
+    if (!categoryScore) {
+      throw new Error(`CAN NOT FIND CATEGORY SCORE! ID: ${id}`);
+    }
+    return categoryScore;
+  }
+
+  async validCategory(categoryId: number) {
+    const category = await this.entityManager.findOneBy(Category, {
+      id: categoryId,
+    });
+    if (!category) {
+      throw new Error(`CAN NOT FIND CATEGORY! ID: ${categoryId}`);
+    } else {
+      return category;
+    }
   }
 }

@@ -17,13 +17,13 @@ export class CategoryScoreResolver {
     return this.categoryScoreService.create(input);
   }
 
-  @Query(() => [CategoryScore], { name: 'categoryScore' })
-  findAll() {
+  @Query(() => [CategoryScore])
+  findAllCategoryScores() {
     return this.categoryScoreService.findAll();
   }
 
-  @Query(() => CategoryScore, { name: 'categoryScore' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => CategoryScore)
+  findCategoryScore(@Args('id', { type: () => Int }) id: number) {
     return this.categoryScoreService.findOne(id);
   }
 

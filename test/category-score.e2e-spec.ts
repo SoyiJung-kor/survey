@@ -224,12 +224,78 @@ describe('category', () => {
         });
     })
     describe('전체 기준점수 조회!', () => {
-        it.todo('전체 기준점수 조회 성공!');
+        it('전체 기준점수 조회 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                {
+                    findAllCategoryScores{
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(200);
+        });
     })
     describe('기준점수 아이디로 기준점수 조회!', () => {
-        it.todo('아이디로 기준점수 조회 성공!');
-        it.todo('없는 아이디로 기준점수 조회 실패!');
-        it.todo('아이디를 안적어서 기준점수 조회 실패!');
+        it('아이디로 기준점수 조회 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                {
+                    findCategoryScore(id:1){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(200);
+        });
+        it('없는 아이디로 기준점수 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                {
+                    findCategoryScore(id:100){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('아이디를 안적어서 기준점수 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                {
+                    findCategoryScore(id:){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
     })
     describe('기준점수 수정!', () => {
         it.todo('기준점수 수정 성공!');
