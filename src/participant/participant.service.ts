@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantInput } from './dto/create-participant.input';
@@ -12,6 +12,8 @@ export class ParticipantService {
     @InjectRepository(Participant)
     private participantRepository: Repository<Participant>,
   ) { }
+
+  private readonly logger = new Logger(ParticipantService.name);
 
   create(input: CreateParticipantInput) {
     const newParticipant = this.participantRepository.create(input);

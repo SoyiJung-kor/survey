@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { Response } from '../response/entities/response.entity';
@@ -14,6 +14,8 @@ export class EachResponseService {
     private eachResponseRepository: Repository<EachResponse>,
     private entityManager: EntityManager,
   ) { }
+
+  private readonly logger = new Logger(EachResponseService.name);
 
   async create(input: CreateEachResponseInput) {
     const eachResponse = this.eachResponseRepository.create(input);

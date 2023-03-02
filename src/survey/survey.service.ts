@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSurveyInput } from './dto/create-survey.input';
@@ -12,6 +12,8 @@ export class SurveyService {
     @InjectRepository(Survey)
     private surveyRepository: Repository<Survey>,
   ) { }
+
+  private readonly logger = new Logger(SurveyService.name);
 
   create(createSurveyInput: CreateSurveyInput) {
     const newSurvey = this.surveyRepository.create(createSurveyInput);
