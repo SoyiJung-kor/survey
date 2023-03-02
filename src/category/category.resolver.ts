@@ -24,11 +24,6 @@ export class CategoryResolver {
     return this.categoryService.findOne(id);
   }
 
-  // @Query(() => Category)
-  // findSurveyWithCategory(@Args('id', { type: () => Int }) id: number) {
-  //   return this.categoryService.findSurveyWithCategory(id);
-  // }
-
   @Mutation(() => Category)
   updateCategory(@Args('input') input: UpdateCategoryInput) {
     return this.categoryService.update(input);

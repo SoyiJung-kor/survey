@@ -1,6 +1,7 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { IsString, MinLength } from 'class-validator';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { CategoryScore } from '../../category-score/entities/category-score.entity';
 import { CommonEntity } from '../../common/entities/\bcommon.entity';
 import { Survey } from '../../survey/entities/survey.entity';
 
@@ -22,4 +23,10 @@ export class Category extends CommonEntity {
     onDelete: 'CASCADE',
   })
   survey: Survey;
+
+  @OneToMany(() => CategoryScore, (categoryScore) => categoryScore.category, {
+    cascade: true,
+  })
+  @Field(() => [CategoryScore], { nullable: true })
+  categoryScores: CategoryScore[];
 }

@@ -40,6 +40,7 @@ describe('category', () => {
 
         const mockSurvey = new Survey();
         mockSurvey.surveyTitle = 'Mock Survey for Test';
+        mockSurvey.id = 1;
         await dataSource.manager.save(mockSurvey);
     });
 

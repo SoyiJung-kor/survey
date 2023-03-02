@@ -3,9 +3,10 @@ import { CategoryService } from './category.service';
 import { CategoryResolver } from './category.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
+import { CategoryScoreModule } from '../category-score/category-score.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Category])],
+  imports: [CategoryScoreModule, TypeOrmModule.forFeature([Category])],
   providers: [CategoryResolver, CategoryService],
 })
 // eslint-disable-next-line prettier/prettier

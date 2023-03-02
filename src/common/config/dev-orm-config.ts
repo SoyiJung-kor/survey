@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Answer } from '../../answer/entities/answer.entity';
+import { CategoryScore } from '../../category-score/entities/category-score.entity';
 import { Category } from '../../category/entities/category.entity';
 import { EachResponse } from '../../each-response/entities/each-response.entity';
 import { Participant } from '../../participant/entities/participant.entity';
@@ -15,6 +16,6 @@ export const typeORMConfig: TypeOrmModuleOptions = {
     username: 'postgres',
     password: 'postgres',
     database: 'postgres',
-    entities: [Answer, Participant, Question, Response, Survey, EachResponse, Category],
+    entities: [Answer, Participant, Question, Response, Survey, EachResponse, Category, CategoryScore],
     synchronize: true,
 };
