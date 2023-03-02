@@ -4,6 +4,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TestingModule, Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import request from 'supertest';
 import { join } from 'path';
 import { DataSource } from 'typeorm';
 import { testTypeORMConfig } from '../src/common/config/test-orm-config';
@@ -11,6 +12,8 @@ import { HttpExceptionFilter } from '../src/common/utils/http_exception_filter';
 import { ParticipantModule } from '../src/participant/participant.module';
 import { Survey } from '../src/survey/entities/survey.entity';
 import { SurveyModule } from '../src/survey/survey.module';
+
+const gql = '/graphql';
 
 describe('category', () => {
     let app: INestApplication;
@@ -46,6 +49,35 @@ describe('category', () => {
     });
     describe('항목 생성', () => {
         it.todo('항목 생성 성공!');
+        it('항목 생성 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    createCategory(input:{categoryName:"Test Category",surveyId:1}){
+                        id
+                        categoryName
+                        survey{
+                            id
+                            surveyTitle
+                        }
+                    }
+                }
+                `,
+                })
+                .expect(200)
+                .expect((res) => {
+                    const createCategory = res.body.data.createCategory;
+                    const { id, categoryName, survey } = createCategory;
+
+                    expect(id).toBe(1);
+                    expect(categoryName).toBe('Test Category');
+                    expect(survey.id).toBe(1);
+                    expect(survey.surveyTitle).toBe('Mock Survey for Test');
+                });
+
+        });
         it.todo('항목 이름을 안써서 항목 생성 실패!');
         it.todo('항목 이름이 짧아서 항목 생성 실패!');
         it.todo('항목 이름이 문자열이 아니라 항목 생성 실패!');

@@ -16,11 +16,12 @@ export class CategoryService {
   ) { }
   private readonly logger = new Logger(CategoryService.name);
 
-  create(input: CreateCategoryInput) {
+  async create(input: CreateCategoryInput) {
     const newCategory = this.categoryRepository.create(input);
-    const survey = new Survey();
-    survey.id = input.surveyId;
-    newCategory.survey = survey;
+    newCategory.survey = await this.entityManager.findOneBy(Survey, { id: input.surveyId },);
+    // const survey = new Survey();
+    // survey.id = input.surveyId;
+    // newCategory.survey = survey;
     return this.entityManager.save(newCategory);
   }
 
