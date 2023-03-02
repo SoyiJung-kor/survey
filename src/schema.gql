@@ -61,6 +61,11 @@ type Survey {
   categories: [Category!]
 }
 
+type QuestionCategory {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   findAllSurveys: [Survey!]!
   findSurvey(surveyId: Int!): Survey!
@@ -85,6 +90,7 @@ type Query {
   findCategoryScore(id: Int!): CategoryScore!
   findAllParticipants: [Participant!]!
   findOneParticipant(participantId: Int!): Participant!
+  questionCategory(id: Int!): QuestionCategory!
 }
 
 type Mutation {
@@ -112,6 +118,9 @@ type Mutation {
   createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
   updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!
   removeParticipant(participantId: Int!): Participant!
+  createQuestionCategory(createQuestionCategoryInput: CreateQuestionCategoryInput!): QuestionCategory!
+  updateQuestionCategory(updateQuestionCategoryInput: UpdateQuestionCategoryInput!): QuestionCategory!
+  removeQuestionCategory(id: Int!): QuestionCategory!
 }
 
 input CreateSurveyInput {
@@ -244,5 +253,16 @@ input CreateParticipantInput {
 input UpdateParticipantInput {
   """participant email"""
   email: String
+  id: Int!
+}
+
+input CreateQuestionCategoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateQuestionCategoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int
   id: Int!
 }

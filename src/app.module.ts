@@ -9,6 +9,7 @@ import { SurveyModule } from './survey/survey.module';
 import { ParticipantModule } from './participant/participant.module';
 import { typeORMConfig } from './common/config/dev-orm-config';
 import { CategoryScoreModule } from './category-score/category-score.module';
+import { QuestionCategoryModule } from './question-category/question-category.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CategoryScoreModule } from './category-score/category-score.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     CategoryScoreModule,
+    QuestionCategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
