@@ -298,7 +298,6 @@ describe('category', () => {
         });
     })
     describe('기준점수 수정!', () => {
-        it.todo('기준점수 수정 성공!');
         it('기준점수 수정 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -316,7 +315,6 @@ describe('category', () => {
                 })
                 .expect(200)
                 .expect((res) => {
-                    console.log(res);
                     const updateCategoryScore = res.body.data.updateCategoryScore;
                     const { id, highScore, lowScore, categoryMessage } = updateCategoryScore;
 
@@ -326,16 +324,182 @@ describe('category', () => {
                     expect(categoryMessage).toBe('배부릅니다.');
                 });
         });
-        it.todo('기준점수 아이디를 안적어서 기준점수 수정 실패!');
-        it.todo('없는 기준점수 아이디를 적어서 기준점수 수정 실패!');
-        it.todo('기준점수 아이디가 숫자가 아니라 기준점수 수정 실패!');
-        it.todo('기준점수수정: 기준점수를 입력하지 않아서 수정 실패!');
-        it.todo('기준점수수정: 기준점수가 숫자가 아니라 수정 실패!');
-        it.todo('안내문구수정: 안내문구를 입력하지 않아서 수정 실패!');
-        it.todo('안내문구수정: 안내문구가 문자열이 아니라 수정 실패!');
-        it.todo('안내문구수정: 안내문구가 너무 짧아서 수정 실패!');
-        it.todo('항목수정: 항목 아이디를 안적어서 수정 실패!');
-        it.todo('항목수정: 존재하지 않는 항목 아이디를 적어서 수정 실패!');
+        it('기준점수 아이디를 안적어서 기준점수 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:,highScore:10,lowScore:0,categoryMessage:"배부릅니다.",categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('없는 기준점수 아이디를 적어서 기준점수 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:100,highScore:10,lowScore:0,categoryMessage:"배부릅니다.",categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('기준점수 아이디가 숫자가 아니라 기준점수 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:"100",highScore:10,lowScore:0,categoryMessage:"배부릅니다.",categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('기준점수수정: 기준점수를 입력하지 않아서 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:1,highScore:,lowScore:,categoryMessage:"배부릅니다.",categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('기준점수수정: 기준점수가 숫자가 아니라 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:1,highScore:"100",lowScore:"100",categoryMessage:"배부릅니다.",categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('안내문구수정: 안내문구를 입력하지 않아서 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:1,highScore:10,lowScore:0,categoryMessage:,categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('안내문구수정: 안내문구가 문자열이 아니라 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:1,highScore:10,lowScore:0,categoryMessage:배부릅니다.,categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('안내문구수정: 안내문구가 너무 짧아서 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:1,highScore:10,lowScore:0,categoryMessage:" ",categoryId:1}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('항목수정: 항목 아이디를 안적어서 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:1,highScore:10,lowScore:0,categoryMessage:"배부릅니다.",categoryId:}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect(400);
+        });
+        it('항목수정: 존재하지 않는 항목 아이디를 적어서 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    updateCategoryScore(input:{id:1,highScore:10,lowScore:0,categoryMessage:"배부릅니다.",categoryId:100}){
+                        id
+                        highScore
+                        lowScore
+                        categoryMessage
+                    }
+                }
+                `,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
     })
     describe('기준점수 삭제!', () => {
         it.todo('기준점수 삭제 성공!');
