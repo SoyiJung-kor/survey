@@ -8,6 +8,7 @@ import { join } from 'path';
 import { SurveyModule } from './survey/survey.module';
 import { ParticipantModule } from './participant/participant.module';
 import { typeORMConfig } from './common/config/dev-orm-config';
+import { CategoryScoreModule } from './category-score/category-score.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { typeORMConfig } from './common/config/dev-orm-config';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
+    CategoryScoreModule,
   ],
   controllers: [AppController],
   providers: [AppService],
