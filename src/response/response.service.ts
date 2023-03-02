@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, EntityManager, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Participant } from '../participant/entities/participant.entity';
 import { Survey } from '../survey/entities/survey.entity';
 import { CreateResponseInput } from './dto/create-response.input';
@@ -14,7 +14,6 @@ export class ResponseService {
     @InjectRepository(Response)
     private responseRepository: Repository<Response>,
     private entityManager: EntityManager,
-    private dataSource: DataSource,
   ) { }
 
   private readonly logger = new Logger(ResponseService.name);
@@ -51,7 +50,7 @@ export class ResponseService {
   }
 
   async getResponseData(id: number) {
-    const responseData = await this.dataSource.manager
+    const responseData = await this.entityManager
       .createQueryBuilder(Response, 'response')
       .where(`response.id = ${id}`)
       .getOne();
@@ -60,7 +59,7 @@ export class ResponseService {
   }
 
   async getScore(id: number) {
-    const score = await this.dataSource.manager
+    const score = await this.entityManager
       .createQueryBuilder(Response, 'response')
       .leftJoin('response.eachResponse', 'eachResponse')
       .select('SUM(eachResponse.responseScore)', 'totalScore')
@@ -73,7 +72,7 @@ export class ResponseService {
   async getSumScore(id: number) {
     const Score = await this.getScore(id);
     const SumScore = +Score.totalScore;
-    await this.dataSource.manager
+    await this.entityManager
       .createQueryBuilder()
       .update(Response)
       .set({ sumScore: `${SumScore}` })
