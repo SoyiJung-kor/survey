@@ -1,5 +1,5 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 @InputType()
 export class CreateCategoryScoreInput {
@@ -14,11 +14,4 @@ export class CreateCategoryScoreInput {
   @Field()
   @IsNumber()
   categoryId: number;
-
-  @Field(() => Category)
-  @JoinColumn({ name: 'categoryId' })
-  @ManyToOne(() => Category, (category) => category.categoryScores, {
-    onDelete: 'CASCADE',
-  })
-  category: Category;
 }

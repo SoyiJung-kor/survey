@@ -10,10 +10,18 @@ type EachResponse {
   responseScore: Int!
 }
 
+type CategoryScore {
+  id: Int!
+  gradeScore: Int!
+  categoryMessage: String!
+  category: Category!
+}
+
 type Category {
   id: Int!
   categoryName: String!
   survey: Survey!
+  categoryScores: [CategoryScore!]
 }
 
 type Answer {
@@ -72,6 +80,7 @@ type Query {
   findOneEachResponse(id: Int!): EachResponse!
   findAllCategories: [Category!]!
   findCategory(id: Int!): Category!
+  categoryScore(id: Int!): CategoryScore!
   findAllParticipants: [Participant!]!
   findOneParticipant(participantId: Int!): Participant!
 }
@@ -95,6 +104,9 @@ type Mutation {
   createCategory(input: CreateCategoryInput!): Category!
   updateCategory(input: UpdateCategoryInput!): Category!
   removeCategory(id: Int!): Category!
+  createCategoryScore(createCategoryScoreInput: CreateCategoryScoreInput!): CategoryScore!
+  updateCategoryScore(updateCategoryScoreInput: UpdateCategoryScoreInput!): CategoryScore!
+  removeCategoryScore(id: Int!): CategoryScore!
   createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
   updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!
   removeParticipant(participantId: Int!): Participant!
@@ -204,6 +216,19 @@ input CreateCategoryInput {
 input UpdateCategoryInput {
   categoryName: String
   surveyId: Int
+  id: Int!
+}
+
+input CreateCategoryScoreInput {
+  gradeScore: Int!
+  categoryMessage: String!
+  categoryId: Float!
+}
+
+input UpdateCategoryScoreInput {
+  gradeScore: Int
+  categoryMessage: String
+  categoryId: Float
   id: Int!
 }
 

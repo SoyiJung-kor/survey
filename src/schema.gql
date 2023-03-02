@@ -220,13 +220,15 @@ input UpdateCategoryInput {
 }
 
 input CreateCategoryScoreInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  gradeScore: Int!
+  categoryMessage: String!
+  categoryId: Float!
 }
 
 input UpdateCategoryScoreInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  gradeScore: Int
+  categoryMessage: String
+  categoryId: Float
   id: Int!
 }
 
