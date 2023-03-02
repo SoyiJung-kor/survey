@@ -1,7 +1,24 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
+import { IsString } from 'class-validator';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { CommonEntity } from '../../common/entities/\bcommon.entity';
+import { Question } from '../../question/entities/question.entity';
 
 @ObjectType()
-export class QuestionCategory {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+@Entity()
+export class QuestionCategory extends CommonEntity {
+  @Column()
+  @IsString()
+  @Field(() => String)
+  categoryName: string;
+
+  @Column()
+  questionId: number;
+
+  @ManyToOne(() => Question, (question) => question.questionCategories, {
+    onDelete: 'CASCADE',
+  })
+  @Field(() => Question)
+  @JoinColumn({ name: 'questionId' })
+  question: Question;
 }

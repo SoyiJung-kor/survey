@@ -3,6 +3,7 @@ import { IsNumber, MinLength } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Answer } from '../../answer/entities/answer.entity';
 import { CommonEntity } from '../../common/entities/\bcommon.entity';
+import { QuestionCategory } from '../../question-category/entities/question-category.entity';
 import { Survey } from '../../survey/entities/survey.entity';
 
 @ObjectType()
@@ -30,4 +31,11 @@ export class Question extends CommonEntity {
 
   @OneToMany(() => Answer, (answers) => answers.question, { cascade: true })
   answers: Answer[];
+
+  @OneToMany(
+    () => QuestionCategory,
+    (questionCategories) => questionCategories.question,
+    { cascade: true },
+  )
+  questionCategories: QuestionCategory[];
 }

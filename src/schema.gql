@@ -62,8 +62,8 @@ type Survey {
 }
 
 type QuestionCategory {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  id: Int!
+  categoryName: String!
 }
 
 type Query {
