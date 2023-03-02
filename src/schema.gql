@@ -2,10 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type CategoryScore {
+  id: Int!
+  gradeScore: Int!
+  categoryMessage: String!
+  category: Category!
+}
+
 type Category {
   id: Int!
   categoryName: String!
   survey: Survey!
+  categoryScores: [CategoryScore!]
 }
 
 type Answer {
@@ -52,11 +60,6 @@ type Survey {
   categories: [Category!]
 }
 
-type CategoryScore {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type Query {
   findAllSurveys: [Survey!]!
   findSurvey(surveyId: Int!): Survey!
@@ -77,9 +80,9 @@ type Query {
   findOneEachResponse(id: Int!): EachResponse!
   findAllCategories: [Category!]!
   findCategory(id: Int!): Category!
+  categoryScore(id: Int!): CategoryScore!
   findAllParticipants: [Participant!]!
   findOneParticipant(participantId: Int!): Participant!
-  categoryScore(id: Int!): CategoryScore!
 }
 
 type Mutation {
@@ -101,12 +104,12 @@ type Mutation {
   createCategory(input: CreateCategoryInput!): Category!
   updateCategory(input: UpdateCategoryInput!): Category!
   removeCategory(id: Int!): Category!
-  createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
-  updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!
-  removeParticipant(participantId: Int!): Participant!
   createCategoryScore(createCategoryScoreInput: CreateCategoryScoreInput!): CategoryScore!
   updateCategoryScore(updateCategoryScoreInput: UpdateCategoryScoreInput!): CategoryScore!
   removeCategoryScore(id: Int!): CategoryScore!
+  createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
+  updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!
+  removeParticipant(participantId: Int!): Participant!
 }
 
 input CreateSurveyInput {
@@ -216,17 +219,6 @@ input UpdateCategoryInput {
   id: Int!
 }
 
-input CreateParticipantInput {
-  """participant email"""
-  email: String!
-}
-
-input UpdateParticipantInput {
-  """participant email"""
-  email: String
-  id: Int!
-}
-
 input CreateCategoryScoreInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -235,5 +227,16 @@ input CreateCategoryScoreInput {
 input UpdateCategoryScoreInput {
   """Example field (placeholder)"""
   exampleField: Int
+  id: Int!
+}
+
+input CreateParticipantInput {
+  """participant email"""
+  email: String!
+}
+
+input UpdateParticipantInput {
+  """participant email"""
+  email: String
   id: Int!
 }
