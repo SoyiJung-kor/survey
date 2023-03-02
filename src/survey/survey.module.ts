@@ -5,10 +5,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Survey } from './entities/survey.entity';
 import { QuestionModule } from '../question/question.module';
 import { ResponseModule } from '../response/response.module';
+import { CategoryModule } from '../category/category.module';
 
 @Module({
-  imports: [QuestionModule, ResponseModule, TypeOrmModule.forFeature([Survey])],
+  imports: [
+    QuestionModule,
+    ResponseModule,
+    CategoryModule,
+    TypeOrmModule.forFeature([Survey]),
+  ],
   providers: [SurveyResolver, SurveyService],
-  exports: [TypeOrmModule],
 })
-export class SurveyModule {}
+// eslint-disable-next-line prettier/prettier
+export class SurveyModule { }

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { Question } from '../question/entities/question.entity';
@@ -14,6 +14,7 @@ export class AnswerService {
     private answerRepository: Repository<Answer>,
     private entityManager: EntityManager,
   ) { }
+  private readonly logger = new Logger(AnswerService.name);
 
   async create(input: CreateAnswerInput) {
     const answer = this.answerRepository.create(input);
@@ -42,7 +43,7 @@ export class AnswerService {
       .createQueryBuilder('answer')
       .innerJoinAndSelect('answer.question', 'question')
       .where(`answer.id= :${id}`)
-      .getMany();
+      .getOne();
 
     return result;
   }
@@ -50,7 +51,7 @@ export class AnswerService {
   async update(id: number, updateAnswerInput: UpdateAnswerInput) {
     const answer = await this.validAnswer(id);
 
-    if (updateAnswerInput.questionId) {
+    if (updateAnswerInput?.questionId) {
       const question = await this.validQuestion(updateAnswerInput.questionId);
       answer.question = question;
     }

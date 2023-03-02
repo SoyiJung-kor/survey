@@ -7,7 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [TypeOrmModule.forFeature([EachResponse])],
   providers: [EachResponseResolver, EachResponseService],
-  exports: [TypeOrmModule],
 })
 // eslint-disable-next-line prettier/prettier
 export class EachResponseModule { }

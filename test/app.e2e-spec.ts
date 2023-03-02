@@ -7,7 +7,7 @@ import { join } from 'path';
 import { ParticipantModule } from '../src/participant/participant.module';
 import { SurveyModule } from '../src/survey/survey.module';
 import { DataSource } from 'typeorm';
-import { typeORMConfig } from '../src/common/config/orm-config';
+import { testTypeORMConfig } from '../src/common/config/test-orm-config';
 
 describe('Graphql (e2e)', () => {
   let app: INestApplication;
@@ -18,7 +18,7 @@ describe('Graphql (e2e)', () => {
       imports: [
         SurveyModule,
         ParticipantModule,
-        TypeOrmModule.forRoot(typeORMConfig),
+        TypeOrmModule.forRoot(testTypeORMConfig),
         GraphQLModule.forRoot<ApolloDriverConfig>({
           driver: ApolloDriver,
           autoSchemaFile: join(process.cwd(), 'test/schema.gql'),

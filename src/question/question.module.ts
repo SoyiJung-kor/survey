@@ -8,7 +8,6 @@ import { Question } from './entities/question.entity';
 @Module({
   imports: [AnswerModule, TypeOrmModule.forFeature([Question])],
   providers: [QuestionResolver, QuestionService],
-  exports: [TypeOrmModule],
 })
 // eslint-disable-next-line prettier/prettier
 export class QuestionModule { }

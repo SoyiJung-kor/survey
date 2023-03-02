@@ -1,26 +1,13 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { CommonEntity } from '../../common/entity/\bcommon.entity';
 import { EachResponse } from '../../each-response/entities/each-response.entity';
 import { Participant } from '../../participant/entities/participant.entity';
 import { Survey } from '../../survey/entities/survey.entity';
 
 @ObjectType()
 @Entity()
-export class Response {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Response extends CommonEntity {
   @Field(() => Boolean)
   @Column({ default: false })
   isSubmit: boolean;
@@ -28,15 +15,6 @@ export class Response {
   @Field(() => Int)
   @Column({ default: 0 })
   sumScore: number;
-
-  @CreateDateColumn()
-  readonly createdAt: Date;
-
-  @UpdateDateColumn()
-  readonly updatedAt: Date;
-
-  @DeleteDateColumn()
-  readonly deletedAt: Date;
 
   @Column()
   participantId: number;
