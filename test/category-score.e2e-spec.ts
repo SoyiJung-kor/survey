@@ -502,7 +502,20 @@ describe('category', () => {
         });
     })
     describe('기준점수 삭제!', () => {
-        it.todo('기준점수 삭제 성공!');
+        it('기준점수 삭제 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                mutation {
+                    removeCategoryScore(id:1){
+                        id
+                    }
+                }
+                `,
+                })
+                .expect(200);
+        });
         it.todo('기준점수 아이디를 안적어서 기준점수 삭제 실패!');
         it.todo('없는 기준점수 아이디를 적어서 기준점수 삭제 실패!');
     })

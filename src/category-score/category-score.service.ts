@@ -47,8 +47,10 @@ export class CategoryScoreService {
     return newCategoryScore;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} categoryScore`;
+  async remove(id: number) {
+    const categoryScore = await this.validCategoryScore(id);
+    await this.categoryScoreRepository.delete(id);
+    return categoryScore;
   }
 
   async validCategoryScore(id: number) {
