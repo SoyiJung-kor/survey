@@ -72,6 +72,21 @@ export class QuestionService {
     return question;
   }
 
+  /**
+   * @description 질문이 포함하는 항목 조회
+   * @param id question id
+   * @returns 
+   */
+  async findQuestionWithCategory(id: number) {
+    const result = await this.questionRepository
+      .createQueryBuilder('question')
+      .leftJoinAndSelect('question.questionCategories', 'question_category')
+      .where(`question.id = ${id}`)
+      .getOne();
+
+    return result;
+  }
+
   async update(id: number, updateQuestionInput: UpdateQuestionInput) {
     const question = await this.validQuestion(id);
     this.questionRepository.merge(question, updateQuestionInput);

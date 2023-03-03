@@ -481,6 +481,25 @@ describe('question', () => {
         .expect(400);
     });
   });
+  describe('질문이 포함하는 항목 조회', () => {
+    it('질문이 포함하는 항목 조회 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+            findQuestionWithCategory(id:1){
+                questionNumber
+                questionContent
+                id
+                questionCategories{
+                  categoryName
+                }
+            }
+          }`,
+        })
+        .expect(200);
+    });
+  })
   describe('질문 삭제!', () => {
     it('질문 삭제 성공!', async () => {
       return request(app.getHttpServer())

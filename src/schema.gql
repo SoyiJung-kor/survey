@@ -37,6 +37,8 @@ type Question {
   questionNumber: Int!
   questionContent: String!
   survey: Survey!
+  answers: [Answer!]
+  questionCategories: [QuestionCategory!]
 }
 
 type EachResponse {
@@ -77,6 +79,7 @@ type Query {
   findQuestion(questionId: Int!): Question!
   findOneQuestionDetail(id: Int!): Question!
   findQuestionContainCategory(surveyId: Int!, categoryName: String!): [Question!]!
+  findQuestionWithCategory(id: Int!): Question!
   findAllAnswers: [Answer!]!
   findAnswer(id: Int!): Answer!
   findOneAnswerDetail(answerId: Int!): [Answer!]!

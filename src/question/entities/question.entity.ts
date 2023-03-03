@@ -30,12 +30,14 @@ export class Question extends CommonEntity {
   survey: Survey;
 
   @OneToMany(() => Answer, (answers) => answers.question, { cascade: true })
+  @Field(() => [Answer], { nullable: true })
   answers: Answer[];
 
   @OneToMany(
     () => QuestionCategory,
-    (questionCategories) => questionCategories.question,
+    (questionCategory) => questionCategory.question,
     { cascade: true },
   )
+  @Field(() => [QuestionCategory], { nullable: true })
   questionCategories: QuestionCategory[];
 }
