@@ -431,7 +431,7 @@ describe('question', () => {
     });
   });
   describe('특정 항목을 포함하는 질문 조회!', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       const mockQuestionCategory = new QuestionCategory();
       mockQuestionCategory.id = 1;
       mockQuestionCategory.questionId = 1;
@@ -452,9 +452,34 @@ describe('question', () => {
         })
         .expect(200);
     });
-    it.todo('없는 아이디를 적어서 항목이 어떤 질문에 포함되어 있는지 조회 실패!');
-    it.todo('아이디를 안적어서 항목이 어떤 질문에 포함되어 있는지 조회 실패!');
-    it.todo('아이디가 숫자가 아니라 항목이 어떤 질문에 포함되어 있는지 조회 실패!');
+    it('없는 항목이름을 적어서 항목이 어떤 질문에 포함되어 있는지 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+            findQuestionContainCategory(surveyId:1,categoryName:"Mock Category"){
+                questionNumber
+                questionContent
+            }
+          }`,
+        })
+        .expect((res) => {
+          expect(res.body.data.findQuestionContainCategory).toStrictEqual([]);
+        });
+    });
+    it('항목이름을 안적어서 항목이 어떤 질문에 포함되어 있는지 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+            findQuestionContainCategory(surveyId:1,categoryName:){
+                questionNumber
+                questionContent
+            }
+          }`,
+        })
+        .expect(400);
+    });
   });
   describe('질문 삭제!', () => {
     it('질문 삭제 성공!', async () => {

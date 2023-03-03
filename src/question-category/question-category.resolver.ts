@@ -29,16 +29,6 @@ export class QuestionCategoryResolver {
     return this.questionCategoryService.findOne(id);
   }
 
-  // @Query(() => [Question])
-  // findQuestionContainCategory(
-  //   @Args('surveyId', { type: () => Int }) surveyId: number,
-  //   @Args('categoryName', { type: () => String }) categoryName: string,
-  // ) {
-  //   return this.questionCategoryService.findQuestionContainCategory(
-  //     surveyId,
-  //     categoryName,
-  //   );
-  // }
   @Mutation(() => QuestionCategory)
   updateQuestionCategory(
     @Args('updateQuestionCategoryInput')
