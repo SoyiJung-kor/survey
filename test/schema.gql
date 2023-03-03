@@ -33,6 +33,12 @@ type Answer {
   question: Question!
 }
 
+type QuestionCategory {
+  id: Int!
+  categoryName: String!
+  question: Question!
+}
+
 type Question {
   id: Int!
   questionNumber: Int!
@@ -72,6 +78,7 @@ type Query {
   findAllAnswers: [Answer!]!
   findAnswer(id: Int!): Answer!
   findOneAnswerDetail(answerId: Int!): [Answer!]!
+  questionCategory(id: Int!): QuestionCategory!
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findResponseWithQueryBuilder(responseId: Int!): Response!
@@ -97,6 +104,9 @@ type Mutation {
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   removeAnswer(id: Int!): Answer!
+  createQuestionCategory(input: CreateQuestionCategoryInput!): QuestionCategory!
+  updateQuestionCategory(updateQuestionCategoryInput: UpdateQuestionCategoryInput!): QuestionCategory!
+  removeQuestionCategory(id: Int!): QuestionCategory!
   createResponse(createResponseInput: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
   updateResponse(updateResponseInput: UpdateResponseInput!): Response!
@@ -166,6 +176,17 @@ input UpdateAnswerInput {
   """answer Score"""
   answerScore: Int
   questionId: Int
+  id: Int!
+}
+
+input CreateQuestionCategoryInput {
+  questionId: Int!
+  categoryName: String!
+}
+
+input UpdateQuestionCategoryInput {
+  questionId: Int
+  categoryName: String
   id: Int!
 }
 

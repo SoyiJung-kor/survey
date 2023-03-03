@@ -14,6 +14,7 @@ import { ParticipantModule } from '../src/participant/participant.module';
 import { Question } from '../src/question/entities/question.entity';
 import { Survey } from '../src/survey/entities/survey.entity';
 import { SurveyModule } from '../src/survey/survey.module';
+import request from 'supertest';
 
 const gql = '/graphql';
 
@@ -74,20 +75,41 @@ describe('question-category', () => {
     });
     describe('질문 문항 생성!', () => {
         it.todo('질문 문항 생성 성공!');
+        it('질문 문항 생성 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                    mutation {
+                        createQuestionCategory(input:{questionId:1,categoryName:"Mock Category for Test"}){
+                            id
+                            categoryName
+                        }
+                    }`,
+                })
+                .expect(200)
+                .expect((res) => {
+                    const createQuestionCategory = res.body.data.createQuestionCategory;
+                    const { id, categoryName } = createQuestionCategory;
+
+                    expect(id).toBe(1);
+                    expect(categoryName).toBe('Mock Category for Test');
+                });
+        });
     });
     describe('질문 문항 전체 조회!', () => {
         it.todo('질문 문항 전체 조회 성공!');
-    })
+    });
     describe('아이디로 질문 문항 조회!', () => {
         it.todo('아이디로 질문 문항 전체 조회 성공!');
-    })
+    });
     describe('항목이 어떤 질문에 포함되어 있는지 조회!', () => {
         it.todo('항목이 어떤 질문에 포함되어 있는지 조회 성공!');
-    })
+    });
     describe('질문 문항 수정!', () => {
         it.todo('질문 문항 수정 성공!');
-    })
+    });
     describe('질문 문항 삭제!', () => {
         it.todo('질문 문항 삭제 성공!');
-    })
+    });
 });

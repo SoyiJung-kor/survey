@@ -4,12 +4,12 @@ import { QuestionResolver } from './question.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AnswerModule } from '../answer/answer.module';
 import { Question } from './entities/question.entity';
-import { QuestionCategory } from '../question-category/entities/question-category.entity';
+import { QuestionCategoryModule } from '../question-category/question-category.module';
 
 @Module({
   imports: [
     AnswerModule,
-    QuestionCategory,
+    QuestionCategoryModule,
     TypeOrmModule.forFeature([Question]),
   ],
   providers: [QuestionResolver, QuestionService],

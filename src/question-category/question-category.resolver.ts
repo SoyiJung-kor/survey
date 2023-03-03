@@ -6,11 +6,16 @@ import { UpdateQuestionCategoryInput } from './dto/update-question-category.inpu
 
 @Resolver(() => QuestionCategory)
 export class QuestionCategoryResolver {
-  constructor(private readonly questionCategoryService: QuestionCategoryService) {}
+  constructor(
+    private readonly questionCategoryService: QuestionCategoryService,
+  ) { }
 
   @Mutation(() => QuestionCategory)
-  createQuestionCategory(@Args('createQuestionCategoryInput') createQuestionCategoryInput: CreateQuestionCategoryInput) {
-    return this.questionCategoryService.create(createQuestionCategoryInput);
+  createQuestionCategory(
+    @Args('input')
+    input: CreateQuestionCategoryInput,
+  ) {
+    return this.questionCategoryService.create(input);
   }
 
   @Query(() => [QuestionCategory], { name: 'questionCategory' })
@@ -24,8 +29,14 @@ export class QuestionCategoryResolver {
   }
 
   @Mutation(() => QuestionCategory)
-  updateQuestionCategory(@Args('updateQuestionCategoryInput') updateQuestionCategoryInput: UpdateQuestionCategoryInput) {
-    return this.questionCategoryService.update(updateQuestionCategoryInput.id, updateQuestionCategoryInput);
+  updateQuestionCategory(
+    @Args('updateQuestionCategoryInput')
+    updateQuestionCategoryInput: UpdateQuestionCategoryInput,
+  ) {
+    return this.questionCategoryService.update(
+      updateQuestionCategoryInput.id,
+      updateQuestionCategoryInput,
+    );
   }
 
   @Mutation(() => QuestionCategory)
