@@ -4,9 +4,14 @@ import { QuestionResolver } from './question.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AnswerModule } from '../answer/answer.module';
 import { Question } from './entities/question.entity';
+import { QuestionCategoryModule } from '../question-category/question-category.module';
 
 @Module({
-  imports: [AnswerModule, TypeOrmModule.forFeature([Question])],
+  imports: [
+    AnswerModule,
+    QuestionCategoryModule,
+    TypeOrmModule.forFeature([Question]),
+  ],
   providers: [QuestionResolver, QuestionService],
 })
 // eslint-disable-next-line prettier/prettier

@@ -47,6 +47,7 @@ export class CategoryService {
 
     return result;
   }
+
   async update(input: UpdateCategoryInput) {
     const category = await this.validCategory(input.id);
     if (input?.surveyId) {

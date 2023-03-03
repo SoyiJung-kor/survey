@@ -31,6 +31,27 @@ export class QuestionResolver {
     return this.questionService.findDetail(id);
   }
 
+  @Query(() => [Question])
+  findQuestionContainCategory(
+    @Args('surveyId', { type: () => Int }) surveyId: number,
+    @Args('categoryName', { type: () => String }) categoryName: string,
+  ) {
+    return this.questionService.findQuestionContainCategory(
+      surveyId,
+      categoryName,
+    );
+  }
+
+  /**
+   * @description 질문이 포함하는 항목 조회
+   * @param id question id
+   * @returns 
+   */
+  @Query(() => Question)
+  findQuestionWithCategory(@Args('id', { type: () => Int }) id: number,) {
+    return this.questionService.findQuestionWithCategory(id);
+  }
+
   @Mutation(() => Question, { name: 'updateQuestion' })
   updateQuestion(
     @Args('updateQuestionInput') updateQuestionInput: UpdateQuestionInput,

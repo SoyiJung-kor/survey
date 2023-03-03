@@ -21,6 +21,7 @@ type CategoryScore {
 type Category {
   id: Int!
   categoryName: String!
+  surveyId: Int!
   survey: Survey!
   categoryScores: [CategoryScore!]
 }
@@ -33,11 +34,19 @@ type Answer {
   question: Question!
 }
 
+type QuestionCategory {
+  id: Int!
+  categoryName: String!
+  question: Question!
+}
+
 type Question {
   id: Int!
   questionNumber: Int!
   questionContent: String!
   survey: Survey!
+  answers: [Answer!]
+  questionCategories: [QuestionCategory!]
 }
 
 type Survey {
@@ -69,9 +78,13 @@ type Query {
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
   findOneQuestionDetail(id: Int!): Question!
+  findQuestionContainCategory(surveyId: Int!, categoryName: String!): [Question!]!
+  findQuestionWithCategory(id: Int!): Question!
   findAllAnswers: [Answer!]!
   findAnswer(id: Int!): Answer!
   findOneAnswerDetail(answerId: Int!): [Answer!]!
+  findAllQuestionCategories: [QuestionCategory!]!
+  findQuestionCategory(id: Int!): QuestionCategory!
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findResponseWithQueryBuilder(responseId: Int!): Response!
@@ -97,6 +110,9 @@ type Mutation {
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   removeAnswer(id: Int!): Answer!
+  createQuestionCategory(input: CreateQuestionCategoryInput!): QuestionCategory!
+  updateQuestionCategory(input: UpdateQuestionCategoryInput!): QuestionCategory!
+  removeQuestionCategory(id: Int!): QuestionCategory!
   createResponse(createResponseInput: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
   updateResponse(updateResponseInput: UpdateResponseInput!): Response!
@@ -166,6 +182,17 @@ input UpdateAnswerInput {
   """answer Score"""
   answerScore: Int
   questionId: Int
+  id: Int!
+}
+
+input CreateQuestionCategoryInput {
+  questionId: Int!
+  categoryName: String!
+}
+
+input UpdateQuestionCategoryInput {
+  questionId: Int
+  categoryName: String
   id: Int!
 }
 
