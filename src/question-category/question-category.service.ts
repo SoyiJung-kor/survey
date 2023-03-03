@@ -34,8 +34,18 @@ export class QuestionCategoryService {
     return this.validQuestionCategory(id);
   }
 
-  update(id: number, updateQuestionCategoryInput: UpdateQuestionCategoryInput) {
-    return `This action updates a #${id} questionCategory`;
+  async update(input: UpdateQuestionCategoryInput) {
+    const questionCategory = await this.validQuestionCategory(input.id);
+    if (input?.questionId) {
+      const question = await this.validQuestion(input.questionId);
+      questionCategory.question = question;
+    }
+    const result = this.questionCategoryRepository.merge(
+      questionCategory,
+      input,
+    );
+    this.questionCategoryRepository.update(input.id, questionCategory);
+    return result;
   }
 
   remove(id: number) {
@@ -48,6 +58,15 @@ export class QuestionCategoryService {
       throw new Error(`CAT NOT FOUND QUESTION CATEGIRY! ID:${id}`);
     } else {
       return questionCategory;
+    }
+  }
+
+  async validQuestion(questionId: number) {
+    const question = await this.dataSource.manager.findOneBy(Question, { id: questionId });
+    if (!question) {
+      throw new Error(`CAT NOT FOUND QUESTION! ID:${questionId}`);
+    } else {
+      return question;
     }
   }
 }

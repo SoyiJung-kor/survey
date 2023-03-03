@@ -1,9 +1,10 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsString, MinLength } from 'class-validator';
+import { IsNumber, IsString, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateQuestionCategoryInput {
   @Field(() => Int)
+  @IsNumber()
   questionId: number;
 
   @Field(() => String)

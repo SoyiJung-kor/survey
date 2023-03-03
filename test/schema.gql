@@ -108,7 +108,7 @@ type Mutation {
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   removeAnswer(id: Int!): Answer!
   createQuestionCategory(input: CreateQuestionCategoryInput!): QuestionCategory!
-  updateQuestionCategory(updateQuestionCategoryInput: UpdateQuestionCategoryInput!): QuestionCategory!
+  updateQuestionCategory(input: UpdateQuestionCategoryInput!): QuestionCategory!
   removeQuestionCategory(id: Int!): QuestionCategory!
   createResponse(createResponseInput: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!

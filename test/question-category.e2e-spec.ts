@@ -261,20 +261,199 @@ describe('question-category', () => {
         });
     });
     describe('질문 문항 수정!', () => {
-        it.todo('질문 문항 수정 성공!');
-        it.todo('아이디를 안적어서 질문 문항 수정 실패!');
-        it.todo('없는 아이디를 적어서 질문 문항 수정 실패!');
-        it.todo('질문 수정: 질문 아이디를 안적어서 수정 실패!');
-        it.todo('질문 수정: 없는 질문 아이디를 적어서 수정 실패!');
-        it.todo('질문 수정: 질문 아이디가 숫자가 아니라 수정 실패!');
-        it.todo('항목 이름 수정: 항목 이름이 너무 짧아서 실패!(2글자 미만)');
-        it.todo('항목 이름 수정: 항목 이름을 안적어서 실패!');
-        it.todo('항목 이름 수정: 항목 이름이 문자열이 아니라 실패!');
+        it('질문 문항 수정 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            updateQuestionCategory(input:{id:1,categoryName:"Modified Category for Test"}){
+                                id
+                                categoryName
+                            }
+                        }`,
+                })
+                .expect(200)
+                .expect((res) => {
+                    const updateQuestionCategory = res.body.data.updateQuestionCategory;
+                    const { id, categoryName } = updateQuestionCategory;
+                    expect(id).toBe(1);
+                    expect(categoryName).toBe('Modified Category for Test');
+                })
+        });
+        it('아이디를 안적어서 질문 문항 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            updateQuestionCategory(input:{id:,categoryName:"Modified Category for Test"}){
+                                id
+                                categoryName
+                            }
+                        }`,
+                })
+                .expect(400)
+        });
+        it('없는 아이디를 적어서 질문 문항 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            updateQuestionCategory(input:{id:100,categoryName:"Modified Category for Test"}){
+                                id
+                                categoryName
+                            }
+                        }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
+        it('질문 수정: 질문 아이디를 안적어서 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            updateQuestionCategory(input:{id:1,questionId:}){
+                                id
+                                categoryName
+                            }
+                        }`,
+                })
+                .expect(400)
+        });
+        it('질문 수정: 없는 질문 아이디를 적어서 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            updateQuestionCategory(input:{id:1,questionId:100}){
+                                id
+                                categoryName
+                            }
+                        }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
+        it('질문 수정: 질문 아이디가 숫자가 아니라 수정 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            updateQuestionCategory(input:{id:1,questionId:"1"}){
+                                id
+                                categoryName
+                            }
+                        }`,
+                })
+                .expect(400)
+        });
+        it('항목 이름 수정: 항목 이름이 너무 짧아서 실패!(2글자 미만)', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            updateQuestionCategory(input:{id:1,categoryName:" "}){
+                                id
+                                categoryName
+                            }
+                        }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                })
+        });
+        it('항목 이름 수정: 항목 이름을 안적어서 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            updateQuestionCategory(input:{id:1,categoryName:}){
+                                id
+                                categoryName
+                            }
+                        }`,
+                })
+                .expect(400)
+        });
+        it('항목 이름 수정: 항목 이름이 문자열이 아니라 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            updateQuestionCategory(input:{id:1,categoryName:1234}){
+                                id
+                                categoryName
+                            }
+                        }`,
+                })
+                .expect(400)
+        });
     });
     describe('질문 문항 삭제!', () => {
-        it.todo('질문 문항 삭제 성공!');
-        it.todo('아이디를 안적어서 질문 문항 삭제 실패!');
-        it.todo('없는 아이디를 적어서 질문 문항 삭제 실패!');
-        it.todo('아이디가 숫자가 아니라 질문 문항 삭제 실패!');
+        it('질문 문항 삭제 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            removeQuestionCategory(id:1){
+                                id
+                            }
+                        }`,
+                })
+                .expect(200);
+        });
+        it('아이디를 안적어서 질문 문항 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            removeQuestionCategory(id:){
+                                id
+                            }
+                        }`,
+                })
+                .expect(400);
+        });
+        it('없는 아이디를 적어서 질문 문항 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            removeQuestionCategory(id:100){
+                                id
+                            }
+                        }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('아이디가 숫자가 아니라 질문 문항 삭제 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                        mutation {
+                            removeQuestionCategory(id:"1"){
+                                id
+                            }
+                        }`,
+                })
+                .expect(400);
+        });
     });
 });

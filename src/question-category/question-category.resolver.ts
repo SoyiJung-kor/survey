@@ -30,14 +30,8 @@ export class QuestionCategoryResolver {
   }
 
   @Mutation(() => QuestionCategory)
-  updateQuestionCategory(
-    @Args('updateQuestionCategoryInput')
-    updateQuestionCategoryInput: UpdateQuestionCategoryInput,
-  ) {
-    return this.questionCategoryService.update(
-      updateQuestionCategoryInput.id,
-      updateQuestionCategoryInput,
-    );
+  updateQuestionCategory(@Args('input') input: UpdateQuestionCategoryInput) {
+    return this.questionCategoryService.update(input);
   }
 
   @Mutation(() => QuestionCategory)

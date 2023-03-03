@@ -1,5 +1,5 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-import { IsString, MinLength } from 'class-validator';
+import { IsNumber, IsString, MinLength } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { CommonEntity } from '../../common/entities/\bcommon.entity';
 import { Question } from '../../question/entities/question.entity';
@@ -14,6 +14,7 @@ export class QuestionCategory extends CommonEntity {
   categoryName: string;
 
   @Column()
+  @IsNumber()
   questionId: number;
 
   @ManyToOne(() => Question, (question) => question.questionCategories, {
