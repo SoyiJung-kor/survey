@@ -497,7 +497,31 @@ describe('question', () => {
             }
           }`,
         })
-        .expect(200);
+        .expect(200)
+        .expect((res) => {
+          const findQuestionWithCategory = res.body.data.findQuestionWithCategory;
+          const { questionNumber, questionContent, id } = findQuestionWithCategory;
+          expect(questionNumber).toBe(1);
+          expect(questionContent).toBe('Modified Question');
+          expect(id).toBe(1);
+        })
+    });
+    it('아이디를 안적어서 질문이 포함하는 항목 조회 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+            findQuestionWithCategory(id:){
+                questionNumber
+                questionContent
+                id
+                questionCategories{
+                  categoryName
+                }
+            }
+          }`,
+        })
+        .expect(400)
     });
   })
   describe('질문 삭제!', () => {
