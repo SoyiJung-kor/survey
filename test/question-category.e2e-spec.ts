@@ -96,6 +96,10 @@ describe('question-category', () => {
                     expect(categoryName).toBe('Mock Category for Test');
                 });
         });
+        it.todo('input을 아예 안넣어서 질문 문항 생성 실패!');
+        it.todo('questionId를 안적어서 질문 문항 생성 실패!');
+        it.todo('없는 questionId를 적어서 질문 문항 생성 실패!');
+        it.todo('categoryName을 안적어서 질문 문항 생성 실패!');
     });
     describe('질문 문항 전체 조회!', () => {
         it.todo('질문 문항 전체 조회 성공!');
