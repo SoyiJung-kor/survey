@@ -12,6 +12,10 @@ import { ParticipantModule } from '../src/participant/participant.module';
 import { SurveyModule } from '../src/survey/survey.module';
 import { HttpExceptionFilter } from '../src/common/utils/http_exception_filter';
 import { testTypeORMConfig } from '../src/common/config/test-orm-config';
+import { Category } from '../src/category/entities/category.entity';
+import { CategoryScore } from '../src/category-score/entities/category-score.entity';
+import { Question } from '../src/question/entities/question.entity';
+import { QuestionCategory } from '../src/question-category/entities/question-category.entity';
 const gql = '/graphql';
 
 describe('question', () => {
@@ -41,6 +45,21 @@ describe('question', () => {
     mockSurvey.id = 1;
     mockSurvey.surveyTitle = 'Mock Survey for Test';
     await dataSource.manager.save(Survey, mockSurvey);
+
+    const mockCategory = new Category();
+    mockCategory.id = 1;
+    mockCategory.categoryName = 'Mock Category for Test';
+    mockCategory.survey = mockSurvey;
+    await dataSource.manager.save(mockCategory);
+
+    const mockCategoryScore = new CategoryScore();
+    mockCategoryScore.id = 1;
+    mockCategoryScore.highScore = 10;
+    mockCategoryScore.lowScore = 0;
+    mockCategoryScore.categoryMessage = '배고픕니다.';
+    mockCategoryScore.category = mockCategory;
+    await dataSource.manager.save(mockCategoryScore);
+
   });
 
 
@@ -410,6 +429,32 @@ describe('question', () => {
           expect(res.body.data).toBeNull();
         });
     });
+  });
+  describe('특정 항목을 포함하는 질문 조회!', () => {
+    beforeEach(async () => {
+      const mockQuestionCategory = new QuestionCategory();
+      mockQuestionCategory.id = 1;
+      mockQuestionCategory.questionId = 1;
+      mockQuestionCategory.categoryName = 'Mock Category for Test';
+      mockQuestionCategory.question = await dataSource.manager.findOneBy(Question, ({ id: 1 }));
+      await dataSource.manager.save(mockQuestionCategory);
+    })
+    it('특정 항목을 포함하는 질문 조회 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+            findQuestionContainCategory(surveyId:1,categoryName:"Mock Category for Test"){
+                questionNumber
+                questionContent
+            }
+          }`,
+        })
+        .expect(200);
+    });
+    it.todo('없는 아이디를 적어서 항목이 어떤 질문에 포함되어 있는지 조회 실패!');
+    it.todo('아이디를 안적어서 항목이 어떤 질문에 포함되어 있는지 조회 실패!');
+    it.todo('아이디가 숫자가 아니라 항목이 어떤 질문에 포함되어 있는지 조회 실패!');
   });
   describe('질문 삭제!', () => {
     it('질문 삭제 성공!', async () => {

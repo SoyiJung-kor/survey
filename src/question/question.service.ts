@@ -49,8 +49,27 @@ export class QuestionService {
       .innerJoinAndSelect('question.survey', 'survey')
       .where(`question.id = ${id}`)
       .getOne();
-
+    this.logger.debug(result);
     return result;
+  }
+
+  /**
+   * @description 항목에 어떤 문항이 포함되어 있는지 조회
+   * @param id 설문아이디
+   */
+  async findQuestionContainCategory(
+    surveyId: number,
+    categoryName: string,
+  ) {
+    const question = await this.questionRepository
+      .createQueryBuilder('question')
+      .leftJoinAndSelect('question.questionCategories', 'question_category')
+      .where(`question_category.categoryName = '${categoryName}'`)
+      .andWhere(`question.surveyId = ${surveyId}`)
+      .getMany();
+
+    this.logger.debug(question);
+    return question;
   }
 
   async update(id: number, updateQuestionInput: UpdateQuestionInput) {

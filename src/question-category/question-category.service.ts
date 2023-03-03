@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Question } from '../question/entities/question.entity';
 import { CreateQuestionCategoryInput } from './dto/create-question-category.input';
 import { UpdateQuestionCategoryInput } from './dto/update-question-category.input';
@@ -12,6 +12,7 @@ export class QuestionCategoryService {
     @InjectRepository(QuestionCategory)
     private questionCategoryRepository: Repository<QuestionCategory>,
     private entityManager: EntityManager,
+    private dataSource: DataSource,
   ) { }
 
   private readonly logger = new Logger(QuestionCategory.name);
@@ -26,11 +27,11 @@ export class QuestionCategoryService {
   }
 
   findAll() {
-    return `This action returns all questionCategory`;
+    return this.questionCategoryRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} questionCategory`;
+    return this.validQuestionCategory(id);
   }
 
   update(id: number, updateQuestionCategoryInput: UpdateQuestionCategoryInput) {
@@ -39,5 +40,14 @@ export class QuestionCategoryService {
 
   remove(id: number) {
     return `This action removes a #${id} questionCategory`;
+  }
+
+  validQuestionCategory(id: number) {
+    const questionCategory = this.questionCategoryRepository.findOneBy({ id });
+    if (!questionCategory) {
+      throw new Error(`CAT NOT FOUND QUESTION CATEGIRY! ID:${id}`);
+    } else {
+      return questionCategory;
+    }
   }
 }

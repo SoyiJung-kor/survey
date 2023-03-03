@@ -1,4 +1,4 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { IsString, MinLength } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { CategoryScore } from '../../category-score/entities/category-score.entity';
@@ -15,6 +15,7 @@ export class Category extends CommonEntity {
   categoryName: string;
 
   @Column()
+  @Field(() => Int)
   surveyId: number;
 
   @Field(() => Survey)

@@ -74,7 +74,6 @@ describe('question-category', () => {
         app.close();
     });
     describe('질문 문항 생성!', () => {
-        it.todo('질문 문항 생성 성공!');
         it('질문 문항 생성 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -96,24 +95,186 @@ describe('question-category', () => {
                     expect(categoryName).toBe('Mock Category for Test');
                 });
         });
-        it.todo('input을 아예 안넣어서 질문 문항 생성 실패!');
-        it.todo('questionId를 안적어서 질문 문항 생성 실패!');
-        it.todo('없는 questionId를 적어서 질문 문항 생성 실패!');
-        it.todo('categoryName을 안적어서 질문 문항 생성 실패!');
+        it('input을 아예 안넣어서 질문 문항 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                    mutation {
+                        createQuestionCategory{
+                            id
+                            categoryName
+                        }
+                    }`,
+                })
+                .expect(400);
+        });
+        it('questionId를 안적어서 질문 문항 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                    mutation {
+                        createQuestionCategory(input:{questionId:,categoryName:"Mock Category for Test"}){
+                            id
+                            categoryName
+                        }
+                    }`,
+                })
+                .expect(400);
+        });
+        it('없는 questionId를 적어서 질문 문항 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                    mutation {
+                        createQuestionCategory(input:{questionId:100,categoryName:"Mock Category for Test"}){
+                            id
+                            categoryName
+                        }
+                    }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('categoryName을 안적어서 질문 문항 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                    mutation {
+                        createQuestionCategory(input:{questionId:1,categoryName:}){
+                            id
+                            categoryName
+                        }
+                    }`,
+                })
+                .expect(400);
+        });
+        it('categoryName이 너무 짧아서 질문 문항 생성 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `
+                    mutation {
+                        createQuestionCategory(input:{questionId:1,categoryName:" "}){
+                            id
+                            categoryName
+                        }
+                    }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
     });
     describe('질문 문항 전체 조회!', () => {
-        it.todo('질문 문항 전체 조회 성공!');
+        it('질문 문항 전체 조회 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findAllQuestionCategories{
+              id
+              categoryName
+            }
+          }`,
+                })
+                .expect(200);
+        });
+        it('queryfield를 안적어서 질문 문항 전체 조회 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findAllQuestionCategories{
+            }
+          }`,
+                })
+                .expect(400);
+        });
     });
     describe('아이디로 질문 문항 조회!', () => {
-        it.todo('아이디로 질문 문항 전체 조회 성공!');
-    });
-    describe('항목이 어떤 질문에 포함되어 있는지 조회!', () => {
-        it.todo('항목이 어떤 질문에 포함되어 있는지 조회 성공!');
+        it('아이디로 질문 문항 조회 성공!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findQuestionCategory(id:1){
+              id
+              categoryName
+            }
+          }`,
+                })
+                .expect(200)
+                .expect((res) => {
+                    const findQuestionCategory = res.body.data.findQuestionCategory;
+                    const { id, categoryName } = findQuestionCategory;
+                    expect(id).toBe(1);
+                    expect(categoryName).toBe(
+                        'Mock Category for Test',
+                    );
+                });
+        });
+        it('아이디를 안적어서 질문 문항 전체 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findQuestionCategory(id:){
+              id
+              categoryName
+            }
+          }`,
+                })
+                .expect(400);
+        });
+        it('없는 아이디를 적어서 질문 문항 전체 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findQuestionCategory(id:100){
+              id
+              categoryName
+            }
+          }`,
+                })
+                .expect((res) => {
+                    expect(res.body.data).toBeNull();
+                });
+        });
+        it('아이디가 숫자가 아니라 질문 문항 전체 조회 실패!', async () => {
+            return request(app.getHttpServer())
+                .post(gql)
+                .send({
+                    query: `{
+            findQuestionCategory(id:'1'){
+              id
+              categoryName
+            }
+          }`,
+                })
+                .expect(400);
+        });
     });
     describe('질문 문항 수정!', () => {
         it.todo('질문 문항 수정 성공!');
+        it.todo('아이디를 안적어서 질문 문항 수정 실패!');
+        it.todo('없는 아이디를 적어서 질문 문항 수정 실패!');
+        it.todo('질문 수정: 질문 아이디를 안적어서 수정 실패!');
+        it.todo('질문 수정: 없는 질문 아이디를 적어서 수정 실패!');
+        it.todo('질문 수정: 질문 아이디가 숫자가 아니라 수정 실패!');
+        it.todo('항목 이름 수정: 항목 이름이 너무 짧아서 실패!(2글자 미만)');
+        it.todo('항목 이름 수정: 항목 이름을 안적어서 실패!');
+        it.todo('항목 이름 수정: 항목 이름이 문자열이 아니라 실패!');
     });
     describe('질문 문항 삭제!', () => {
         it.todo('질문 문항 삭제 성공!');
+        it.todo('아이디를 안적어서 질문 문항 삭제 실패!');
+        it.todo('없는 아이디를 적어서 질문 문항 삭제 실패!');
+        it.todo('아이디가 숫자가 아니라 질문 문항 삭제 실패!');
     });
 });

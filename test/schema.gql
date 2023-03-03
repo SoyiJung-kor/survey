@@ -21,6 +21,7 @@ type CategoryScore {
 type Category {
   id: Int!
   categoryName: String!
+  surveyId: Int!
   survey: Survey!
   categoryScores: [CategoryScore!]
 }
@@ -75,10 +76,12 @@ type Query {
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
   findOneQuestionDetail(id: Int!): Question!
+  findQuestionContainCategory(surveyId: Int!, categoryName: String!): [Question!]!
   findAllAnswers: [Answer!]!
   findAnswer(id: Int!): Answer!
   findOneAnswerDetail(answerId: Int!): [Answer!]!
-  questionCategory(id: Int!): QuestionCategory!
+  findAllQuestionCategories: [QuestionCategory!]!
+  findQuestionCategory(id: Int!): QuestionCategory!
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findResponseWithQueryBuilder(responseId: Int!): Response!

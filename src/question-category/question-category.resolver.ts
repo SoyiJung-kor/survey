@@ -3,6 +3,7 @@ import { QuestionCategoryService } from './question-category.service';
 import { QuestionCategory } from './entities/question-category.entity';
 import { CreateQuestionCategoryInput } from './dto/create-question-category.input';
 import { UpdateQuestionCategoryInput } from './dto/update-question-category.input';
+import { Question } from '../question/entities/question.entity';
 
 @Resolver(() => QuestionCategory)
 export class QuestionCategoryResolver {
@@ -18,16 +19,26 @@ export class QuestionCategoryResolver {
     return this.questionCategoryService.create(input);
   }
 
-  @Query(() => [QuestionCategory], { name: 'questionCategory' })
-  findAll() {
+  @Query(() => [QuestionCategory])
+  findAllQuestionCategories() {
     return this.questionCategoryService.findAll();
   }
 
-  @Query(() => QuestionCategory, { name: 'questionCategory' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => QuestionCategory)
+  findQuestionCategory(@Args('id', { type: () => Int }) id: number) {
     return this.questionCategoryService.findOne(id);
   }
 
+  // @Query(() => [Question])
+  // findQuestionContainCategory(
+  //   @Args('surveyId', { type: () => Int }) surveyId: number,
+  //   @Args('categoryName', { type: () => String }) categoryName: string,
+  // ) {
+  //   return this.questionCategoryService.findQuestionContainCategory(
+  //     surveyId,
+  //     categoryName,
+  //   );
+  // }
   @Mutation(() => QuestionCategory)
   updateQuestionCategory(
     @Args('updateQuestionCategoryInput')

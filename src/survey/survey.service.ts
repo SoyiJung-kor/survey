@@ -44,7 +44,7 @@ export class SurveyService {
   }
 
   /**
-   * @description "설문이 갖고 있는 질문 조회"
+   * @description 설문이 갖고 있는 질문 조회
    * @param id 
    * @returns 
    */
@@ -55,6 +55,7 @@ export class SurveyService {
       .where(`survey.id = ${id}`)
       .getOne();
 
+    this.logger.debug(result);
     return result;
   }
 

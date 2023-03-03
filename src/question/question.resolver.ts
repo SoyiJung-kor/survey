@@ -31,6 +31,18 @@ export class QuestionResolver {
     return this.questionService.findDetail(id);
   }
 
+  @Query(() => [Question])
+  findQuestionContainCategory(
+    @Args('surveyId', { type: () => Int }) surveyId: number,
+    @Args('categoryName', { type: () => String }) categoryName: string,
+  ) {
+    return this.questionService.findQuestionContainCategory(
+      surveyId,
+      categoryName,
+    );
+  }
+
+
   @Mutation(() => Question, { name: 'updateQuestion' })
   updateQuestion(
     @Args('updateQuestionInput') updateQuestionInput: UpdateQuestionInput,
