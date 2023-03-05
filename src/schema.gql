@@ -54,6 +54,14 @@ type Participant {
   email: String!
 }
 
+type ResponseCategory {
+  id: Int!
+  categoryName: String!
+  sumCategoryScore: Int!
+  message: String!
+  response: Response!
+}
+
 type Response {
   id: Int!
   isSubmit: Boolean!
@@ -90,6 +98,7 @@ type Query {
   findResponseWithQueryBuilder(responseId: Int!): Response!
   findOneResponseDetail(responseId: Int!): [Response!]!
   getSumScore(responseId: Int!): Response!
+  responseCategory(id: Int!): ResponseCategory!
   findAllEachResponse: [EachResponse!]!
   findOneEachResponse(id: Int!): EachResponse!
   findAllCategories: [Category!]!
@@ -116,6 +125,9 @@ type Mutation {
   createResponse(createResponseInput: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
   updateResponse(updateResponseInput: UpdateResponseInput!): Response!
+  createResponseCategory(createResponseCategoryInput: CreateResponseCategoryInput!): ResponseCategory!
+  updateResponseCategory(updateResponseCategoryInput: UpdateResponseCategoryInput!): ResponseCategory!
+  removeResponseCategory(id: Int!): ResponseCategory!
   createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
   updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
   removeEachResponse(id: Int!): EachResponse!
@@ -206,6 +218,17 @@ input UpdateResponseInput {
   participantId: Int
   id: Int!
   isSubmit: Boolean!
+}
+
+input CreateResponseCategoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateResponseCategoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input CreateEachResponseInput {

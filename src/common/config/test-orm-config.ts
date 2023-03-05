@@ -7,6 +7,7 @@ import { EachResponse } from '../../each-response/entities/each-response.entity'
 import { Participant } from '../../participant/entities/participant.entity';
 import { QuestionCategory } from '../../question-category/entities/question-category.entity';
 import { Question } from '../../question/entities/question.entity';
+import { ResponseCategory } from '../../response-category/entities/response-category.entity';
 import { Response } from '../../response/entities/response.entity';
 import { Survey } from '../../survey/entities/survey.entity';
 
@@ -17,6 +18,6 @@ export const testTypeORMConfig: TypeOrmModuleOptions = {
     username: 'postgres',
     password: 'postgres',
     database: 'test',
-    entities: [Answer, Participant, Question, Response, Survey, EachResponse, Category, CategoryScore, QuestionCategory],
+    entities: [Answer, Participant, Question, Response, Survey, EachResponse, Category, CategoryScore, QuestionCategory, ResponseCategory],
     synchronize: true,
 };

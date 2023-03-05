@@ -4,9 +4,14 @@ import { ResponseResolver } from './response.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Response } from './entities/response.entity';
 import { EachResponseModule } from '../each-response/each-response.module';
+import { ResponseCategoryModule } from '../response-category/response-category.module';
 
 @Module({
-  imports: [EachResponseModule, TypeOrmModule.forFeature([Response])],
+  imports: [
+    ResponseCategoryModule,
+    EachResponseModule,
+    TypeOrmModule.forFeature([Response]),
+  ],
   providers: [ResponseResolver, ResponseService],
 })
 // eslint-disable-next-line prettier/prettier
