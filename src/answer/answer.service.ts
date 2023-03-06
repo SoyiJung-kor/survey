@@ -48,15 +48,15 @@ export class AnswerService {
     return result;
   }
 
-  async update(id: number, updateAnswerInput: UpdateAnswerInput) {
-    const answer = await this.validAnswer(id);
+  async update(input: UpdateAnswerInput) {
+    const answer = await this.validAnswer(input.id);
 
-    if (updateAnswerInput?.questionId) {
-      const question = await this.validQuestion(updateAnswerInput.questionId);
+    if (input?.questionId) {
+      const question = await this.validQuestion(input.questionId);
       answer.question = question;
     }
-    this.answerRepository.merge(answer, updateAnswerInput);
-    this.answerRepository.update(id, answer);
+    this.answerRepository.merge(answer, input);
+    this.answerRepository.update(input.id, answer);
     return answer;
   }
   async validQuestion(questionId: number) {

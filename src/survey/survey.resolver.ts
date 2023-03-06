@@ -46,11 +46,11 @@ export class SurveyResolver {
     return this.surveyService.findQuestion(id);
   }
 
-  @Mutation(() => Survey, { name: 'updateSurvey' })
+  @Mutation(() => Survey)
   updateSurvey(
-    @Args('updateSurveyInput') updateSurveyInput: UpdateSurveyInput,
+    @Args('input') input: UpdateSurveyInput,
   ) {
-    return this.surveyService.update(updateSurveyInput.id, updateSurveyInput);
+    return this.surveyService.update(input);
   }
 
   @Mutation(() => Survey, { name: 'removeSurvey' })

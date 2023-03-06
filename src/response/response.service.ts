@@ -99,10 +99,10 @@ export class ResponseService {
     return response;
   }
 
-  async updateSubmit(id: number, updateResponseInput: UpdateResponseInput) {
-    const response = this.validResponse(id);
-    this.responseRepository.merge(await response, updateResponseInput);
-    this.responseRepository.update(id, await response);
+  async updateSubmit(input: UpdateResponseInput) {
+    const response = await this.validResponse(input.id);
+    this.responseRepository.merge(response, input);
+    this.responseRepository.update(input.id, response);
     return response;
   }
 }

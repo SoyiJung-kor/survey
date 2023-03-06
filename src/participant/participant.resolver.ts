@@ -9,7 +9,7 @@ import { UpdateParticipantInput } from './dto/update-participant.input';
 export class ParticipantResolver {
   constructor(private readonly participantService: ParticipantService) { }
 
-  @Mutation(() => Participant, { name: 'createParticipant' })
+  @Mutation(() => Participant)
   createParticipant(
     @Args('createParticipantInput')
     createParticipantInput: CreateParticipantInput,
@@ -17,28 +17,27 @@ export class ParticipantResolver {
     return this.participantService.create(createParticipantInput);
   }
 
-  @Query(() => [Participant], { name: 'findAllParticipants' })
-  findAll() {
+  @Query(() => [Participant])
+  findAllParticipants() {
     return this.participantService.findAll();
   }
 
-  @Query(() => Participant, { name: 'findOneParticipant' })
-  findOne(@Args('participantId', { type: () => Int }) participantId: number) {
+  @Query(() => Participant)
+  findOneParticipant(@Args('participantId', { type: () => Int }) participantId: number) {
     return this.participantService.findOne(participantId);
   }
 
-  @Mutation(() => Participant, { name: 'updateParticipant' })
+  @Mutation(() => Participant)
   updateParticipant(
-    @Args('updateParticipantInput')
-    updateParticipantInput: UpdateParticipantInput,
+    @Args('input')
+    input: UpdateParticipantInput,
   ) {
     return this.participantService.update(
-      updateParticipantInput.id,
-      updateParticipantInput,
+      input,
     );
   }
 
-  @Mutation(() => Participant, { name: 'removeParticipant' })
+  @Mutation(() => Participant)
   removeParticipant(@Args('participantId', { type: () => Int }) id: number) {
     return this.participantService.remove(id);
   }

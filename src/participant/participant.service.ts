@@ -28,10 +28,10 @@ export class ParticipantService {
     return this.validParticipant(id);
   }
 
-  async update(id: number, updateParticipantInput: UpdateParticipantInput) {
-    const participant = this.validParticipant(id);
-    this.participantRepository.merge(await participant, updateParticipantInput);
-    this.participantRepository.update(id, await participant);
+  async update(input: UpdateParticipantInput) {
+    const participant = await this.validParticipant(input.id);
+    this.participantRepository.merge(await participant, input);
+    this.participantRepository.update(input.id, participant);
     return participant;
   }
 

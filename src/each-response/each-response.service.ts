@@ -34,17 +34,17 @@ export class EachResponseService {
 
   }
 
-  async update(id: number, updateEachResponseInput: UpdateEachResponseInput) {
-    const eachResponse = await this.validEachResponse(id);
-    if (updateEachResponseInput.responseId) {
-      const response = await this.validResponse(updateEachResponseInput.responseId);
+  async update(input: UpdateEachResponseInput) {
+    const eachResponse = await this.validEachResponse(input.id);
+    if (input.responseId) {
+      const response = await this.validResponse(input.responseId);
       eachResponse.response = response;
     }
     this.eachResponseRepository.merge(
       eachResponse,
-      updateEachResponseInput,
+      input,
     );
-    this.eachResponseRepository.update(id, eachResponse);
+    this.eachResponseRepository.update(input.id, eachResponse);
     return eachResponse;
   }
   async validResponse(responseId: number) {

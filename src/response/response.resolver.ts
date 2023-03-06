@@ -16,13 +16,13 @@ export class ResponseResolver {
     return this.responseService.create(createResponseInput);
   }
 
-  @Query(() => [Response], { name: 'findAllResponses' })
-  findAll() {
+  @Query(() => [Response])
+  findAllResponses() {
     return this.responseService.findAll();
   }
 
-  @Query(() => Response, { name: 'findResponse' })
-  findOne(@Args('responseId', { type: () => Int }) responseId: number) {
+  @Query(() => Response)
+  findResponse(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.findOne(responseId);
   }
 
@@ -31,8 +31,8 @@ export class ResponseResolver {
     return this.responseService.remove(responseId);
   }
 
-  @Query(() => Response, { name: 'findResponseWithQueryBuilder' })
-  find(@Args('responseId', { type: () => Int }) responseId: number) {
+  @Query(() => Response)
+  findResponseWithQueryBuilder(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.getResponseData(responseId);
   }
 
@@ -41,18 +41,17 @@ export class ResponseResolver {
     return this.responseService.findDetail(responseId);
   }
 
-  @Query(() => Response, { name: 'getSumScore' })
-  getScore(@Args('responseId', { type: () => Int }) responseId: number) {
+  @Query(() => Response)
+  getSumScore(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.getSumScore(responseId);
   }
 
-  @Mutation(() => Response, { name: 'updateResponse' })
+  @Mutation(() => Response)
   updateResponse(
-    @Args('updateResponseInput') updateResponseInput: UpdateResponseInput,
+    @Args('input') input: UpdateResponseInput,
   ) {
     return this.responseService.updateSubmit(
-      updateResponseInput.id,
-      updateResponseInput,
+      input
     );
   }
 }

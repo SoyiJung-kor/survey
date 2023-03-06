@@ -101,7 +101,7 @@ type Query {
   findAllResponseCategory: [ResponseCategory!]!
   findResponseCategory(id: Int!): ResponseCategory!
   findAllEachResponse: [EachResponse!]!
-  findOneEachResponse(id: Int!): EachResponse!
+  findEachResponse(id: Int!): EachResponse!
   findAllCategories: [Category!]!
   findCategory(id: Int!): Category!
   findAllCategoryScores: [CategoryScore!]!
@@ -112,27 +112,27 @@ type Query {
 
 type Mutation {
   createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
-  updateSurvey(updateSurveyInput: UpdateSurveyInput!): Survey!
+  updateSurvey(input: UpdateSurveyInput!): Survey!
   removeSurvey(surveyId: Int!): Survey!
   createQuestion(createQuestionInput: CreateQuestionInput!): Question!
-  updateQuestion(updateQuestionInput: UpdateQuestionInput!): Question!
+  updateQuestion(input: UpdateQuestionInput!): Question!
   removeQuestion(questionId: Int!): Question!
   copyQuestion(id: Int!): Question!
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
-  updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
+  updateAnswer(input: UpdateAnswerInput!): Answer!
   removeAnswer(id: Int!): Answer!
   createQuestionCategory(input: CreateQuestionCategoryInput!): QuestionCategory!
   updateQuestionCategory(input: UpdateQuestionCategoryInput!): QuestionCategory!
   removeQuestionCategory(id: Int!): QuestionCategory!
   createResponse(createResponseInput: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
-  updateResponse(updateResponseInput: UpdateResponseInput!): Response!
+  updateResponse(input: UpdateResponseInput!): Response!
   createResponseCategory(input: CreateResponseCategoryInput!): [ResponseCategory!]!
   sumResponseCategory(input: UpdateResponseCategoryInput!): [ResponseCategory!]!
   removeResponseCategory(id: Int!): ResponseCategory!
   compareScore(responseId: Int!, surveyId: Int!): [ResponseCategory!]!
   createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
-  updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
+  updateEachResponse(input: UpdateEachResponseInput!): EachResponse!
   removeEachResponse(id: Int!): EachResponse!
   createCategory(input: CreateCategoryInput!): Category!
   updateCategory(input: UpdateCategoryInput!): Category!
@@ -141,7 +141,7 @@ type Mutation {
   updateCategoryScore(input: UpdateCategoryScoreInput!): CategoryScore!
   removeCategoryScore(id: Int!): CategoryScore!
   createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
-  updateParticipant(updateParticipantInput: UpdateParticipantInput!): Participant!
+  updateParticipant(input: UpdateParticipantInput!): Participant!
   removeParticipant(participantId: Int!): Participant!
 }
 

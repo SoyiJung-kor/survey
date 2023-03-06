@@ -33,9 +33,9 @@ export class AnswerResolver {
 
   @Mutation(() => Answer)
   updateAnswer(
-    @Args('updateAnswerInput') updateAnswerInput: UpdateAnswerInput,
+    @Args('input') input: UpdateAnswerInput,
   ) {
-    return this.answerService.update(updateAnswerInput.id, updateAnswerInput);
+    return this.answerService.update(input);
   }
 
   @Mutation(() => Answer)

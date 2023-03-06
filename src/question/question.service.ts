@@ -90,10 +90,10 @@ export class QuestionService {
     return result;
   }
 
-  async update(id: number, updateQuestionInput: UpdateQuestionInput) {
-    const question = await this.validQuestion(id);
-    this.questionRepository.merge(question, updateQuestionInput);
-    this.questionRepository.update(id, question);
+  async update(input: UpdateQuestionInput) {
+    const question = await this.validQuestion(input.id);
+    this.questionRepository.merge(question, input);
+    this.questionRepository.update(input.id, question);
     return question;
   }
 

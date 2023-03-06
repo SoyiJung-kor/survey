@@ -9,7 +9,7 @@ export class EachResponseResolver {
   // eslint-disable-next-line prettier/prettier
   constructor(private readonly eachResponseService: EachResponseService) { }
 
-  @Mutation(() => EachResponse, { name: 'createEachResponse' })
+  @Mutation(() => EachResponse)
   createEachResponse(
     @Args('createEachResponseInput')
     createEachResponseInput: CreateEachResponseInput,
@@ -17,28 +17,25 @@ export class EachResponseResolver {
     return this.eachResponseService.create(createEachResponseInput);
   }
 
-  @Query(() => [EachResponse], { name: 'findAllEachResponse' })
-  findAll() {
+  @Query(() => [EachResponse])
+  findAllEachResponse() {
     return this.eachResponseService.findAll();
   }
 
-  @Query(() => EachResponse, { name: 'findOneEachResponse' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => EachResponse)
+  findEachResponse(@Args('id', { type: () => Int }) id: number) {
     return this.eachResponseService.findOne(id);
   }
 
-  @Mutation(() => EachResponse, { name: 'updateEachResponse' })
+  @Mutation(() => EachResponse)
   updateEachResponse(
-    @Args('updateEachResponseInput')
-    updateEachResponseInput: UpdateEachResponseInput,
+    @Args('input')
+    input: UpdateEachResponseInput,
   ) {
-    return this.eachResponseService.update(
-      updateEachResponseInput.id,
-      updateEachResponseInput,
-    );
+    return this.eachResponseService.update(input);
   }
 
-  @Mutation(() => EachResponse, { name: 'removeEachResponse' })
+  @Mutation(() => EachResponse)
   removeEachResponse(@Args('id', { type: () => Int }) id: number) {
     return this.eachResponseService.remove(id);
   }

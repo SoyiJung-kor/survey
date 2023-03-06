@@ -59,10 +59,10 @@ export class SurveyService {
     return result;
   }
 
-  async update(id: number, updateSurveyInput: UpdateSurveyInput) {
-    const survey = await this.validSurvey(id);
-    this.surveyRepository.merge(survey, updateSurveyInput);
-    this.surveyRepository.update(id, survey);
+  async update(input: UpdateSurveyInput) {
+    const survey = await this.validSurvey(input.id);
+    this.surveyRepository.merge(survey, input);
+    this.surveyRepository.update(input.id, survey);
     return survey;
   }
 

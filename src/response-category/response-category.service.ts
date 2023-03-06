@@ -23,11 +23,6 @@ export class ResponseCategoryService {
   async create(
     input: CreateResponseCategoryInput,
   ) {
-    /**
-     * 입력한 응답아이디로
-     * survey.id==response.surveyId인 survey를 찾는다.
-     * 이 survey에 포함된 category의 이름으로 그 갯수만큼 responseCategory를 만든다.
-     */
     await this.validResponse(input.responseId);
     await this.validSurvey(input.surveyId);
     const category = await this.dataSource.manager.findBy(Category, {
@@ -59,16 +54,6 @@ export class ResponseCategoryService {
   }
 
   async sumCategoryScore(input: UpdateResponseCategoryInput) {
-    /**
-     * 1. question.surveyId==response.surveyId인 question의 id를 찾는다.
-     * response의 eachREsponse 갯수만큼 아래를 반복한다.
-     *  2. 위 (1)question들 중에서 eachResponse.responseQuestion == question.questionContent인 question을 찾는다.
-     *  3. questionCategory.questionId==(2)question.id인 questionCategory들을 찾는다.
-     *  검색된 questionCategory의 갯수만큼 아래를 반복한다.
-     *    responseCategory.categoryName == questionCategory[i]?
-     *      => responseCategory.sumCategoryScore+=eachResponse.score
-     *
-     */
     await this.validResponse(input.responseId);
     await this.validSurvey(input.surveyId);
     const responseCategories = await this.dataSource.manager.find(
