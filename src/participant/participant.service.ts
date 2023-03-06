@@ -36,10 +36,7 @@ export class ParticipantService {
   }
 
   async remove(id: number) {
-    const participant = this.participantRepository.findOneBy({ id });
-    if (!participant) {
-      throw new Error("CAN'T FIND THE PARTICIPANT!");
-    }
+    const participant = await this.validParticipant(id)
     await this.participantRepository.delete({ id });
     return participant;
   }

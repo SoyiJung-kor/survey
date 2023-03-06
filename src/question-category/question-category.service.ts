@@ -49,8 +49,10 @@ export class QuestionCategoryService {
     return result;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} questionCategory`;
+  async remove(id: number) {
+    const questionCategory = await this.validQuestionCategory(id);
+    await this.questionCategoryRepository.delete(id);
+    return questionCategory;
   }
 
   validQuestionCategory(id: number) {

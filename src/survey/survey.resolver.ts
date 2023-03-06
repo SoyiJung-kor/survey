@@ -53,7 +53,7 @@ export class SurveyResolver {
     return this.surveyService.update(input);
   }
 
-  @Mutation(() => Survey, { name: 'removeSurvey' })
+  @Mutation(() => Survey)
   removeSurvey(@Args('surveyId', { type: () => Int }) surveyId: number) {
     return this.surveyService.remove(surveyId);
   }

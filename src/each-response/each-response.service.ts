@@ -57,11 +57,8 @@ export class EachResponseService {
   }
 
   async remove(id: number) {
-    const eachResponse = this.eachResponseRepository.findOneBy({ id });
-    if (!eachResponse) {
-      throw new Error("CAN'T FIND THE EACHRESPONSE!");
-    }
-    await this.eachResponseRepository.delete({ id });
+    const eachResponse = await this.validEachResponse(id);
+    await this.eachResponseRepository.delete(id);
     return eachResponse;
   }
 

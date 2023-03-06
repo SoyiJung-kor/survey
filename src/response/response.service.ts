@@ -83,10 +83,7 @@ export class ResponseService {
   }
 
   async remove(id: number) {
-    const response = this.responseRepository.findOneBy({ id });
-    if (!response) {
-      throw new Error("CAN'T FIND THE RESPONSE!");
-    }
+    const response = await this.validResponse(id);
     await this.responseRepository.delete({ id });
     return response;
   }

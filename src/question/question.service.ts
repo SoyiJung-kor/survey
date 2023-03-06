@@ -106,10 +106,7 @@ export class QuestionService {
     }
   }
   async remove(id: number) {
-    const question = this.questionRepository.findOneBy({ id });
-    if (!question) {
-      throw new Error("CAN'T FIND THE QUENSTION!");
-    }
+    const question = await this.validQuestion(id);
     await this.questionRepository.delete({ id });
     return question;
   }

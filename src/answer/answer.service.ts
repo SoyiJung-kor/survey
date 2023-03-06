@@ -68,12 +68,10 @@ export class AnswerService {
     }
   }
 
-  async remove(id: number): Promise<void> {
-    const answer = this.answerRepository.findOneBy({ id });
-    if (!answer) {
-      throw new Error("CAN'T FIND THE ANSWER!");
-    }
+  async remove(id: number) {
+    const answer = this.validAnswer(id);
     await this.answerRepository.delete({ id });
+    return answer;
   }
 
   async validAnswer(id: number) {
