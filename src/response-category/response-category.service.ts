@@ -8,6 +8,7 @@ import { EachResponse } from '../each-response/entities/each-response.entity';
 import { QuestionCategory } from '../question-category/entities/question-category.entity';
 import { Question } from '../question/entities/question.entity';
 import { Response } from '../response/entities/response.entity';
+import { Survey } from '../survey/entities/survey.entity';
 import { CreateResponseCategoryInput } from './dto/create-response-category.input';
 import { UpdateResponseCategoryInput } from './dto/update-response-category.input';
 import { ResponseCategory } from './entities/response-category.entity';
@@ -21,12 +22,14 @@ export class ResponseCategoryService {
   ) { }
   async create(
     input: CreateResponseCategoryInput,
-  ): Promise<ResponseCategory[]> {
+  ) {
     /**
      * 입력한 응답아이디로
      * survey.id==response.surveyId인 survey를 찾는다.
      * 이 survey에 포함된 category의 이름으로 그 갯수만큼 responseCategory를 만든다.
      */
+    await this.validResponse(input.responseId);
+    await this.validSurvey(input.surveyId);
     const category = await this.dataSource.manager.findBy(Category, {
       surveyId: input.surveyId,
     });
@@ -66,6 +69,8 @@ export class ResponseCategoryService {
      *      => responseCategory.sumCategoryScore+=eachResponse.score
      *
      */
+    await this.validResponse(input.responseId);
+    await this.validSurvey(input.surveyId);
     const responseCategories = await this.dataSource.manager.find(
       ResponseCategory,
       {
@@ -95,7 +100,6 @@ export class ResponseCategoryService {
             );
             questionCategories.forEach((queCat) => {
               if (queCat.categoryName == resCat.categoryName) {
-                console.log(res.responseScore);
                 resCat.sumCategoryScore += res.responseScore;
                 this.responseCategoryRepository.update(resCat.id, resCat);
               }
@@ -108,8 +112,8 @@ export class ResponseCategoryService {
   }
 
   async remove(id: number) {
-    const responseCategory = this.validResponseCategory(id);
-    await this.responseCategoryRepository.delete({ id });
+    const responseCategory = await this.validResponseCategory(id);
+    this.responseCategoryRepository.delete({ id });
     return responseCategory;
   }
 
@@ -123,6 +127,8 @@ export class ResponseCategoryService {
   }
 
   async compareScore(responseId: number, surveyId: number): Promise<ResponseCategory[]> {
+    await this.validResponse(responseId);
+    await this.validSurvey(surveyId);
     const responseCategoryResult = await this.responseCategoryRepository.findBy({ responseId });
     const categories = [];
     responseCategoryResult.forEach(result => {
@@ -153,5 +159,19 @@ export class ResponseCategoryService {
         responseId: responseId,
       },
     });
+  }
+
+  async validResponse(responseId: number) {
+    const response = await this.dataSource.manager.findOneBy(Response, { id: responseId });
+    if (!response) {
+      throw new Error(`CAN NOT FOUND RESPONSE! id: ${responseId}`)
+    }
+  }
+
+  async validSurvey(surveyId: number) {
+    const survey = await this.dataSource.manager.findOneBy(Survey, { id: surveyId });
+    if (!survey) {
+      throw new Error(`CAN NOT FOUND SURVEY! id: ${surveyId}`)
+    }
   }
 }

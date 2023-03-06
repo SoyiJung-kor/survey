@@ -231,7 +231,6 @@ input CreateResponseCategoryInput {
 input UpdateResponseCategoryInput {
   responseId: Int
   surveyId: Int
-  id: Int!
 }
 
 input CreateEachResponseInput {
