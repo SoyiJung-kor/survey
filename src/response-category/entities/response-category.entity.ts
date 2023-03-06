@@ -15,7 +15,7 @@ export class ResponseCategory extends CommonEntity {
   sumCategoryScore: number;
 
   @Field(() => String)
-  @Column()
+  @Column({ default: ' ' })
   message: string;
 
   @Column()

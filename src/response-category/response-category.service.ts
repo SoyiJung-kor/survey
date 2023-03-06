@@ -6,6 +6,7 @@ import { Category } from '../category/entities/category.entity';
 import { EachResponse } from '../each-response/entities/each-response.entity';
 import { QuestionCategory } from '../question-category/entities/question-category.entity';
 import { Question } from '../question/entities/question.entity';
+import { Response } from '../response/entities/response.entity';
 import { CreateResponseCategoryInput } from './dto/create-response-category.input';
 import { UpdateResponseCategoryInput } from './dto/update-response-category.input';
 import { ResponseCategory } from './entities/response-category.entity';
@@ -31,6 +32,11 @@ export class ResponseCategoryService {
     for (let i = 0; i < category.length; i++) {
       const responseCategory = this.responseCategoryRepository.create(input);
       responseCategory.categoryName = category[i].categoryName;
+      responseCategory.sumCategoryScore = 0;
+      responseCategory.response = await this.dataSource.manager.findOneBy(
+        Response,
+        { id: input.responseId }
+      );
       this.responseCategoryRepository.save(responseCategory);
     }
     return this.responseCategoryRepository.find({
@@ -87,7 +93,8 @@ export class ResponseCategoryService {
               },
             );
             questionCategories.forEach((queCat) => {
-              if (resCat.categoryName == queCat.categoryName) {
+              if (queCat.categoryName == resCat.categoryName) {
+                console.log(res.responseScore);
                 resCat.sumCategoryScore += res.responseScore;
                 this.responseCategoryRepository.update(resCat.id, resCat);
               }
