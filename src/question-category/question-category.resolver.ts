@@ -1,9 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { QuestionCategoryService } from './question-category.service';
 import { QuestionCategory } from './entities/question-category.entity';
 import { CreateQuestionCategoryInput } from './dto/create-question-category.input';
 import { UpdateQuestionCategoryInput } from './dto/update-question-category.input';
-import { Question } from '../question/entities/question.entity';
 
 @Resolver(() => QuestionCategory)
 export class QuestionCategoryResolver {

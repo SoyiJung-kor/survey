@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { CommonEntity } from '../../common/entities/\bcommon.entity';
 import { EachResponse } from '../../each-response/entities/each-response.entity';
 import { Participant } from '../../participant/entities/participant.entity';
+import { ResponseCategory } from '../../response-category/entities/response-category.entity';
 import { Survey } from '../../survey/entities/survey.entity';
 
 @ObjectType()
@@ -40,4 +41,13 @@ export class Response extends CommonEntity {
     cascade: true,
   })
   eachResponse: EachResponse[];
+
+  @OneToMany(
+    () => ResponseCategory,
+    (responseCategory) => responseCategory.response,
+    {
+      cascade: true,
+    },
+  )
+  responseCategories: ResponseCategory[];
 }

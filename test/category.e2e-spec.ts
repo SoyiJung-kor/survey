@@ -291,7 +291,6 @@ describe('category', () => {
         })
     });
     describe('선택한 항목이 포함된 질문 조회', () => {
-        it.todo('선택한 항목이 포함된 질문 조회 성공!');
         it('선택한 항목이 포함된 질문 조회 성공!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -307,7 +306,6 @@ describe('category', () => {
                 })
                 .expect(400);
         })
-        it.todo('항목 아이디를 안써서 선택한 항목이 포함된 질문 조회 실패!');
         it('항목 아이디를 안써서 선택한 항목이 포함된 질문 조회 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -323,7 +321,6 @@ describe('category', () => {
                 })
                 .expect(400);
         })
-        it.todo('없는 항목 아이디를 입력해서 선택한 항목이 포함된 질문 조회 실패!');
         it('없는 항목 아이디를 입력해서 선택한 항목이 포함된 질문 조회 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)
@@ -339,7 +336,6 @@ describe('category', () => {
                 })
                 .expect(400);
         })
-        it.todo('query field를 잘못 입력해서 선택한 항목이 포함된 질문 조회 실패!');
         it('query field를 잘못 입력해서 선택한 항목이 포함된 질문 조회 실패!', async () => {
             return request(app.getHttpServer())
                 .post(gql)

@@ -66,4 +66,9 @@ export class QuestionResolver {
   removeQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
     return this.questionService.remove(questionId);
   }
+
+  @Mutation(() => Question)
+  copyQuestion(@Args('id', { type: () => Int }) id: number) {
+    return this.questionService.copyQuestion(id);
+  }
 }

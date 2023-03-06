@@ -10,6 +10,7 @@ import { ParticipantModule } from './participant/participant.module';
 import { typeORMConfig } from './common/config/dev-orm-config';
 import { CategoryScoreModule } from './category-score/category-score.module';
 import { QuestionCategoryModule } from './question-category/question-category.module';
+import { ResponseCategoryModule } from './response-category/response-category.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { QuestionCategoryModule } from './question-category/question-category.mo
     }),
     CategoryScoreModule,
     QuestionCategoryModule,
+    ResponseCategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

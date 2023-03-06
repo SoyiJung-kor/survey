@@ -54,6 +54,14 @@ type Participant {
   email: String!
 }
 
+type ResponseCategory {
+  id: Int!
+  categoryName: String!
+  sumCategoryScore: Int!
+  message: String!
+  response: Response!
+}
+
 type Response {
   id: Int!
   isSubmit: Boolean!
@@ -90,6 +98,8 @@ type Query {
   findResponseWithQueryBuilder(responseId: Int!): Response!
   findOneResponseDetail(responseId: Int!): [Response!]!
   getSumScore(responseId: Int!): Response!
+  findAllResponseCategory: [ResponseCategory!]!
+  findResponseCategory(id: Int!): ResponseCategory!
   findAllEachResponse: [EachResponse!]!
   findOneEachResponse(id: Int!): EachResponse!
   findAllCategories: [Category!]!
@@ -107,6 +117,7 @@ type Mutation {
   createQuestion(createQuestionInput: CreateQuestionInput!): Question!
   updateQuestion(updateQuestionInput: UpdateQuestionInput!): Question!
   removeQuestion(questionId: Int!): Question!
+  copyQuestion(id: Int!): Question!
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   removeAnswer(id: Int!): Answer!
@@ -116,6 +127,10 @@ type Mutation {
   createResponse(createResponseInput: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
   updateResponse(updateResponseInput: UpdateResponseInput!): Response!
+  createResponseCategory(input: CreateResponseCategoryInput!): [ResponseCategory!]!
+  sumResponseCategory(input: UpdateResponseCategoryInput!): [ResponseCategory!]!
+  removeResponseCategory(id: Int!): ResponseCategory!
+  compareScore(responseId: Int!, surveyId: Int!): [ResponseCategory!]!
   createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
   updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
   removeEachResponse(id: Int!): EachResponse!
@@ -206,6 +221,16 @@ input UpdateResponseInput {
   participantId: Int
   id: Int!
   isSubmit: Boolean!
+}
+
+input CreateResponseCategoryInput {
+  responseId: Int!
+  surveyId: Int!
+}
+
+input UpdateResponseCategoryInput {
+  responseId: Int
+  surveyId: Int
 }
 
 input CreateEachResponseInput {
