@@ -524,6 +524,43 @@ describe('question', () => {
         .expect(400)
     });
   })
+  describe('질문 복사!', () => {
+    it('질문 복사 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `mutation {
+            copyQuestion(id:1){
+                questionNumber
+                questionContent
+                id
+            }
+          }`,
+        })
+        .expect(200)
+        .expect((res) => {
+          const copyQuestion = res.body.data.copyQuestion;
+          const { questionNumber, questionContent, id } = copyQuestion;
+          expect(questionNumber).toBe(1);
+          expect(questionContent).toBe('Modified Question');
+          expect(id).toBe(2);
+        })
+    });
+    it('아이디를 안적어서 질문 복사 실패!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `mutation {
+            copyQuestion(id:){
+                questionNumber
+                questionContent
+                id
+            }
+          }`,
+        })
+        .expect(400)
+    });
+  })
   describe('질문 삭제!', () => {
     it('질문 삭제 성공!', async () => {
       return request(app.getHttpServer())
@@ -539,7 +576,7 @@ describe('question', () => {
         })
         .expect(200);
     });
-    it('질문을 삭제하면 db에 남은 question data가 0개다.', async () => {
+    it('질문을 삭제하면 db에 남은 question data가 1개다.', async () => {
       const result = request(app.getHttpServer())
         .post(gql)
         .send({
@@ -550,7 +587,7 @@ describe('question', () => {
           }`,
         })
         .expect((res) => {
-          expect(res.body.data.findAllQuestions).toHaveLength(0);
+          expect(res.body.data.findAllQuestions).toHaveLength(1);
         })
         .expect(200);
       return result;

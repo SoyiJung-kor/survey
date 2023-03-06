@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Answer } from '../answer/entities/answer.entity';
+import { QuestionCategory } from '../question-category/entities/question-category.entity';
 import { Survey } from '../survey/entities/survey.entity';
 import { CreateQuestionInput } from './dto/create-question.input';
 import { UpdateQuestionInput } from './dto/update-question.input';
@@ -134,6 +135,7 @@ export class QuestionService {
     const finalQuestion = await this.entityManager.save(newQuestion);
 
     this.copyAnswer(id, finalQuestion);
+    this.copyQuestionCategory(id, finalQuestion);
     return finalQuestion;
   }
 
@@ -148,7 +150,17 @@ export class QuestionService {
       newAnswer.questionId = finalQuestion.id;
       newAnswer.question = finalQuestion;
       this.entityManager.save(newAnswer);
-      console.log(newAnswer);
     });
+  }
+  async copyQuestionCategory(id: number, finalQuestion: Question) {
+    const questionCategories = await this.dataSource.manager
+      .findBy(QuestionCategory, { questionId: id });
+    questionCategories.forEach(questionCategory => {
+      const newQuestionCategory = new QuestionCategory();
+      newQuestionCategory.categoryName = questionCategory.categoryName;
+      newQuestionCategory.questionId = finalQuestion.id;
+      newQuestionCategory.question = finalQuestion;
+      this.entityManager.save(newQuestionCategory);
+    })
   }
 }
