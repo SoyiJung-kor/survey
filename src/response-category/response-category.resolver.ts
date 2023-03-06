@@ -19,13 +19,13 @@ export class ResponseCategoryResolver {
     return this.responseCategoryService.create(input);
   }
 
-  @Query(() => [ResponseCategory], { name: 'responseCategory' })
-  findAll() {
+  @Query(() => [ResponseCategory])
+  findAllResponseCategory() {
     return this.responseCategoryService.findAll();
   }
 
-  @Query(() => ResponseCategory, { name: 'responseCategory' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => ResponseCategory)
+  findResponseCategory(@Args('id', { type: () => Int }) id: number) {
     return this.responseCategoryService.findOne(id);
   }
 
@@ -40,5 +40,11 @@ export class ResponseCategoryResolver {
   @Mutation(() => ResponseCategory)
   removeResponseCategory(@Args('id', { type: () => Int }) id: number) {
     return this.responseCategoryService.remove(id);
+  }
+
+  @Mutation(() => [ResponseCategory])
+  compareScore(@Args('responseId', { type: () => Int }) responseId: number,
+    @Args('surveyId', { type: () => Int }) surveyId: number) {
+    return this.responseCategoryService.compareScore(responseId, surveyId);
   }
 }

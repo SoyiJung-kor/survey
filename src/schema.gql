@@ -98,7 +98,8 @@ type Query {
   findResponseWithQueryBuilder(responseId: Int!): Response!
   findOneResponseDetail(responseId: Int!): [Response!]!
   getSumScore(responseId: Int!): Response!
-  responseCategory(id: Int!): ResponseCategory!
+  findAllResponseCategory: [ResponseCategory!]!
+  findResponseCategory(id: Int!): ResponseCategory!
   findAllEachResponse: [EachResponse!]!
   findOneEachResponse(id: Int!): EachResponse!
   findAllCategories: [Category!]!
@@ -129,6 +130,7 @@ type Mutation {
   createResponseCategory(input: CreateResponseCategoryInput!): [ResponseCategory!]!
   sumResponseCategory(input: UpdateResponseCategoryInput!): [ResponseCategory!]!
   removeResponseCategory(id: Int!): ResponseCategory!
+  compareScore(responseId: Int!, surveyId: Int!): [ResponseCategory!]!
   createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
   updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
   removeEachResponse(id: Int!): EachResponse!

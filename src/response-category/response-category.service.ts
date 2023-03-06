@@ -2,6 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
+import { CategoryScore } from '../category-score/entities/category-score.entity';
 import { Category } from '../category/entities/category.entity';
 import { EachResponse } from '../each-response/entities/each-response.entity';
 import { QuestionCategory } from '../question-category/entities/question-category.entity';
@@ -119,5 +120,38 @@ export class ResponseCategoryService {
     } else {
       return responseCategory;
     }
+  }
+
+  async compareScore(responseId: number, surveyId: number): Promise<ResponseCategory[]> {
+    const responseCategoryResult = await this.responseCategoryRepository.findBy({ responseId });
+    const categories = [];
+    responseCategoryResult.forEach(result => {
+      categories.push(this.dataSource.manager.findOne(Category, {
+        where: {
+          surveyId: surveyId,
+          categoryName: result.categoryName,
+        }
+      }))
+    });
+
+    for (let i = 0; i < categories.length; i++) {
+      const categoryScores = await this.dataSource.manager.find(CategoryScore, {
+        where: {
+          categoryId: categories[i].id
+        }
+      })
+      categoryScores.forEach(score => {
+        if (score.highScore > responseCategoryResult[i].sumCategoryScore &&
+          score.lowScore <= responseCategoryResult[i].sumCategoryScore) {
+          responseCategoryResult[i].message = score.categoryMessage;
+          this.responseCategoryRepository.save(responseCategoryResult[i]);
+        }
+      })
+    }
+    return await this.responseCategoryRepository.find({
+      where: {
+        responseId: responseId,
+      },
+    });
   }
 }
