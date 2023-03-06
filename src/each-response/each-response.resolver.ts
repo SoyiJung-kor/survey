@@ -11,10 +11,10 @@ export class EachResponseResolver {
 
   @Mutation(() => EachResponse)
   createEachResponse(
-    @Args('createEachResponseInput')
-    createEachResponseInput: CreateEachResponseInput,
+    @Args('input')
+    input: CreateEachResponseInput,
   ) {
-    return this.eachResponseService.create(createEachResponseInput);
+    return this.eachResponseService.create(input);
   }
 
   @Query(() => [EachResponse])

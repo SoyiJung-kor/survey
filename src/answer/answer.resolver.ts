@@ -11,9 +11,9 @@ export class AnswerResolver {
 
   @Mutation(() => Answer)
   createAnswer(
-    @Args('createAnswerInput') createAnswerInput: CreateAnswerInput,
+    @Args('input') input: CreateAnswerInput,
   ) {
-    return this.answerService.create(createAnswerInput);
+    return this.answerService.create(input);
   }
 
   @Query(() => [Answer])

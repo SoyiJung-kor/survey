@@ -11,9 +11,9 @@ export class ResponseResolver {
 
   @Mutation(() => Response)
   createResponse(
-    @Args('createResponseInput') createResponseInput: CreateResponseInput,
+    @Args('input') input: CreateResponseInput,
   ) {
-    return this.responseService.create(createResponseInput);
+    return this.responseService.create(input);
   }
 
   @Query(() => [Response])

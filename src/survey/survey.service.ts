@@ -15,8 +15,8 @@ export class SurveyService {
 
   private readonly logger = new Logger(SurveyService.name);
 
-  create(createSurveyInput: CreateSurveyInput) {
-    const newSurvey = this.surveyRepository.create(createSurveyInput);
+  create(input: CreateSurveyInput) {
+    const newSurvey = this.surveyRepository.create(input);
     return this.surveyRepository.save(newSurvey);
   }
 

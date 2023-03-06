@@ -111,27 +111,27 @@ type Query {
 }
 
 type Mutation {
-  createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
+  createSurvey(input: CreateSurveyInput!): Survey!
   updateSurvey(input: UpdateSurveyInput!): Survey!
   removeSurvey(surveyId: Int!): Survey!
-  createQuestion(createQuestionInput: CreateQuestionInput!): Question!
+  createQuestion(input: CreateQuestionInput!): Question!
   updateQuestion(input: UpdateQuestionInput!): Question!
   removeQuestion(questionId: Int!): Question!
   copyQuestion(id: Int!): Question!
-  createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
+  createAnswer(input: CreateAnswerInput!): Answer!
   updateAnswer(input: UpdateAnswerInput!): Answer!
   removeAnswer(id: Int!): Answer!
   createQuestionCategory(input: CreateQuestionCategoryInput!): QuestionCategory!
   updateQuestionCategory(input: UpdateQuestionCategoryInput!): QuestionCategory!
   removeQuestionCategory(id: Int!): QuestionCategory!
-  createResponse(createResponseInput: CreateResponseInput!): Response!
+  createResponse(input: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
   updateResponse(input: UpdateResponseInput!): Response!
   createResponseCategory(input: CreateResponseCategoryInput!): [ResponseCategory!]!
   sumResponseCategory(input: UpdateResponseCategoryInput!): [ResponseCategory!]!
   removeResponseCategory(id: Int!): ResponseCategory!
   compareScore(responseId: Int!, surveyId: Int!): [ResponseCategory!]!
-  createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
+  createEachResponse(input: CreateEachResponseInput!): EachResponse!
   updateEachResponse(input: UpdateEachResponseInput!): EachResponse!
   removeEachResponse(id: Int!): EachResponse!
   createCategory(input: CreateCategoryInput!): Category!
@@ -140,7 +140,7 @@ type Mutation {
   createCategoryScore(input: CreateCategoryScoreInput!): CategoryScore!
   updateCategoryScore(input: UpdateCategoryScoreInput!): CategoryScore!
   removeCategoryScore(id: Int!): CategoryScore!
-  createParticipant(createParticipantInput: CreateParticipantInput!): Participant!
+  createParticipant(input: CreateParticipantInput!): Participant!
   updateParticipant(input: UpdateParticipantInput!): Participant!
   removeParticipant(participantId: Int!): Participant!
 }

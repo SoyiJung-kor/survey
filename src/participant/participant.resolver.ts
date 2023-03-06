@@ -11,10 +11,10 @@ export class ParticipantResolver {
 
   @Mutation(() => Participant)
   createParticipant(
-    @Args('createParticipantInput')
-    createParticipantInput: CreateParticipantInput,
+    @Args('input')
+    input: CreateParticipantInput,
   ) {
-    return this.participantService.create(createParticipantInput);
+    return this.participantService.create(input);
   }
 
   @Query(() => [Participant])

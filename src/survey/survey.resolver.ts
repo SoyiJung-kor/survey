@@ -11,9 +11,9 @@ export class SurveyResolver {
 
   @Mutation(() => Survey)
   createSurvey(
-    @Args('createSurveyInput') createSurveyInput: CreateSurveyInput,
+    @Args('input') input: CreateSurveyInput,
   ) {
-    return this.surveyService.create(createSurveyInput);
+    return this.surveyService.create(input);
   }
 
   @Query(() => [Survey])
