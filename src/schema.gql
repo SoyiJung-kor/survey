@@ -125,8 +125,8 @@ type Mutation {
   createResponse(createResponseInput: CreateResponseInput!): Response!
   removeResponse(responseId: Int!): Response!
   updateResponse(updateResponseInput: UpdateResponseInput!): Response!
-  createResponseCategory(createResponseCategoryInput: CreateResponseCategoryInput!): ResponseCategory!
-  updateResponseCategory(updateResponseCategoryInput: UpdateResponseCategoryInput!): ResponseCategory!
+  createResponseCategory(input: CreateResponseCategoryInput!): [ResponseCategory!]!
+  sumResponseCategory(input: UpdateResponseCategoryInput!): [ResponseCategory!]!
   removeResponseCategory(id: Int!): ResponseCategory!
   createEachResponse(createEachResponseInput: CreateEachResponseInput!): EachResponse!
   updateEachResponse(updateEachResponseInput: UpdateEachResponseInput!): EachResponse!
@@ -221,13 +221,13 @@ input UpdateResponseInput {
 }
 
 input CreateResponseCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  responseId: Int!
+  surveyId: Int!
 }
 
 input UpdateResponseCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  responseId: Int
+  surveyId: Int
   id: Int!
 }
 

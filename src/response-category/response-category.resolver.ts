@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { ResponseCategoryService } from './response-category.service';
 import { ResponseCategory } from './entities/response-category.entity';
@@ -6,11 +7,16 @@ import { UpdateResponseCategoryInput } from './dto/update-response-category.inpu
 
 @Resolver(() => ResponseCategory)
 export class ResponseCategoryResolver {
-  constructor(private readonly responseCategoryService: ResponseCategoryService) {}
+  constructor(
+    private readonly responseCategoryService: ResponseCategoryService,
+  ) { }
 
-  @Mutation(() => ResponseCategory)
-  createResponseCategory(@Args('createResponseCategoryInput') createResponseCategoryInput: CreateResponseCategoryInput) {
-    return this.responseCategoryService.create(createResponseCategoryInput);
+  @Mutation(() => [ResponseCategory])
+  createResponseCategory(
+    @Args('input')
+    input: CreateResponseCategoryInput,
+  ) {
+    return this.responseCategoryService.create(input);
   }
 
   @Query(() => [ResponseCategory], { name: 'responseCategory' })
@@ -23,9 +29,12 @@ export class ResponseCategoryResolver {
     return this.responseCategoryService.findOne(id);
   }
 
-  @Mutation(() => ResponseCategory)
-  updateResponseCategory(@Args('updateResponseCategoryInput') updateResponseCategoryInput: UpdateResponseCategoryInput) {
-    return this.responseCategoryService.update(updateResponseCategoryInput.id, updateResponseCategoryInput);
+  @Mutation(() => [ResponseCategory])
+  sumResponseCategory(
+    @Args('input')
+    input: UpdateResponseCategoryInput,
+  ) {
+    return this.responseCategoryService.sumCategoryScore(input);
   }
 
   @Mutation(() => ResponseCategory)
