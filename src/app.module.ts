@@ -8,9 +8,6 @@ import { join } from 'path';
 import { SurveyModule } from './survey/survey.module';
 import { ParticipantModule } from './participant/participant.module';
 import { typeORMConfig } from './common/config/dev-orm-config';
-import { CategoryScoreModule } from './category-score/category-score.module';
-import { QuestionCategoryModule } from './question-category/question-category.module';
-import { ResponseCategoryModule } from './response-category/response-category.module';
 
 @Module({
   imports: [
@@ -21,9 +18,6 @@ import { ResponseCategoryModule } from './response-category/response-category.mo
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
-    CategoryScoreModule,
-    QuestionCategoryModule,
-    ResponseCategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
