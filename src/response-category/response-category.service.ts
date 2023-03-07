@@ -24,14 +24,17 @@ export class ResponseCategoryService {
     input: CreateResponseCategoryInput,
   ) {
     await this.validSurvey(input.surveyId);
-    const category = await this.validCategoryWithSurvey(input.surveyId);
-    for (let i = 0; i < category.length; i++) {
+    await this.validResponse(input.responseId);
+    const categories = await this.validCategoryWithSurvey(input.surveyId);
+    categories.forEach(async category => {
       const responseCategory = this.responseCategoryRepository.create(input);
-      responseCategory.categoryName = category[i].categoryName;
+      responseCategory.categoryName = category.categoryName;
       responseCategory.sumCategoryScore = 0;
       responseCategory.response = await this.validResponse(input.responseId);
       this.responseCategoryRepository.save(responseCategory);
-    }
+    });
+
+
     return this.responseCategoryRepository.find({
       where: {
         responseId: input.responseId,
@@ -46,6 +49,49 @@ export class ResponseCategoryService {
   findOne(id: number) {
     return this.validResponseCategory(id);
   }
+
+  // async sumCategoryScore(input: UpdateResponseCategoryInput) {
+  //   await this.validResponse(input.responseId);
+  //   await this.validSurvey(input.surveyId);
+  //   const responseCategories = await this.entityManager.find(
+  //     ResponseCategory,
+  //     {
+  //       where: {
+  //         responseId: input.responseId,
+  //       },
+  //     },
+  //   );
+  //   const questions = this.entityManager.find(Question, {
+  //     where: {
+  //       surveyId: input.surveyId,
+  //     },
+  //   });
+  //   const eachResponses = await this.entityManager.findBy(EachResponse, {
+  //     responseId: input.responseId,
+  //   });
+  //   responseCategories.forEach((resCat) => {
+  //     eachResponses.forEach(async (res) => {
+  //       (await questions).forEach(async (q) => {
+  //         if (q.questionContent == res.responseQuestion) {
+  //           const questionId = q.id;
+  //           const questionCategories = await this.entityManager.findBy(
+  //             QuestionCategory,
+  //             {
+  //               questionId: questionId,
+  //             },
+  //           );
+  //           questionCategories.forEach((queCat) => {
+  //             if (queCat.categoryName == resCat.categoryName) {
+  //               resCat.sumCategoryScore += res.responseScore;
+  //               this.responseCategoryRepository.update(resCat.id, resCat);
+  //             }
+  //           });
+  //         }
+  //       });
+  //     });
+  //   });
+  //   return responseCategories;
+  // }
 
   async sumCategoryScore(input: UpdateResponseCategoryInput) {
     await this.validResponse(input.responseId);
