@@ -146,3 +146,4 @@ dist
 !.vscode/launch.json
 !.vscode/extensions.json
 .env.dev
+.env.dev
