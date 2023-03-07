@@ -18,10 +18,7 @@ export class CategoryService {
 
   async create(input: CreateCategoryInput) {
     const newCategory = this.categoryRepository.create(input);
-    newCategory.survey = await this.entityManager.findOneBy(Survey, { id: input.surveyId },);
-    // const survey = new Survey();
-    // survey.id = input.surveyId;
-    // newCategory.survey = survey;
+    newCategory.survey = await this.validSurvey(input.surveyId);
     return this.entityManager.save(newCategory);
   }
 

@@ -102,4 +102,19 @@ export class ResponseService {
     this.responseRepository.update(input.id, response);
     return response;
   }
+
+  async validSurvey(surveyId: number) {
+    const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
+    if (!survey) {
+      throw new Error(`CAN NOT FOUND SURVEY! ID: ${surveyId} `);
+    }
+    return survey;
+  }
+  async validParticipant(participantId: number) {
+    const participant = await this.entityManager.findOneBy(Participant, { id: participantId });
+    if (!participant) {
+      throw new Error(`CAN NOT FOUND PARTICIPANT! ID:${participantId}`);
+    }
+    return participant;
+  }
 }

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { CategoryScore } from '../category-score/entities/category-score.entity';
 import { Category } from '../category/entities/category.entity';
 import { EachResponse } from '../each-response/entities/each-response.entity';
@@ -18,24 +18,17 @@ export class ResponseCategoryService {
   constructor(
     @InjectRepository(ResponseCategory)
     private responseCategoryRepository: Repository<ResponseCategory>,
-    private dataSource: DataSource,
+    private entityManager: EntityManager,
   ) { }
   async create(
     input: CreateResponseCategoryInput,
   ) {
-    await this.validResponse(input.responseId);
-    await this.validSurvey(input.surveyId);
-    const category = await this.dataSource.manager.findBy(Category, {
-      surveyId: input.surveyId,
-    });
+    const category = await this.validCategoryWithSurvey(input.surveyId);
     for (let i = 0; i < category.length; i++) {
       const responseCategory = this.responseCategoryRepository.create(input);
       responseCategory.categoryName = category[i].categoryName;
       responseCategory.sumCategoryScore = 0;
-      responseCategory.response = await this.dataSource.manager.findOneBy(
-        Response,
-        { id: input.responseId }
-      );
+      responseCategory.response = await this.validResponse(input.responseId);
       this.responseCategoryRepository.save(responseCategory);
     }
     return this.responseCategoryRepository.find({
@@ -56,7 +49,7 @@ export class ResponseCategoryService {
   async sumCategoryScore(input: UpdateResponseCategoryInput) {
     await this.validResponse(input.responseId);
     await this.validSurvey(input.surveyId);
-    const responseCategories = await this.dataSource.manager.find(
+    const responseCategories = await this.entityManager.find(
       ResponseCategory,
       {
         where: {
@@ -64,12 +57,12 @@ export class ResponseCategoryService {
         },
       },
     );
-    const questions = this.dataSource.manager.find(Question, {
+    const questions = this.entityManager.find(Question, {
       where: {
         surveyId: input.surveyId,
       },
     });
-    const eachResponses = await this.dataSource.manager.findBy(EachResponse, {
+    const eachResponses = await this.entityManager.findBy(EachResponse, {
       responseId: input.responseId,
     });
     responseCategories.forEach((resCat) => {
@@ -77,7 +70,7 @@ export class ResponseCategoryService {
         (await questions).forEach(async (q) => {
           if (q.questionContent == res.responseQuestion) {
             const questionId = q.id;
-            const questionCategories = await this.dataSource.manager.findBy(
+            const questionCategories = await this.entityManager.findBy(
               QuestionCategory,
               {
                 questionId: questionId,
@@ -117,7 +110,7 @@ export class ResponseCategoryService {
     const responseCategoryResult = await this.responseCategoryRepository.findBy({ responseId });
     const categories = [];
     responseCategoryResult.forEach(result => {
-      categories.push(this.dataSource.manager.findOne(Category, {
+      categories.push(this.entityManager.findOne(Category, {
         where: {
           surveyId: surveyId,
           categoryName: result.categoryName,
@@ -126,7 +119,7 @@ export class ResponseCategoryService {
     });
 
     for (let i = 0; i < categories.length; i++) {
-      const categoryScores = await this.dataSource.manager.find(CategoryScore, {
+      const categoryScores = await this.entityManager.find(CategoryScore, {
         where: {
           categoryId: categories[i].id
         }
@@ -147,16 +140,31 @@ export class ResponseCategoryService {
   }
 
   async validResponse(responseId: number) {
-    const response = await this.dataSource.manager.findOneBy(Response, { id: responseId });
+    const response = await this.entityManager.findOneBy(Response, { id: responseId });
     if (!response) {
       throw new Error(`CAN NOT FOUND RESPONSE! id: ${responseId}`)
     }
+    return response;
   }
 
   async validSurvey(surveyId: number) {
-    const survey = await this.dataSource.manager.findOneBy(Survey, { id: surveyId });
+    const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
     if (!survey) {
       throw new Error(`CAN NOT FOUND SURVEY! id: ${surveyId}`)
     }
+    return survey;
   }
+
+  async validCategoryWithSurvey(surveyId: number) {
+    const category = await this.entityManager.findBy(Category, {
+      surveyId: surveyId,
+    });
+    if (!category) {
+      throw new Error(`CAN NOT FIND CATEGORY! SURVEYID: ${surveyId}`);
+    } else {
+      return category;
+    }
+  }
+
+
 }

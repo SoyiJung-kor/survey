@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, EntityManager, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Question } from '../question/entities/question.entity';
 import { CreateQuestionCategoryInput } from './dto/create-question-category.input';
 import { UpdateQuestionCategoryInput } from './dto/update-question-category.input';
@@ -13,17 +13,13 @@ export class QuestionCategoryService {
     @InjectRepository(QuestionCategory)
     private questionCategoryRepository: Repository<QuestionCategory>,
     private entityManager: EntityManager,
-    private dataSource: DataSource,
   ) { }
 
   private readonly logger = new Logger(QuestionCategory.name);
 
   async create(input: CreateQuestionCategoryInput) {
     const newQuestionCategory = this.questionCategoryRepository.create(input);
-    const question = await this.entityManager.findOneBy(Question, {
-      id: input.questionId,
-    });
-    newQuestionCategory.question = question;
+    newQuestionCategory.question = await this.validQuestion(input.questionId);
     return this.entityManager.save(newQuestionCategory);
   }
 
@@ -65,7 +61,7 @@ export class QuestionCategoryService {
   }
 
   async validQuestion(questionId: number) {
-    const question = await this.dataSource.manager.findOneBy(Question, { id: questionId });
+    const question = await this.entityManager.findOneBy(Question, { id: questionId });
     if (!question) {
       throw new Error(`CAT NOT FOUND QUESTION! ID:${questionId}`);
     } else {

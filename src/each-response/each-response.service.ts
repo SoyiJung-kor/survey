@@ -19,9 +19,7 @@ export class EachResponseService {
 
   async create(input: CreateEachResponseInput) {
     const eachResponse = this.eachResponseRepository.create(input);
-    eachResponse.response = await this.entityManager.findOneBy(Response, {
-      id: input.responseId,
-    });
+    eachResponse.response = await this.validResponse(input.responseId);
     return this.entityManager.save(eachResponse);
   }
 
@@ -50,7 +48,7 @@ export class EachResponseService {
   async validResponse(responseId: number) {
     const response = await this.entityManager.findOneBy(Response, { id: responseId });
     if (!response) {
-      throw new Error("CAN'T FIND THE RESPONSE")
+      throw new Error(`CAN'T FIND THE RESPONSE! ID:${responseId}`);
     } else {
       return response;
     }

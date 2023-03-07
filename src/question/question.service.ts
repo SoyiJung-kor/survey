@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, EntityManager, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Answer } from '../answer/entities/answer.entity';
 import { QuestionCategory } from '../question-category/entities/question-category.entity';
 import { Survey } from '../survey/entities/survey.entity';
@@ -15,20 +15,13 @@ export class QuestionService {
     @InjectRepository(Question)
     private questionRepository: Repository<Question>,
     private entityManager: EntityManager,
-    private dataSource: DataSource,
   ) { }
 
   private readonly logger = new Logger(QuestionService.name);
 
   async create(input: CreateQuestionInput) {
     const question = this.questionRepository.create(input);
-    // const survey = new Survey()
-    // survey.id = input.surveyId
-    // question.survey = survey
-    question.survey = await this.entityManager.findOneBy(
-      Survey,
-      { id: input.surveyId },
-    );
+    question.survey = await this.validSurvey(input.surveyId);
     return this.entityManager.save(question);
   }
 
@@ -100,7 +93,7 @@ export class QuestionService {
   async validSurvey(surveyId: number) {
     const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
     if (!survey) {
-      throw new Error("CAN'T FIND THE SURVEY!")
+      throw new Error(`CAN'T FIND THE SURVEY! ID: ${surveyId}`);
     } else {
       return survey;
     }
@@ -137,7 +130,7 @@ export class QuestionService {
   }
 
   async copyAnswer(id: number, finalQuestion: Question) {
-    const answers = await this.dataSource.manager
+    const answers = await this.entityManager
       .findBy(Answer, { questionId: id });
     answers.forEach(answer => {
       const newAnswer = new Answer();
@@ -150,7 +143,7 @@ export class QuestionService {
     });
   }
   async copyQuestionCategory(id: number, finalQuestion: Question) {
-    const questionCategories = await this.dataSource.manager
+    const questionCategories = await this.entityManager
       .findBy(QuestionCategory, { questionId: id });
     questionCategories.forEach(questionCategory => {
       const newQuestionCategory = new QuestionCategory();
