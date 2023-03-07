@@ -7,8 +7,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { SurveyModule } from './survey/survey.module';
 import { ParticipantModule } from './participant/participant.module';
-import { typeORMConfig } from './common/config/dev-orm-config';
-import { ConfigModule } from '@nestjs/config';
+import { typeORMConfig } from './common/config/orm-config';
 
 @Module({
   imports: [
@@ -18,10 +17,6 @@ import { ConfigModule } from '@nestjs/config';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-    }),
-    ConfigModule.forRoot({
-      envFilePath: ['.env.development.local', '.env.development', '.env.test'],
-      isGlobal: true,
     }),
   ],
   controllers: [AppController],
