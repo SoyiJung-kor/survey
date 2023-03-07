@@ -2,12 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { ParticipantModule } from '../src/participant/participant.module';
 import { SurveyModule } from '../src/survey/survey.module';
 import { DataSource } from 'typeorm';
-import { testTypeORMConfig } from '../src/common/config/test-orm-config';
+import { ConfigurationModule } from '../src/common/config/config.module';
+import { DatabaseModule } from '../src/common/config/database.module';
 
 describe('Graphql (e2e)', () => {
   let app: INestApplication;
@@ -18,11 +18,12 @@ describe('Graphql (e2e)', () => {
       imports: [
         SurveyModule,
         ParticipantModule,
-        TypeOrmModule.forRoot(testTypeORMConfig),
+        DatabaseModule,
         GraphQLModule.forRoot<ApolloDriverConfig>({
           driver: ApolloDriver,
-          autoSchemaFile: join(process.cwd(), 'test/schema.gql'),
+          autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
         }),
+        ConfigurationModule,
       ],
     }).compile();
 

@@ -3,14 +3,12 @@ import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TestingModule, Test } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import request from 'supertest';
 import { join } from 'path';
 import { DataSource } from 'typeorm';
 import { Answer } from '../src/answer/entities/answer.entity';
 import { CategoryScore } from '../src/category-score/entities/category-score.entity';
 import { Category } from '../src/category/entities/category.entity';
-import { testTypeORMConfig } from '../src/common/config/test-orm-config';
 import { HttpExceptionFilter } from '../src/common/utils/http_exception_filter';
 import { EachResponse } from '../src/each-response/entities/each-response.entity';
 import { Participant } from '../src/participant/entities/participant.entity';
@@ -20,6 +18,8 @@ import { Question } from '../src/question/entities/question.entity';
 import { Response } from '../src/response/entities/response.entity';
 import { Survey } from '../src/survey/entities/survey.entity';
 import { SurveyModule } from '../src/survey/survey.module';
+import { ConfigurationModule } from '../src/common/config/config.module';
+import { DatabaseModule } from '../src/common/config/database.module';
 const gql = '/graphql';
 
 describe('response-category', () => {
@@ -31,11 +31,12 @@ describe('response-category', () => {
             imports: [
                 SurveyModule,
                 ParticipantModule,
-                TypeOrmModule.forRoot(testTypeORMConfig),
+                DatabaseModule,
                 GraphQLModule.forRoot<ApolloDriverConfig>({
                     driver: ApolloDriver,
-                    autoSchemaFile: join(process.cwd(), 'test/schema.gql'),
+                    autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
                 }),
+                ConfigurationModule,
             ],
         }).compile();
 
