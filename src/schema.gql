@@ -2,22 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type EachResponse {
-  id: Int!
-  responseId: Int!
-  responseQuestion: String!
-  responseAnswer: String!
-  responseScore: Int!
-}
-
-type ResponseCategory {
-  id: Int!
-  categoryName: String!
-  sumCategoryScore: Int!
-  message: String!
-  response: Response!
-}
-
 type CategoryScore {
   id: Int!
   highScore: Int!
@@ -57,12 +41,25 @@ type Question {
   questionCategories: [QuestionCategory!]
 }
 
-type Survey {
+type EachResponse {
   id: Int!
-  surveyTitle: String!
-  questions: [Question!]
-  response: [Response!]
-  categories: [Category!]
+  responseId: Int!
+  responseQuestion: String!
+  responseAnswer: String!
+  responseScore: Int!
+}
+
+type Participant {
+  id: Int!
+  email: String!
+}
+
+type ResponseCategory {
+  id: Int!
+  categoryName: String!
+  sumCategoryScore: Int!
+  message: String!
+  response: Response!
 }
 
 type Response {
@@ -73,9 +70,12 @@ type Response {
   survey: Survey!
 }
 
-type Participant {
+type Survey {
   id: Int!
-  email: String!
+  surveyTitle: String!
+  questions: [Question!]
+  response: [Response!]
+  categories: [Category!]
 }
 
 type Query {
