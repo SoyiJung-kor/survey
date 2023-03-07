@@ -23,6 +23,7 @@ export class ResponseCategoryService {
   async create(
     input: CreateResponseCategoryInput,
   ) {
+    await this.validSurvey(input.surveyId);
     const category = await this.validCategoryWithSurvey(input.surveyId);
     for (let i = 0; i < category.length; i++) {
       const responseCategory = this.responseCategoryRepository.create(input);

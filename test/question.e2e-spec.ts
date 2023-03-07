@@ -75,7 +75,7 @@ describe('question', () => {
         .send({
           query: `
           mutation {
-            createQuestion(createQuestionInput:{questionNumber:1,questionContent:"Test Question",surveyId:1}) {
+            createQuestion(input:{questionNumber:1,questionContent:"Test Question",surveyId:1}) {
               id
               questionNumber
               questionContent
@@ -126,7 +126,7 @@ describe('question', () => {
         .send({
           query: `
           mutation {
-            createQuestion(createQuestionInput:{questionNumber:"1",questionContent:"Test Question",surveyId:1}) {
+            createQuestion(input:{questionNumber:"1",questionContent:"Test Question",surveyId:1}) {
               id
               questionNumber
               questionContent
@@ -146,7 +146,7 @@ describe('question', () => {
         .send({
           query: `
           mutation {
-            createQuestion(createQuestionInput:{questionNumber:1,questionContent:" ",surveyId:1}) {
+            createQuestion(input:{questionNumber:1,questionContent:" ",surveyId:1}) {
               id
               questionNumber
               questionContent
@@ -169,7 +169,7 @@ describe('question', () => {
         .send({
           query: `
           mutation {
-            createQuestion(createQuestionInput:{questionNumber:1,questionContent:"Test Question",surveyId:}) {
+            createQuestion(input:{questionNumber:1,questionContent:"Test Question",surveyId:}) {
               id
               questionNumber
               questionContent
@@ -333,7 +333,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:1}) {
+            updateQuestion(input:{questionContent:"Modified Question",id:1}) {
               id
               questionContent
             }
@@ -354,7 +354,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:1}) {
+            updateQuestion(input:{questionContent:"Modified Question",id:1}) {
               id
               question
             }
@@ -369,7 +369,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:100}) {
+            updateQuestion(input:{questionContent:"Modified Question",id:100}) {
               id
               questionContent
             }
@@ -386,7 +386,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:"1"}) {
+            updateQuestion(input:{questionContent:"Modified Question",id:"1"}) {
               id
               questionContent
             }
@@ -401,7 +401,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:" ",id:1}) {
+            updateQuestion(input:{questionContent:" ",id:1}) {
               id
               questionContent
             }
@@ -418,7 +418,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{id:100,questionContent:"Modified Question",surveyId:100}) {
+            updateQuestion(input:{id:100,questionContent:"Modified Question",surveyId:100}) {
               id
               questionContent
             }

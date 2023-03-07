@@ -77,7 +77,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              createResponse(createResponseInput:{surveyId:1,participantId:1}) {
+              createResponse(input:{surveyId:1,participantId:1}) {
                 id
                 isSubmit
                 sumScore
@@ -128,7 +128,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              createResponse(createResponseInput:{surveyId:1,participantId:100}) {
+              createResponse(input:{surveyId:1,participantId:100}) {
                 id
                 isSubmit
                 sumScore
@@ -152,7 +152,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              createResponse(createResponseInput:{surveyId:1,participantId:}) {
+              createResponse(input:{surveyId:1,participantId:}) {
                 id
                 isSubmit
                 sumScore
@@ -174,7 +174,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              createResponse(createResponseInput:{surveyId:100,participantId:1}) {
+              createResponse(input:{surveyId:100,participantId:1}) {
                 id
                 isSubmit
                 sumScore
@@ -198,7 +198,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              createResponse(createResponseInput:{surveyId:,participantId:1}) {
+              createResponse(input:{surveyId:,participantId:1}) {
                 id
                 isSubmit
                 sumScore
@@ -391,7 +391,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              updateResponse(updateResponseInput:{id:1,isSubmit:true}) {
+              updateResponse(input:{id:1,isSubmit:true}) {
                 id
                 isSubmit
               }
@@ -409,7 +409,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              updateResponse(updateResponseInput:{id:100,isSubmit:true}) {
+              updateResponse(input:{id:100,isSubmit:true}) {
                 id
                 isSubmit
               }
@@ -426,7 +426,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              updateResponse(updateResponseInput:{id:,isSubmit:true}) {
+              updateResponse(input:{id:,isSubmit:true}) {
                 id
                 isSubmit
               }
@@ -456,7 +456,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              updateResponse(updateResponseInput:{id:1,isSubmite:true}) {
+              updateResponse(input:{id:1,isSubmite:true}) {
                 id
                 isSubmit
               }

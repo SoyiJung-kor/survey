@@ -49,7 +49,7 @@ describe('participant', () => {
         .send({
           query: `
             mutation {
-              createParticipant(createParticipantInput:{email:"test@test.com"}) {
+              createParticipant(input:{email:"test@test.com"}) {
                 id
                 email
               }
@@ -68,7 +68,7 @@ describe('participant', () => {
         .send({
           query: `
             mutation createParticipant {
-              createSurvey(createParticipantInput:{email:"test@test.d"}) {
+              createSurvey(input:{email:"test@test.d"}) {
                 id
                 email
               }
@@ -173,7 +173,7 @@ describe('participant', () => {
         .send({
           query: `
             mutation updateParticipant {
-              updateParticipant(updateParticipantInput:{email:"modified@test.com",id:1}) {
+              updateParticipant(input:{email:"modified@test.com",id:1}) {
                 id
                 email
               }
@@ -194,7 +194,7 @@ describe('participant', () => {
         .send({
           query: `
             mutation updateParticipant {
-              updateParticipant(updateParticipantInput:{email:"modified@test.com",id:100}) {
+              updateParticipant(input:{email:"modified@test.com",id:100}) {
                 id
                 email
               }
@@ -211,7 +211,7 @@ describe('participant', () => {
         .send({
           query: `
             mutation updateParticipant {
-              updateParticipant(updateParticipantInput:{email:"modified@test.com",id:}) {
+              updateParticipant(input:{email:"modified@test.com",id:}) {
                 id
                 email
               }
@@ -226,7 +226,7 @@ describe('participant', () => {
         .send({
           query: `
             mutation updateParticipant {
-              updateParticipant(updateParticipantInput:{email:"modified@test.d",id:1}) {
+              updateParticipant(input:{email:"modified@test.d",id:1}) {
                 id
                 email
               }

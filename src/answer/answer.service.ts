@@ -26,8 +26,8 @@ export class AnswerService {
     return this.answerRepository.find();
   }
 
-  findOne(id: number) {
-    return this.validAnswer(id);
+  async findOne(id: number) {
+    return await this.validAnswer(id);
   }
 
   /**
@@ -66,7 +66,7 @@ export class AnswerService {
   }
 
   async remove(id: number) {
-    const answer = this.validAnswer(id);
+    const answer = await this.validAnswer(id);
     await this.answerRepository.delete({ id });
     return answer;
   }

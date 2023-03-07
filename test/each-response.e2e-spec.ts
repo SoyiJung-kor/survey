@@ -84,7 +84,7 @@ describe('eachResponse', () => {
         .send({
           query: `
             mutation {
-              createEachResponse(createEachResponseInput:{responseId:1,responseQuestion:"Modified Question",responseAnswer:"Modified Answer", responseScore:5}) {
+              createEachResponse(input:{responseId:1,responseQuestion:"Modified Question",responseAnswer:"Modified Answer", responseScore:5}) {
                 id
                 responseId
                 responseQuestion
@@ -131,7 +131,7 @@ describe('eachResponse', () => {
         .send({
           query: `
             mutation {
-              createEachResponse(createEachResponseInput:{responseId:100,responseQuestion:"Modified Question",responseAnswer:"Modified Answer", responseScore:5}) {
+              createEachResponse(input:{responseId:100,responseQuestion:"Modified Question",responseAnswer:"Modified Answer", responseScore:5}) {
                 id
                 responseId
                 responseQuestion
@@ -183,7 +183,7 @@ describe('eachResponse', () => {
         .post(gql)
         .send({
           query: `{
-              findOneEachResponse(id:1){
+              findEachResponse(id:1){
                 id
                 responseId
                 responseQuestion
@@ -193,15 +193,15 @@ describe('eachResponse', () => {
             }`,
         })
         .expect((res) => {
-          expect(res.body.data.findOneEachResponse.id).toBe(1);
-          expect(res.body.data.findOneEachResponse.responseId).toBe(1);
-          expect(res.body.data.findOneEachResponse.responseQuestion).toBe(
+          expect(res.body.data.findEachResponse.id).toBe(1);
+          expect(res.body.data.findEachResponse.responseId).toBe(1);
+          expect(res.body.data.findEachResponse.responseQuestion).toBe(
             'Modified Question',
           );
-          expect(res.body.data.findOneEachResponse.responseAnswer).toBe(
+          expect(res.body.data.findEachResponse.responseAnswer).toBe(
             'Modified Answer',
           );
-          expect(res.body.data.findOneEachResponse.responseScore).toBe(5);
+          expect(res.body.data.findEachResponse.responseScore).toBe(5);
         });
     });
     it('존재하지 않는 아이디를 입력해서 응답 항목 조회 실패!', async () => {
@@ -209,7 +209,7 @@ describe('eachResponse', () => {
         .post(gql)
         .send({
           query: `{
-              findOneEachResponse(id:100){
+              findEachResponse(id:100){
                 id
                 responseId
                 responseQuestion
@@ -227,7 +227,7 @@ describe('eachResponse', () => {
         .post(gql)
         .send({
           query: `{
-              findOneEachResponse(id:){
+              findEachResponse(id:){
                 id
                 responseId
                 responseQuestion
@@ -243,7 +243,7 @@ describe('eachResponse', () => {
         .post(gql)
         .send({
           query: `{
-              findOneEachResponse(id:1){
+              findEachResponse(id:1){
               }
             }`,
         })
@@ -257,7 +257,7 @@ describe('eachResponse', () => {
         .send({
           query: `
             mutation {
-              updateEachResponse(updateEachResponseInput:{id:1}) {
+              updateEachResponse(input:{id:1}) {
                 id
                 responseId
               }
@@ -275,7 +275,7 @@ describe('eachResponse', () => {
         .send({
           query: `
             mutation {
-              updateEachResponse(updateEachResponseInput:{id:100}) {
+              updateEachResponse(input:{id:100}) {
                 id
                 responseId
               }
@@ -292,7 +292,7 @@ describe('eachResponse', () => {
         .send({
           query: `
             mutation {
-              updateEachResponse(updateEachResponseInput:{id:}) {
+              updateEachResponse(input:{id:}) {
                 id
                 responseId
               }
@@ -307,7 +307,7 @@ describe('eachResponse', () => {
         .send({
           query: `
             mutation {
-              updateEachResponse(updateEachResponseInput:{id:1,responseId:100}) {
+              updateEachResponse(input:{id:1,responseId:100}) {
                 id
                 responseId
               }
@@ -339,7 +339,7 @@ describe('eachResponse', () => {
         .send({
           query: `
             mutation {
-              updateEachResponse(updateEachResponseInput:{ids:1}) {
+              updateEachResponse(input:{ids:1}) {
                 id
                 responseId
               }
@@ -354,7 +354,7 @@ describe('eachResponse', () => {
         .send({
           query: `
             mutation {
-              updateEachResponse(updateEachResponseInput:{id:1}) {
+              updateEachResponse(input:{id:1}) {
               }
             }
             `,
