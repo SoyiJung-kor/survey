@@ -50,14 +50,12 @@ export class ResponseCategoryService {
     return this.validResponseCategory(id);
   }
 
+
   async sumCategoryScore(input: UpdateResponseCategoryInput) {
     await this.validResponse(input.responseId);
     await this.validSurvey(input.surveyId);
-    const eachResponses = await this.entityManager.find(EachResponse, { where: { responseId: input.responseId } });
-    const questions = await this.entityManager.createQueryBuilder(Question, 'question')
-      .innerJoinAndSelect('question.questionCategories', 'questionCategory')
-      .where(`question.surveyId = ${input.surveyId}`)
-      .getMany();
+    const eachResponses = await this.findEachResponseWithResponseId(input.responseId);
+    const questions = await this.getQuestionWithSurveyId(input.surveyId);
 
     const questionContents = new Map(); //{questionContent: questionId}
     questions.map(question => {
@@ -65,7 +63,41 @@ export class ResponseCategoryService {
     })
 
     const responseCategoryMap = new Map(); //{categoryName: total score}
-    eachResponses.map(async eachResponse => {
+    this.setScore(eachResponses, responseCategoryMap, questionContents);
+
+    const responseCategory = await this.entityManager.createQueryBuilder(ResponseCategory, 'responseCategory')
+      .where(`responseCategory.responseId = ${input.responseId}`)
+      .getMany();
+
+    this.updateScoreAtResponse(responseCategory, responseCategoryMap);
+
+    return responseCategory;
+  }
+
+  async updateScoreAtResponse(responseCategory: ResponseCategory[], responseCategoryMap: any) {
+    return responseCategory.map(responseCategory => {
+      this.entityManager.createQueryBuilder(ResponseCategory, 'responseCategory')
+        .update(ResponseCategory)
+        .set({ sumCategoryScore: responseCategoryMap.get(responseCategory.categoryName) })
+        .where({ id: responseCategory.id })
+        .execute();
+    });
+  }
+
+  async getQuestionWithSurveyId(surveyId: number) {
+    const questions = await this.entityManager.createQueryBuilder(Question, 'question')
+      .innerJoinAndSelect('question.questionCategories', 'questionCategory')
+      .where(`question.surveyId = ${surveyId}`)
+      .getMany();
+    return questions;
+  }
+
+  async findEachResponseWithResponseId(responseId: number) {
+    return await this.entityManager.find(EachResponse, { where: { responseId: responseId } });
+  }
+
+  async setScore(eachResponses: EachResponse[], responseCategoryMap: any, questionContents: any) {
+    return eachResponses.map(async eachResponse => {
       const questionId = questionContents.get(eachResponse.responseQuestion);
       const questionCategories = await this.entityManager.createQueryBuilder(QuestionCategory, 'question_category')
         .select(`question_category.categoryName`)
@@ -82,19 +114,6 @@ export class ResponseCategoryService {
       })
 
     })
-    const responseCategory = this.entityManager.createQueryBuilder(ResponseCategory, 'responseCategory')
-      .where(`responseCategory.responseId = ${input.responseId}`)
-      .getMany();
-
-    (await responseCategory).map(responseCategory => {
-      this.entityManager.createQueryBuilder(ResponseCategory, 'responseCategory')
-        .update(ResponseCategory)
-        .set({ sumCategoryScore: responseCategoryMap.get(responseCategory.categoryName) })
-        .where({ id: responseCategory.id })
-        .execute();
-    });
-
-    return responseCategory;
   }
 
   async remove(id: number) {
@@ -116,35 +135,23 @@ export class ResponseCategoryService {
     await this.validResponse(responseId);
     await this.validSurvey(surveyId);
     const responseCategoryResult = await this.responseCategoryRepository.findBy({ responseId });
-    const categories = [];
-    responseCategoryResult.forEach(result => {
-      categories.push(this.entityManager.findOne(Category, {
-        where: {
-          surveyId: surveyId,
-          categoryName: result.categoryName,
-        }
-      }))
+    const category = await this.entityManager.find(Category, { where: { surveyId: surveyId } });
+    const categories = new Map(); // {categoryName, categoryId}
+    category.forEach(category => {
+      categories.set(category.categoryName, category.id)
     });
 
-    for (let i = 0; i < categories.length; i++) {
-      const categoryScores = await this.entityManager.find(CategoryScore, {
-        where: {
-          categoryId: categories[i].id
+    responseCategoryResult.forEach(async result => {
+      const categoryId = categories.get(result.categoryName);
+      const categoryScore = this.entityManager.find(CategoryScore, { where: { categoryId: categoryId } });
+      (await categoryScore).map(score => {
+        if (score.highScore > result.sumCategoryScore && score.lowScore <= result.sumCategoryScore) {
+          result.message = score.categoryMessage;
+          this.responseCategoryRepository.save(result);
         }
       })
-      categoryScores.forEach(score => {
-        if (score.highScore > responseCategoryResult[i].sumCategoryScore &&
-          score.lowScore <= responseCategoryResult[i].sumCategoryScore) {
-          responseCategoryResult[i].message = score.categoryMessage;
-          this.responseCategoryRepository.save(responseCategoryResult[i]);
-        }
-      })
-    }
-    return await this.responseCategoryRepository.find({
-      where: {
-        responseId: responseId,
-      },
     });
+    return responseCategoryResult;
   }
 
   async validResponse(responseId: number) {
