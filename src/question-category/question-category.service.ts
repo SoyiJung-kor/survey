@@ -19,8 +19,14 @@ export class QuestionCategoryService {
 
   async create(input: CreateQuestionCategoryInput) {
     const newQuestionCategory = this.questionCategoryRepository.create(input);
-    newQuestionCategory.question = await this.validQuestion(input.questionId);
+    newQuestionCategory.question = await this.createQuestion(input.questionId);
     return this.entityManager.save(newQuestionCategory);
+  }
+
+  async createQuestion(id: number) {
+    const question = new Question();
+    question.id = id;
+    return question;
   }
 
   findAll() {

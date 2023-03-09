@@ -18,8 +18,14 @@ export class AnswerService {
 
   async create(input: CreateAnswerInput) {
     const answer = this.answerRepository.create(input);
-    answer.question = await this.validQuestion(input.questionId);
+    answer.question = await this.createQuestion(input.questionId);
     return this.entityManager.save(answer);
+  }
+
+  async createQuestion(id: number) {
+    const question = new Question();
+    question.id = id;
+    return question;
   }
 
   findAll() {

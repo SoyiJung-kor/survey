@@ -18,10 +18,14 @@ export class CategoryService {
 
   async create(input: CreateCategoryInput) {
     const newCategory = this.categoryRepository.create(input);
-    const survey = new Survey();
-    survey.id = input.surveyId;
-    newCategory.survey = survey;
+    newCategory.survey = await this.createSurvey(input.surveyId);
     return this.entityManager.save(newCategory);
+  }
+
+  async createSurvey(id: number) {
+    const survey = new Survey();
+    survey.id = id;
+    return survey;
   }
 
   findAll() {

@@ -21,8 +21,14 @@ export class QuestionService {
 
   async create(input: CreateQuestionInput) {
     const question = this.questionRepository.create(input);
-    question.survey = await this.validSurvey(input.surveyId);
+    question.survey = await this.createSurvey(input.surveyId);
     return this.entityManager.save(question);
+  }
+
+  async createSurvey(id: number) {
+    const survey = new Survey();
+    survey.id = id;
+    return survey;
   }
 
   findAll() {

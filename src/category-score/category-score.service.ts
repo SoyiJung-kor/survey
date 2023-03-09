@@ -19,8 +19,14 @@ export class CategoryScoreService {
 
   async create(input: CreateCategoryScoreInput) {
     const newCategoryScore = this.categoryScoreRepository.create(input);
-    newCategoryScore.category = await this.validCategory(input.categoryId);
+    newCategoryScore.category = await this.createCategory(input.categoryId);
     return this.entityManager.save(newCategoryScore);
+  }
+
+  async createCategory(id: number) {
+    const category = new Category();
+    category.id = id;
+    return category;
   }
 
   findAll() {

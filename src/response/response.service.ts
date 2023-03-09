@@ -20,13 +20,21 @@ export class ResponseService {
 
   async create(input: CreateResponseInput) {
     const response = this.responseRepository.create(input);
-    response.survey = await this.entityManager.findOneBy(Survey, {
-      id: input.surveyId,
-    });
-    response.participant = await this.entityManager.findOneBy(Participant, {
-      id: input.participantId,
-    });
+    response.survey = await this.createSurvey(input.surveyId);
+    response.participant = await this.createParticipant(input.participantId);
     return this.responseRepository.save(response);
+  }
+
+  async createSurvey(id: number) {
+    const survey = new Survey();
+    survey.id = id;
+    return survey;
+  }
+
+  async createParticipant(id: number) {
+    const participant = new Participant();
+    participant.id = id;
+    return participant;
   }
 
   findAll() {
