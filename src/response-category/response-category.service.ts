@@ -137,7 +137,7 @@ export class ResponseCategoryService {
     });
 
     const responseCategoryResultArray = new Array<ResponseCategory>();
-    responseCategoryResult.forEach(async result => {
+    responseCategoryResult.map(async result => {
       const categoryId = categories.get(result.categoryName);
       const categoryScore = this.entityManager.find(CategoryScore, { where: { categoryId: categoryId } });
       (await categoryScore).map(score => {
