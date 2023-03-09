@@ -6,7 +6,6 @@ import { UpdateEachResponseInput } from './dto/update-each-response.input';
 
 @Resolver(() => EachResponse)
 export class EachResponseResolver {
-  // eslint-disable-next-line prettier/prettier
   constructor(private readonly eachResponseService: EachResponseService) { }
 
   @Mutation(() => EachResponse)

@@ -16,5 +16,4 @@ import { CategoryModule } from '../category/category.module';
   ],
   providers: [SurveyResolver, SurveyService],
 })
-// eslint-disable-next-line prettier/prettier
 export class SurveyModule { }

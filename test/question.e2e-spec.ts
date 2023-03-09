@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { Survey } from '../src/survey/entities/survey.entity';
 import request from 'supertest';

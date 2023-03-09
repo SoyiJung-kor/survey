@@ -9,5 +9,4 @@ import { ResponseModule } from '../response/response.module';
   imports: [TypeOrmModule.forFeature([Participant]), ResponseModule],
   providers: [ParticipantResolver, ParticipantService],
 })
-// eslint-disable-next-line prettier/prettier
 export class ParticipantModule { }

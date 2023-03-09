@@ -1,11 +1,10 @@
-/* eslint-disable prettier/prettier */
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { CategoryScore } from '../category-score/entities/category-score.entity';
 import { Category } from '../category/entities/category.entity';
 import { EachResponse } from '../each-response/entities/each-response.entity';
-import { QuestionCategory } from '../question-category/entities/question-category.entity';
 import { Question } from '../question/entities/question.entity';
 import { Response } from '../response/entities/response.entity';
 import { Survey } from '../survey/entities/survey.entity';
@@ -26,20 +25,17 @@ export class ResponseCategoryService {
     await this.validSurvey(input.surveyId);
     await this.validResponse(input.responseId);
     const categories = await this.validCategoryWithSurvey(input.surveyId);
+    const categoryResponse = new Array<ResponseCategory>();
     categories.forEach(async category => {
       const responseCategory = this.responseCategoryRepository.create(input);
       responseCategory.categoryName = category.categoryName;
       responseCategory.sumCategoryScore = 0;
       responseCategory.response = await this.validResponse(input.responseId);
-      this.responseCategoryRepository.save(responseCategory);
+      categoryResponse.push(responseCategory);
     });
+    return this.responseCategoryRepository.save(categoryResponse);
 
 
-    return this.responseCategoryRepository.find({
-      where: {
-        responseId: input.responseId,
-      },
-    });
   }
 
   findAll() {
@@ -59,7 +55,7 @@ export class ResponseCategoryService {
 
     const questionContents = new Map(); //{questionContent: questionId}
     questions.map(question => {
-      questionContents.set(question.questionContent, question.id)
+      questionContents.set(question.questionContent, question)
     })
 
     const responseCategoryMap = new Map(); //{categoryName: total score}
@@ -98,13 +94,8 @@ export class ResponseCategoryService {
 
   async setScore(eachResponses: EachResponse[], responseCategoryMap: any, questionContents: any) {
     return eachResponses.map(async eachResponse => {
-      const questionId = questionContents.get(eachResponse.responseQuestion);
-      const questionCategories = await this.entityManager.createQueryBuilder(QuestionCategory, 'question_category')
-        .select(`question_category.categoryName`)
-        .where(
-          `question_category.questionId = ${questionId}`
-        )
-        .getMany();
+      const question = questionContents.get(eachResponse.responseQuestion);
+      const questionCategories = question
       questionCategories.map(data => {
         if (responseCategoryMap.has(data.categoryName)) {
           responseCategoryMap.set(data.categoryName, responseCategoryMap.get(data.categoryName) + eachResponse.responseScore)

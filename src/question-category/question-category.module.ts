@@ -8,5 +8,4 @@ import { QuestionCategory } from './entities/question-category.entity';
   imports: [TypeOrmModule.forFeature([QuestionCategory])],
   providers: [QuestionCategoryResolver, QuestionCategoryService],
 })
-// eslint-disable-next-line prettier/prettier
 export class QuestionCategoryModule { }

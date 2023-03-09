@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
@@ -18,7 +18,9 @@ export class CategoryService {
 
   async create(input: CreateCategoryInput) {
     const newCategory = this.categoryRepository.create(input);
-    newCategory.survey = await this.validSurvey(input.surveyId);
+    const survey = new Survey();
+    survey.id = input.surveyId;
+    newCategory.survey = survey;
     return this.entityManager.save(newCategory);
   }
 

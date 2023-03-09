@@ -8,5 +8,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([Answer])],
   providers: [AnswerResolver, AnswerService],
 })
-// eslint-disable-next-line prettier/prettier
 export class AnswerModule { }

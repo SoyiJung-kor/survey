@@ -1,5 +1,5 @@
-/* eslint-disable prettier/prettier */
-import { Injectable, Logger } from '@nestjs/common';
+
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSurveyInput } from './dto/create-survey.input';
@@ -73,10 +73,23 @@ export class SurveyService {
   }
 
   async validSurvey(id: number) {
-    const survey = await this.surveyRepository.findOneBy({ id });
-    if (!survey) {
-      throw new Error(`CAN NOT FIND SURVEY! ID: ${id}`);
+    try {
+      const survey = await this.surveyRepository.findOneBy({ id });
+
+      return survey;
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: `SQL ERROR`,
+          error: error.sqlMessage,
+        },
+        HttpStatus.FORBIDDEN,
+      );
     }
-    return survey;
+
+    // if (!survey) {
+    //   throw new Error(`CAN NOT FIND SURVEY! ID: ${id}`);
+    // }
+    // return survey;
   }
 }

@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { ParticipantService } from './participant.service';
 import { Participant } from './entities/participant.entity';

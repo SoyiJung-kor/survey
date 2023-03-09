@@ -1,5 +1,5 @@
-/* eslint-disable prettier/prettier */
-import { Injectable, Logger } from '@nestjs/common';
+
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { Answer } from '../answer/entities/answer.entity';
@@ -91,13 +91,28 @@ export class QuestionService {
   }
 
   async validSurvey(surveyId: number) {
-    const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
-    if (!survey) {
-      throw new Error(`CAN'T FIND THE SURVEY! ID: ${surveyId}`);
-    } else {
+    try {
+      const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
+
       return survey;
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: `SQL ERROR`,
+          error: error.sqlMessage,
+        },
+        HttpStatus.FORBIDDEN,
+      );
     }
   }
+  // async validSurvey(surveyId: number) {
+  //   const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
+  //   if (!survey) {
+  //     throw new Error(`CAN'T FIND THE SURVEY! ID: ${surveyId}`);
+  //   } else {
+  //     return survey;
+  //   }
+  // }
   async remove(id: number) {
     const question = await this.validQuestion(id);
     await this.questionRepository.delete({ id });

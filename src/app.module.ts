@@ -23,5 +23,4 @@ import { DatabaseModule } from './common/config/database.module';
   controllers: [AppController],
   providers: [AppService],
 })
-// eslint-disable-next-line prettier/prettier
 export class AppModule { }

@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { CreateResponseCategoryInput } from './create-response-category.input';
 import { InputType, PartialType } from '@nestjs/graphql';
 

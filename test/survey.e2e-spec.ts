@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';

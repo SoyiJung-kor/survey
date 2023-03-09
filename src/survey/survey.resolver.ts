@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { SurveyService } from './survey.service';
 import { Survey } from './entities/survey.entity';

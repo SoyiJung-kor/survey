@@ -9,5 +9,4 @@ import { CategoryScoreModule } from '../category-score/category-score.module';
   imports: [CategoryScoreModule, TypeOrmModule.forFeature([Category])],
   providers: [CategoryResolver, CategoryService],
 })
-// eslint-disable-next-line prettier/prettier
 export class CategoryModule { }

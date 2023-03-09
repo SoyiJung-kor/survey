@@ -14,5 +14,4 @@ import { ResponseCategoryModule } from '../response-category/response-category.m
   ],
   providers: [ResponseResolver, ResponseService],
 })
-// eslint-disable-next-line prettier/prettier
 export class ResponseModule { }

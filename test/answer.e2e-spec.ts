@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';

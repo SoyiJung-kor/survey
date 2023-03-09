@@ -14,5 +14,4 @@ import { QuestionCategoryModule } from '../question-category/question-category.m
   ],
   providers: [QuestionResolver, QuestionService],
 })
-// eslint-disable-next-line prettier/prettier
 export class QuestionModule { }

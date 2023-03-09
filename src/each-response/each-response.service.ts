@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
@@ -49,9 +49,8 @@ export class EachResponseService {
     const response = await this.entityManager.findOneBy(Response, { id: responseId });
     if (!response) {
       throw new Error(`CAN'T FIND THE RESPONSE! ID:${responseId}`);
-    } else {
-      return response;
     }
+    return response;
   }
 
   async remove(id: number) {

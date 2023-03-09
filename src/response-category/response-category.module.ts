@@ -8,5 +8,4 @@ import { ResponseCategory } from './entities/response-category.entity';
   imports: [TypeOrmModule.forFeature([ResponseCategory])],
   providers: [ResponseCategoryResolver, ResponseCategoryService],
 })
-// eslint-disable-next-line prettier/prettier
 export class ResponseCategoryModule { }
