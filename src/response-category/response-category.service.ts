@@ -34,8 +34,6 @@ export class ResponseCategoryService {
       categoryResponse.push(responseCategory);
     });
     return this.responseCategoryRepository.save(categoryResponse);
-
-
   }
 
   findAll() {
@@ -58,26 +56,25 @@ export class ResponseCategoryService {
       questionContents.set(question.questionContent, question)
     })
 
-    const responseCategoryMap = new Map(); //{categoryName: total score}
-    this.setScore(eachResponses, responseCategoryMap, questionContents);
+    //{categoryName: total score}
+    const responseCategoryMap = this.setScore(eachResponses, questionContents);
 
     const responseCategory = await this.entityManager.createQueryBuilder(ResponseCategory, 'responseCategory')
       .where(`responseCategory.responseId = ${input.responseId}`)
       .getMany();
 
-    this.updateScoreAtResponse(responseCategory, responseCategoryMap);
-
-    return responseCategory;
+    return this.updateScoreAtResponse(responseCategory, responseCategoryMap);
   }
 
   async updateScoreAtResponse(responseCategory: ResponseCategory[], responseCategoryMap: any) {
-    return responseCategory.map(responseCategory => {
+    responseCategory.map(responseCategory => {
       this.entityManager.createQueryBuilder(ResponseCategory, 'responseCategory')
         .update(ResponseCategory)
         .set({ sumCategoryScore: responseCategoryMap.get(responseCategory.categoryName) })
         .where({ id: responseCategory.id })
         .execute();
     });
+    return responseCategory;
   }
 
   async getQuestionWithSurveyId(surveyId: number) {
@@ -92,8 +89,9 @@ export class ResponseCategoryService {
     return await this.entityManager.find(EachResponse, { where: { responseId: responseId } });
   }
 
-  async setScore(eachResponses: EachResponse[], responseCategoryMap: any, questionContents: any) {
-    return eachResponses.map(async eachResponse => {
+  async setScore(eachResponses: EachResponse[], questionContents: any) {
+    const responseCategoryMap = new Map();
+    eachResponses.map(async eachResponse => {
       const question = questionContents.get(eachResponse.responseQuestion);
       const questionCategories = question
       questionCategories.map(data => {
@@ -103,8 +101,8 @@ export class ResponseCategoryService {
           responseCategoryMap.set(data.categoryName, eachResponse.responseScore)
         }
       })
-
     })
+    return responseCategoryMap;
   }
 
   async remove(id: number) {
