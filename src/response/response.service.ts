@@ -49,12 +49,26 @@ export class ResponseService {
     const result = await this.responseRepository
       .createQueryBuilder('response')
       .leftJoinAndSelect('response.eachResponse', 'eachResponse')
-      .innerJoinAndSelect('response.participant', 'participant')
-      .innerJoinAndSelect('response.survey', 'survey')
       .where(`response.id = ${id}`)
       .getOne();
 
     return result;
+  }
+
+  /**
+   * @description 참가자의 모든 응답 조회
+   * @param participantId 
+   */
+  async findResponseWithParticipant(participantId: number) {
+    return this.responseRepository.findBy({ participantId: participantId });
+  }
+
+  /**
+   * @description 설문의 모든 응답 조회
+   * @param surveyId 
+   */
+  async findResponseWithSurvey(surveyId: number) {
+    return this.responseRepository.findBy({ surveyId: surveyId });
   }
 
   async getScore(id: number) {

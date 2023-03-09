@@ -36,6 +36,26 @@ export class ResponseResolver {
     return this.responseService.findDetail(responseId);
   }
 
+  /**
+   * @description 참가자 아이디로 응답 조회
+   * @param participantId 참가자 아이디 
+   * @returns [Response]
+   */
+  @Query(() => [Response])
+  findResponseWithParticipant(@Args('participantId', { type: () => Int }) participantId: number) {
+    return this.responseService.findResponseWithParticipant(participantId);
+  }
+
+  /**
+   * @description 설문 아이디로 응답 조회
+   * @param surveyId 설문 아이디 
+   * @returns [Response]
+   */
+  @Query(() => [Response])
+  findResponseWithSurvey(@Args('surveytId', { type: () => Int }) surveyId: number) {
+    return this.responseService.findResponseWithSurvey(surveyId);
+  }
+
   @Mutation(() => Response)
   updateResponse(
     @Args('input') input: UpdateResponseInput,

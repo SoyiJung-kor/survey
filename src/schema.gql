@@ -96,6 +96,8 @@ type Query {
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findOneResponseDetail(responseId: Int!): [Response!]!
+  findResponseWithParticipant(participantId: Int!): [Response!]!
+  findResponseWithSurvey(surveytId: Int!): [Response!]!
   findAllResponseCategory: [ResponseCategory!]!
   findResponseCategory(id: Int!): ResponseCategory!
   findAllEachResponse: [EachResponse!]!
