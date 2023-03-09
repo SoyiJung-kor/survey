@@ -47,7 +47,7 @@ export class QuestionCategoryService {
 
   async remove(id: number) {
     const questionCategory = await this.validQuestionCategory(id);
-    await this.questionCategoryRepository.delete(id);
+    this.questionCategoryRepository.delete(id);
     return questionCategory;
   }
 

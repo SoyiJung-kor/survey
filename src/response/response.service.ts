@@ -49,15 +49,6 @@ export class ResponseService {
     return result;
   }
 
-  async getResponseData(id: number) {
-    const responseData = await this.entityManager
-      .createQueryBuilder(Response, 'response')
-      .where(`response.id = ${id}`)
-      .getOne();
-
-    return responseData;
-  }
-
   async getScore(id: number) {
     const score = await this.entityManager
       .createQueryBuilder(Response, 'response')
@@ -84,7 +75,7 @@ export class ResponseService {
 
   async remove(id: number) {
     const response = await this.validResponse(id);
-    await this.responseRepository.delete({ id });
+    this.responseRepository.delete({ id });
     return response;
   }
 

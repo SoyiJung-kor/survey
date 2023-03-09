@@ -68,7 +68,7 @@ export class SurveyService {
 
   async remove(id: number) {
     const survey = await this.validSurvey(id);
-    await this.surveyRepository.delete({ id });
+    this.surveyRepository.delete({ id });
     return survey;
   }
 

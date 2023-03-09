@@ -60,7 +60,7 @@ export class CategoryService {
 
   async remove(id: number) {
     const category = await this.validCategory(id);
-    await this.categoryRepository.delete(id);
+    this.categoryRepository.delete(id);
     return category;
   }
 

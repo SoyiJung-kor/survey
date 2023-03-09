@@ -67,7 +67,7 @@ export class AnswerService {
 
   async remove(id: number) {
     const answer = await this.validAnswer(id);
-    await this.answerRepository.delete({ id });
+    this.answerRepository.delete({ id });
     return answer;
   }
 

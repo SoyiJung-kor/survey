@@ -55,7 +55,7 @@ export class EachResponseService {
 
   async remove(id: number) {
     const eachResponse = await this.validEachResponse(id);
-    await this.eachResponseRepository.delete(id);
+    this.eachResponseRepository.delete(id);
     return eachResponse;
   }
 

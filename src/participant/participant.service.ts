@@ -30,14 +30,14 @@ export class ParticipantService {
 
   async update(input: UpdateParticipantInput) {
     const participant = await this.validParticipant(input.id);
-    this.participantRepository.merge(await participant, input);
+    this.participantRepository.merge(participant, input);
     this.participantRepository.update(input.id, participant);
     return participant;
   }
 
   async remove(id: number) {
     const participant = await this.validParticipant(id)
-    await this.participantRepository.delete({ id });
+    this.participantRepository.delete({ id });
     return participant;
   }
 

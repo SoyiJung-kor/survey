@@ -47,7 +47,7 @@ export class CategoryScoreService {
 
   async remove(id: number) {
     const categoryScore = await this.validCategoryScore(id);
-    await this.categoryScoreRepository.delete(id);
+    this.categoryScoreRepository.delete(id);
     return categoryScore;
   }
 

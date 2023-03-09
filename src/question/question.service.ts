@@ -105,17 +105,10 @@ export class QuestionService {
       );
     }
   }
-  // async validSurvey(surveyId: number) {
-  //   const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
-  //   if (!survey) {
-  //     throw new Error(`CAN'T FIND THE SURVEY! ID: ${surveyId}`);
-  //   } else {
-  //     return survey;
-  //   }
-  // }
+
   async remove(id: number) {
     const question = await this.validQuestion(id);
-    await this.questionRepository.delete({ id });
+    this.questionRepository.delete({ id });
     return question;
   }
 
