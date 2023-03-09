@@ -64,7 +64,8 @@ export class ResponseCategoryService {
       .where(`responseCategory.responseId = ${input.responseId}`)
       .getMany();
 
-    return this.updateScoreAtResponse(responseCategory, responseCategoryMap);
+    this.updateScoreAtResponse(responseCategory, responseCategoryMap);
+    return this.compareScore(input.responseId, input.surveyId);
   }
 
   async updateScoreAtResponse(responseCategory: ResponseCategory[], responseCategoryMap: any) {
@@ -76,18 +77,6 @@ export class ResponseCategoryService {
         .execute();
     });
     return responseCategory;
-  }
-
-  async getQuestionWithSurveyId(surveyId: number) {
-    const questions = await this.entityManager.createQueryBuilder(Question, 'question')
-      .innerJoinAndSelect('question.questionCategories', 'questionCategory')
-      .where(`question.surveyId = ${surveyId}`)
-      .getMany();
-    return questions;
-  }
-
-  async findEachResponseWithResponseId(responseId: number) {
-    return await this.entityManager.find(EachResponse, { where: { responseId: responseId } });
   }
 
   async setScore(eachResponses: EachResponse[], questionContents: any) {
@@ -109,6 +98,17 @@ export class ResponseCategoryService {
       })
     })
     return responseCategoryMap;
+  }
+  async getQuestionWithSurveyId(surveyId: number) {
+    const questions = await this.entityManager.createQueryBuilder(Question, 'question')
+      .innerJoinAndSelect('question.questionCategories', 'questionCategory')
+      .where(`question.surveyId = ${surveyId}`)
+      .getMany();
+    return questions;
+  }
+
+  async findEachResponseWithResponseId(responseId: number) {
+    return await this.entityManager.find(EachResponse, { where: { responseId: responseId } });
   }
 
   async remove(id: number) {
