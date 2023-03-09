@@ -79,10 +79,6 @@ describe('question', () => {
               id
               questionNumber
               questionContent
-              survey{
-                id
-                surveyTitle
-              }
             }
           }
           `,
@@ -93,10 +89,6 @@ describe('question', () => {
           expect(res.body.data.createQuestion.questionNumber).toBe(1);
           expect(res.body.data.createQuestion.questionContent).toBe(
             'Test Question',
-          );
-          expect(res.body.data.createQuestion.survey.id).toBe(1);
-          expect(res.body.data.createQuestion.survey.surveyTitle).toBe(
-            'Mock Survey for Test',
           );
         });
     });

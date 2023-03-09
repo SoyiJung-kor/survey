@@ -95,7 +95,6 @@ type Query {
   findQuestionCategory(id: Int!): QuestionCategory!
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
-  findResponseWithQueryBuilder(responseId: Int!): Response!
   findOneResponseDetail(responseId: Int!): [Response!]!
   getSumScore(responseId: Int!): Response!
   findAllResponseCategory: [ResponseCategory!]!

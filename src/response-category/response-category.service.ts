@@ -5,6 +5,7 @@ import { EntityManager, Repository } from 'typeorm';
 import { CategoryScore } from '../category-score/entities/category-score.entity';
 import { Category } from '../category/entities/category.entity';
 import { EachResponse } from '../each-response/entities/each-response.entity';
+import { QuestionCategory } from '../question-category/entities/question-category.entity';
 import { Question } from '../question/entities/question.entity';
 import { Response } from '../response/entities/response.entity';
 import { Survey } from '../survey/entities/survey.entity';
@@ -23,14 +24,14 @@ export class ResponseCategoryService {
     input: CreateResponseCategoryInput,
   ) {
     await this.validSurvey(input.surveyId);
-    await this.validResponse(input.responseId);
+    const response = await this.validResponse(input.responseId);
     const categories = await this.validCategoryWithSurvey(input.surveyId);
     const categoryResponse = new Array<ResponseCategory>();
     categories.forEach(async category => {
       const responseCategory = this.responseCategoryRepository.create(input);
       responseCategory.categoryName = category.categoryName;
       responseCategory.sumCategoryScore = 0;
-      responseCategory.response = await this.validResponse(input.responseId);
+      responseCategory.response = response;
       categoryResponse.push(responseCategory);
     });
     return this.responseCategoryRepository.save(categoryResponse);
@@ -93,7 +94,12 @@ export class ResponseCategoryService {
     const responseCategoryMap = new Map();
     eachResponses.map(async eachResponse => {
       const question = questionContents.get(eachResponse.responseQuestion);
-      const questionCategories = question
+      const questionCategories = await this.entityManager.createQueryBuilder(QuestionCategory, 'question_category')
+        .select(`question_category.categoryName`)
+        .where(
+          `question_category.questionId = ${question.id}`
+        )
+        .getMany();
       questionCategories.map(data => {
         if (responseCategoryMap.has(data.categoryName)) {
           responseCategoryMap.set(data.categoryName, responseCategoryMap.get(data.categoryName) + eachResponse.responseScore)

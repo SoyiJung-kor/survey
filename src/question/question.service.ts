@@ -128,14 +128,7 @@ export class QuestionService {
 
   async copyQuestion(id: number) {
     const question = await this.validQuestion(id);
-    const newQuestion = new Question();
-    newQuestion.questionNumber = question.questionNumber;
-    newQuestion.questionContent = question.questionContent;
-    newQuestion.surveyId = question.surveyId;
-    question.survey = await this.entityManager.findOneBy(
-      Survey,
-      { id: question.surveyId },
-    );
+    const newQuestion = new Question().copyQuestion(question);
     const finalQuestion = await this.entityManager.save(newQuestion);
 
     this.copyAnswer(id, finalQuestion);

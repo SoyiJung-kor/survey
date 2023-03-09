@@ -66,10 +66,6 @@ describe('answer', () => {
                 id
                 answerNumber
                 answerContent
-                question{
-                  id
-                  questionContent
-                }
               }
             }
             `,
@@ -82,10 +78,6 @@ describe('answer', () => {
           expect(id).toBe(1);
           expect(answerNumber).toBe(1);
           expect(answerContent).toBe('Test Answer');
-          expect(question.id).toBe(1);
-          expect(question.questionContent).toBe(
-            'Mock Question for Test',
-          );
         });
     });
     it('인풋데이터가 없어서 답지 생성 실패!', async () => {

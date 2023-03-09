@@ -125,6 +125,7 @@ describe('response-category', () => {
                 }`,
                 })
                 .expect(200);
+
         })
         it('응답 아이디가 없어서 응답한 설문 항목 생성 실패!', () => {
             return request(app.getHttpServer())
@@ -257,8 +258,8 @@ describe('response-category', () => {
                 .expect(400);
         })
     })
-    describe('아이디로 응답한 설문의 항목 전체 조회', () => {
-        it('아이디로 응답한 설문의 항목 전체 조회 성공!', () => {
+    describe('아이디로 응답한 설문의 항목 조회', () => {
+        it('아이디로 응답한 설문의 항목 조회 성공!', () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -282,7 +283,7 @@ describe('response-category', () => {
                     expect(message).toBe(' ');
                 })
         })
-        it('아이디가 없어서 아이디로 응답한 설문의 항목 전체 조회 실패!', () => {
+        it('아이디가 없어서 아이디로 응답한 설문의 항목 조회 실패!', () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -298,7 +299,7 @@ describe('response-category', () => {
                 })
                 .expect(400)
         })
-        it('없는 아이디를 입력해서 아이디로 응답한 설문의 항목 전체 조회 실패!', () => {
+        it('없는 아이디를 입력해서 아이디로 응답한 설문의 항목 조회 실패!', () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -316,7 +317,7 @@ describe('response-category', () => {
                     expect(res.body.data).toBeNull();
                 })
         })
-        it('아이디가 숫자가 아니라서 아이디로 응답한 설문의 항목 전체 조회 실패!', () => {
+        it('아이디가 숫자가 아니라서 아이디로 응답한 설문의 항목 조회 실패!', () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
