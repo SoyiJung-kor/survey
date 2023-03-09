@@ -136,16 +136,18 @@ export class ResponseCategoryService {
       categories.set(category.categoryName, category.id)
     });
 
+    const responseCategoryResultArray = new Array<ResponseCategory>();
     responseCategoryResult.forEach(async result => {
       const categoryId = categories.get(result.categoryName);
       const categoryScore = this.entityManager.find(CategoryScore, { where: { categoryId: categoryId } });
       (await categoryScore).map(score => {
         if (score.highScore > result.sumCategoryScore && score.lowScore <= result.sumCategoryScore) {
           result.message = score.categoryMessage;
-          this.responseCategoryRepository.save(result);
+          responseCategoryResultArray.push(result);
         }
       })
     });
+    this.responseCategoryRepository.save(responseCategoryResultArray);
     return responseCategoryResult;
   }
 
