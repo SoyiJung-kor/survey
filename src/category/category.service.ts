@@ -80,8 +80,8 @@ export class CategoryService {
     const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
     if (!survey) {
       throw new Error(`CAN NOT FIND THE SURVEY! ID: ${surveyId}`);
-    } else {
-      return survey;
     }
+    return survey;
+
   }
 }

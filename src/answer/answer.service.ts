@@ -66,9 +66,9 @@ export class AnswerService {
     const question = await this.entityManager.findOneBy(Question, { id: questionId });
     if (!question) {
       throw new Error("CAN'T FIND THE QUESTION!")
-    } else {
-      return question;
     }
+    return question;
+
   }
 
   async remove(id: number) {

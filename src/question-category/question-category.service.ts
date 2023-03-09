@@ -61,17 +61,17 @@ export class QuestionCategoryService {
     const questionCategory = this.questionCategoryRepository.findOneBy({ id });
     if (!questionCategory) {
       throw new Error(`CAT NOT FOUND QUESTION CATEGIRY! ID:${id}`);
-    } else {
-      return questionCategory;
     }
+    return questionCategory;
+
   }
 
   async validQuestion(questionId: number) {
     const question = await this.entityManager.findOneBy(Question, { id: questionId });
     if (!question) {
       throw new Error(`CAT NOT FOUND QUESTION! ID:${questionId}`);
-    } else {
-      return question;
     }
+    return question;
+
   }
 }

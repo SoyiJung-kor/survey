@@ -121,9 +121,9 @@ export class ResponseCategoryService {
     const responseCategory = this.responseCategoryRepository.findOneBy({ id });
     if (!responseCategory) {
       throw new Error(`CAN NOT FOUND RESPONSE CATEGORY! ID:${id}`);
-    } else {
-      return responseCategory;
     }
+    return responseCategory;
+
   }
 
   async compareScore(responseId: number, surveyId: number): Promise<ResponseCategory[]> {
@@ -171,9 +171,9 @@ export class ResponseCategoryService {
     });
     if (!category) {
       throw new Error(`CAN NOT FIND CATEGORY! SURVEYID: ${surveyId}`);
-    } else {
-      return category;
     }
+    return category;
+
   }
 
 

@@ -71,8 +71,8 @@ export class CategoryScoreService {
     });
     if (!category) {
       throw new Error(`CAN NOT FIND CATEGORY! ID: ${categoryId}`);
-    } else {
-      return category;
     }
+    return category;
+
   }
 }
