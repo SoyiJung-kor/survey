@@ -73,7 +73,7 @@ describe('answer', () => {
         .expect(200)
         .expect((res) => {
           const createAnswer = res.body.data.createAnswer
-          const { id, answerNumber, answerContent, question } = createAnswer;
+          const { id, answerNumber, answerContent } = createAnswer;
 
           expect(id).toBe(1);
           expect(answerNumber).toBe(1);

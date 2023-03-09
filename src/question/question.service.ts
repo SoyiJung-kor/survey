@@ -139,25 +139,19 @@ export class QuestionService {
   async copyAnswer(id: number, finalQuestion: Question) {
     const answers = await this.entityManager
       .findBy(Answer, { questionId: id });
-    answers.forEach(answer => {
-      const newAnswer = new Answer();
-      newAnswer.answerContent = answer.answerContent;
-      newAnswer.answerNumber = answer.answerNumber;
-      newAnswer.answerScore = answer.answerScore;
-      newAnswer.questionId = finalQuestion.id;
-      newAnswer.question = finalQuestion;
-      this.entityManager.save(newAnswer);
+    const newAnswers = new Array<Answer>();
+    answers.map(answer => {
+      newAnswers.push(new Answer().copyAnswer(answer, finalQuestion));
     });
+    this.entityManager.save(newAnswers);
   }
   async copyQuestionCategory(id: number, finalQuestion: Question) {
     const questionCategories = await this.entityManager
       .findBy(QuestionCategory, { questionId: id });
-    questionCategories.forEach(questionCategory => {
-      const newQuestionCategory = new QuestionCategory();
-      newQuestionCategory.categoryName = questionCategory.categoryName;
-      newQuestionCategory.questionId = finalQuestion.id;
-      newQuestionCategory.question = finalQuestion;
-      this.entityManager.save(newQuestionCategory);
+    const newQuestionCategory = new Array<QuestionCategory>();
+    questionCategories.map(questionCategory => {
+      newQuestionCategory.push(new QuestionCategory().copyQuestionCategory(questionCategory, finalQuestion));
     })
+    this.entityManager.save(newQuestionCategory);
   }
 }

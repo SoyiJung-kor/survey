@@ -32,4 +32,14 @@ export class Answer extends CommonEntity {
 
   @Column()
   questionId: number;
+
+  copyAnswer(answer: Answer, question: Question) {
+    const newAnswer = new Answer();
+    newAnswer.answerNumber = answer.answerNumber;
+    newAnswer.answerContent = answer.answerContent;
+    newAnswer.answerScore = answer.answerScore;
+    newAnswer.questionId = question.id;
+    newAnswer.question = question;
+    return newAnswer;
+  }
 }
