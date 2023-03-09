@@ -259,64 +259,6 @@ describe('question', () => {
           expect(res.body.data).toBeNull();
         })
     });
-    it('디테일한 특정 질문 조회 성공!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `
-          query {
-            findOneQuestionDetail(id:1) {
-              id
-              questionNumber
-              questionContent
-              survey{
-                id
-              }
-            }
-          }
-          `,
-        })
-        .expect(200);
-    });
-    it('없는 id로 디테일한 특정 질문 조회 실패!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `
-          query {
-            findOneQuestionDetail(id:100) {
-              id
-              questionNumber
-              questionContent
-              survey{
-                id
-              }
-            }
-          }
-          `,
-        })
-        .expect((res) => {
-          expect(res.body.data).toBeNull();
-        })
-    });
-    it('잘못된 query field때문에 디테일한 특정 질문 조회 실패!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `
-          query {
-            findOneQuestionDetail(id:1) {
-              id
-              questionNumber
-              questionContent
-              survey{
-              }
-            }
-          }
-          `,
-        })
-        .expect(400);
-    });
   });
   describe('질문 수정!', () => {
     it('질문 수정 성공!', async () => {

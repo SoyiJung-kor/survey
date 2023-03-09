@@ -31,6 +31,15 @@ export class AnswerResolver {
     return this.answerService.findDetail(answerId);
   }
 
+  /**
+   * @description 질문에 포함된 답안지 목록 조회
+   * @param questionId
+   */
+  @Query(() => [Answer])
+  findAnswerWithQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
+    return this.answerService.findAnswerWithQudstion(questionId);
+  }
+
   @Mutation(() => Answer)
   updateAnswer(
     @Args('input') input: UpdateAnswerInput,

@@ -382,6 +382,22 @@ describe('answer', () => {
         .expect(400);
     });
   });
+  describe('질문에 포함된 답지 조회!', () => {
+    it('질문에 포함된 답지 조회 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          query {
+            findAnswerWithQuestion(questionId:1) {
+              id
+            }
+          }
+          `,
+        })
+        .expect(200);
+    });
+  })
   describe('update a answer', () => {
     it('질문 수정 성공!', async () => {
       return request(app.getHttpServer())

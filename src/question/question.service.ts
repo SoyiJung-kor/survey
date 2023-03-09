@@ -39,21 +39,7 @@ export class QuestionService {
     return this.validQuestion(id);
   }
 
-  /**
-   * @description "선택한 질문의 답지 조회"
-   * @param id
-   * @returns
-   */
-  async findDetail(id: number) {
-    const result = await this.questionRepository
-      .createQueryBuilder('question')
-      .leftJoinAndSelect('question.answers', 'answer')
-      .innerJoinAndSelect('question.survey', 'survey')
-      .where(`question.id = ${id}`)
-      .getOne();
-    this.logger.debug(result);
-    return result;
-  }
+
 
   /**
    * @description 항목에 어떤 문항이 포함되어 있는지 조회

@@ -26,11 +26,11 @@ export class QuestionResolver {
     return this.questionService.findOne(questionId);
   }
 
-  @Query(() => Question)
-  findOneQuestionDetail(@Args('id', { type: () => Int }) id: number) {
-    return this.questionService.findDetail(id);
-  }
-
+  /**
+   * @description 항목을 포함하는 질문 조회
+   * @param surveyId 
+   * @param categoryName 
+   */
   @Query(() => [Question])
   findQuestionContainCategory(
     @Args('surveyId', { type: () => Int }) surveyId: number,

@@ -84,4 +84,14 @@ export class AnswerService {
     }
     return answer;
   }
+
+  /**
+ * @description "선택한 질문의 답지 조회"
+ * @param id
+ * @returns
+ */
+  async findAnswerWithQudstion(questionId: number) {
+    return this.answerRepository.find({ where: { questionId: questionId } })
+  }
+
 }
