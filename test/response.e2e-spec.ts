@@ -466,56 +466,6 @@ describe('response', () => {
         .expect(400);
     });
   });
-  describe('점수 합산!', () => {
-    it('점수 합산 성공!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `{
-              getSumScore(responseId:1){
-                id
-                isSubmit
-                sumScore
-              }
-            }`,
-        })
-        .expect((res) => {
-          expect(res.body.data.getSumScore.id).toBe(1);
-          expect(res.body.data.getSumScore.isSubmit).toBe(true);
-          expect(res.body.data.getSumScore.sumScore).toBe(0);
-        });
-    });
-    it('존재하지 않는 응답 아이디를 입력해서 점수 합산 실패!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `{
-              getSumScore(responseId:100){
-                id
-                isSubmit
-                sumScore
-              }
-            }`,
-        })
-        .expect((res) => {
-          expect(res.body.data).toBeNull();
-        });
-    });
-    it('응답 아이디를 입력하지 않아 점수 합산 실패!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `{
-              getSumScore(responseId:){
-                id
-                isSubmit
-                sumScore
-              }
-            }`,
-        })
-        .expect(400);
-    });
-  });
   describe('응답 삭제!', () => {
     it('응답 삭제성공!', async () => {
       return request(app.getHttpServer())

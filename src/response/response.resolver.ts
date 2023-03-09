@@ -36,11 +36,6 @@ export class ResponseResolver {
     return this.responseService.findDetail(responseId);
   }
 
-  @Query(() => Response)
-  getSumScore(@Args('responseId', { type: () => Int }) responseId: number) {
-    return this.responseService.getSumScore(responseId);
-  }
-
   @Mutation(() => Response)
   updateResponse(
     @Args('input') input: UpdateResponseInput,

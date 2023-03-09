@@ -96,7 +96,6 @@ type Query {
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
   findOneResponseDetail(responseId: Int!): [Response!]!
-  getSumScore(responseId: Int!): Response!
   findAllResponseCategory: [ResponseCategory!]!
   findResponseCategory(id: Int!): ResponseCategory!
   findAllEachResponse: [EachResponse!]!

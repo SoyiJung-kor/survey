@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { IsNumber } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { CommonEntity } from '../../common/entities/\bcommon.entity';
 import { EachResponse } from '../../each-response/entities/each-response.entity';
@@ -15,6 +16,7 @@ export class Response extends CommonEntity {
 
   @Field(() => Int)
   @Column({ default: 0 })
+  @IsNumber()
   sumScore: number;
 
   @Column()

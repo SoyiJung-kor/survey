@@ -96,7 +96,7 @@ export class ResponseService {
   }
 
   async updateSubmit(input: UpdateResponseInput) {
-    const response = await this.validResponse(input.id);
+    const response = await this.getSumScore(input.id);
     this.responseRepository.merge(response, input);
     this.responseRepository.update(input.id, response);
     return response;
