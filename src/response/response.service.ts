@@ -1,18 +1,19 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Participant } from '../participant/entities/participant.entity';
 import { Survey } from '../survey/entities/survey.entity';
 import { CreateResponseInput } from './dto/create-response.input';
 import { UpdateResponseInput } from './dto/update-response.input';
 import { Response } from './entities/response.entity';
+import { ResponseRepository } from './repositories/response.repository';
 
 @Injectable()
 export class ResponseService {
   constructor(
     @InjectRepository(Response)
-    private responseRepository: Repository<Response>,
+    private readonly responseRepository: ResponseRepository,
     private entityManager: EntityManager,
   ) { }
 
@@ -62,26 +63,13 @@ export class ResponseService {
   }
 
   async getScore(id: number) {
-    const score = await this.entityManager
-      .createQueryBuilder(Response, 'response')
-      .leftJoin('response.eachResponse', 'eachResponse')
-      .select('SUM(eachResponse.responseScore)', 'totalScore')
-      .where(`response.id = ${id}`)
-      .getRawOne();
-
-    return score;
+    return await this.responseRepository.getScore(id);
   }
 
   async getSumScore(id: number) {
     const Score = await this.getScore(id);
     const SumScore = +Score.totalScore;
-    await this.entityManager
-      .createQueryBuilder()
-      .update(Response)
-      .set({ sumScore: `${SumScore}` })
-      .where(`id = ${id}`)
-      .execute();
-
+    await this.responseRepository.getSumScore(id, SumScore)
     return this.findOne(id);
   }
 
