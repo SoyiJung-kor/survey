@@ -38,6 +38,15 @@ export class EachResponseService {
 
   }
 
+  /**
+   * @description 응답의 상세 응답 조회
+   * @param responseId 응답아이디
+   * @returns [EachResponse]
+   */
+  async findEachResponseWithResponse(responseId: number) {
+    return this.eachResponseRepository.findBy({ responseId: responseId });
+  }
+
   async update(input: UpdateEachResponseInput) {
     const eachResponse = await this.validEachResponse(input.id);
     if (input.responseId) {

@@ -31,11 +31,6 @@ export class ResponseResolver {
     return this.responseService.remove(responseId);
   }
 
-  @Query(() => [Response])
-  findOneResponseDetail(@Args('responseId', { type: () => Int }) responseId: number) {
-    return this.responseService.findDetail(responseId);
-  }
-
   /**
    * @description 참가자 아이디로 응답 조회
    * @param participantId 참가자 아이디 

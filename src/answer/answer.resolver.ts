@@ -34,6 +34,7 @@ export class AnswerResolver {
   /**
    * @description 질문에 포함된 답안지 목록 조회
    * @param questionId
+   * @returns [Answer]
    */
   @Query(() => [Answer])
   findAnswerWithQuestion(@Args('questionId', { type: () => Int }) questionId: number) {

@@ -36,6 +36,10 @@ export class CategoryService {
     return this.validCategory(id);
   }
 
+  async findCategoryWithSurvey(surveyId: number) {
+    return this.categoryRepository.findBy({ surveyId: surveyId });
+  }
+
   /**
    * @description "항목이 포함된 설문 조회"
    * @param id 

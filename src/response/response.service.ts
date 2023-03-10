@@ -45,16 +45,6 @@ export class ResponseService {
     return this.validResponse(id);
   }
 
-  async findDetail(id: number) {
-    const result = await this.responseRepository
-      .createQueryBuilder('response')
-      .leftJoinAndSelect('response.eachResponse', 'eachResponse')
-      .where(`response.id = ${id}`)
-      .getOne();
-
-    return result;
-  }
-
   /**
    * @description 참가자의 모든 응답 조회
    * @param participantId 

@@ -39,11 +39,11 @@ export class QuestionService {
     return this.validQuestion(id);
   }
 
-
-
   /**
    * @description 항목에 어떤 문항이 포함되어 있는지 조회
-   * @param id 설문아이디
+   * @param surveyId 설문아이디
+   * @param categoryName 항목 이름
+   * @returns [Question]
    */
   async findQuestionContainCategory(
     surveyId: number,
@@ -61,18 +61,22 @@ export class QuestionService {
   }
 
   /**
-   * @description 질문이 포함하는 항목 조회
-   * @param id question id
-   * @returns 
+   * @description 설문에 포함된 질문 조회
+   * @param surveyId 설문 아이디
+   * @returns [Question]
    */
-  async findQuestionWithCategory(id: number) {
-    const result = await this.questionRepository
-      .createQueryBuilder('question')
-      .leftJoinAndSelect('question.questionCategories', 'question_category')
-      .where(`question.id = ${id}`)
-      .getOne();
+  async findQuestionWithSurvey(surveyId: number) {
+    return this.questionRepository.findBy({ surveyId: surveyId });
+  }
 
-    return result;
+  /**
+   * @description 답변을 포함하는 질문 조회
+   * @param answerId 질문 아이디
+   * @returns Question
+   */
+  async findQuestionWithAnswer(answerId: number) {
+    const answer = await this.entityManager.findOneBy(Answer, { id: answerId });
+    return this.questionRepository.findOneBy({ id: answer.questionId });
   }
 
   async update(input: UpdateQuestionInput) {

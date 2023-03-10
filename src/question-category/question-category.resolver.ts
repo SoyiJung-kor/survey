@@ -29,6 +29,16 @@ export class QuestionCategoryResolver {
     return this.questionCategoryService.findOne(id);
   }
 
+  /**
+   * @description 질문이 포함하는 항목 조회
+   * @param questionId 질문아이디
+   * @returns [QuestionCategory]
+   */
+  @Query(() => [QuestionCategory])
+  findQuestionCategoryWithQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
+    return this.questionCategoryService.findQustionCategoryWithQuestion(questionId);
+  }
+
   @Mutation(() => QuestionCategory)
   updateQuestionCategory(@Args('input') input: UpdateQuestionCategoryInput) {
     return this.questionCategoryService.update(input);

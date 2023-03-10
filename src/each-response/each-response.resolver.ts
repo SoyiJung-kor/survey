@@ -26,6 +26,16 @@ export class EachResponseResolver {
     return this.eachResponseService.findOne(id);
   }
 
+  /**
+   * @description 응답의 상세응답 조회
+   * @param responseId 응답아이디
+   * @returns [EachResponse]
+   */
+  @Query(() => [EachResponse])
+  findEachResponseWithResponse(@Args('responseId', { type: () => Int }) responseId: number) {
+    return this.eachResponseService.findEachResponseWithResponse(responseId);
+  }
+
   @Mutation(() => EachResponse)
   updateEachResponse(
     @Args('input')

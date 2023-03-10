@@ -43,13 +43,25 @@ export class QuestionResolver {
   }
 
   /**
-   * @description 질문이 포함하는 항목 조회
-   * @param id question id
-   * @returns 
+  * @description 답변을 포함하는 질문 조회
+  * @param answerId 질문 아이디
+  * @returns Question
+  */
+  @Query(() => [Question])
+  findQuestionWithAnswer(
+    @Args('answerId', { type: () => Int }) answerId: number,
+  ) {
+    return this.questionService.findQuestionWithAnswer(answerId);
+  }
+
+  /**
+   * @description 설문에 포함된 질문 조회
+   * @param surveyId 설문 아이디
+   * @returns [Question]
    */
-  @Query(() => Question)
-  findQuestionWithCategory(@Args('id', { type: () => Int }) id: number,) {
-    return this.questionService.findQuestionWithCategory(id);
+  @Query(() => [Question])
+  findQuestionWithSurvey(@Args('surveyId', { type: () => Int }) surveyId: number) {
+    return this.questionService.findQuestionWithSurvey(surveyId);
   }
 
   @Mutation(() => Question)

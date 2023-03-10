@@ -81,29 +81,31 @@ type Survey {
 type Query {
   findAllSurveys: [Survey!]!
   findSurvey(surveyId: Int!): Survey!
-  findSurveyWithCategory(id: Int!): Survey!
-  findSurveyWithQuestion(id: Int!): Survey!
+  findSurveyWithCategory(categoryName: String!): Survey!
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
   findQuestionContainCategory(surveyId: Int!, categoryName: String!): [Question!]!
-  findQuestionWithCategory(id: Int!): Question!
+  findQuestionWithAnswer(answerId: Int!): [Question!]!
+  findQuestionWithSurvey(surveyId: Int!): [Question!]!
   findAllAnswers: [Answer!]!
   findAnswer(id: Int!): Answer!
   findOneAnswerDetail(answerId: Int!): [Answer!]!
   findAnswerWithQuestion(questionId: Int!): [Answer!]!
   findAllQuestionCategories: [QuestionCategory!]!
   findQuestionCategory(id: Int!): QuestionCategory!
+  findQuestionCategoryWithQuestion(questionId: Int!): [QuestionCategory!]!
   findAllResponses: [Response!]!
   findResponse(responseId: Int!): Response!
-  findOneResponseDetail(responseId: Int!): [Response!]!
   findResponseWithParticipant(participantId: Int!): [Response!]!
   findResponseWithSurvey(surveytId: Int!): [Response!]!
   findAllResponseCategory: [ResponseCategory!]!
   findResponseCategory(id: Int!): ResponseCategory!
   findAllEachResponse: [EachResponse!]!
   findEachResponse(id: Int!): EachResponse!
+  findEachResponseWithResponse(responseId: Int!): [EachResponse!]!
   findAllCategories: [Category!]!
   findCategory(id: Int!): Category!
+  findCategoryWithSurvey(surveyId: Int!): [Category!]!
   findAllCategoryScores: [CategoryScore!]!
   findCategoryScore(id: Int!): CategoryScore!
   findAllParticipants: [Participant!]!

@@ -27,24 +27,15 @@ export class SurveyResolver {
   }
 
   /**
-   * @description 설문에 포함된 항목 조회
-   * @param id 설문 아이디
-   * @returns 
+   * @description 항목이름이 포함된 설문 조회
+   * @param categoryName 항목의 이름
+   * @returns [Survey]
    */
   @Query(() => Survey)
-  findSurveyWithCategory(@Args('id', { type: () => Int }) id: number) {
-    return this.surveyService.findCategory(id);
+  findSurveyWithCategory(@Args('categoryName', { type: () => String }) categoryName: string) {
+    return this.surveyService.findSurveyWithCategory(categoryName);
   }
 
-  /**
-     * @description 설문에 포함된 질문 조회
-     * @param id 설문 아이디
-     * @returns 
-     */
-  @Query(() => Survey)
-  findSurveyWithQuestion(@Args('id', { type: () => Int }) id: number) {
-    return this.surveyService.findQuestion(id);
-  }
 
   @Mutation(() => Survey)
   updateSurvey(

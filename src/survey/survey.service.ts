@@ -29,34 +29,15 @@ export class SurveyService {
   }
 
   /**
-   * @description "설문이 갖고 있는 항목 조회"
-   * @param id 
-   * @returns 
+   * @description 항목이름이 포함된 설문 조회
+   * @param categoryName 
+   * @returns [Survey]
    */
-  async findCategory(id: number) {
-    const result = await this.surveyRepository
-      .createQueryBuilder('survey')
-      .leftJoinAndSelect('survey.categories', 'category')
-      .where(`survey.id = ${id}`)
-      .getOne();
-
-    return result;
-  }
-
-  /**
-   * @description 설문이 갖고 있는 질문 조회
-   * @param id 
-   * @returns 
-   */
-  async findQuestion(id: number) {
-    const result = await this.surveyRepository
-      .createQueryBuilder('survey')
-      .leftJoinAndSelect('survey.questions', 'question')
-      .where(`survey.id = ${id}`)
-      .getOne();
-
-    this.logger.debug(result);
-    return result;
+  findSurveyWithCategory(categoryName: string) {
+    return this.surveyRepository.createQueryBuilder()
+      .innerJoinAndSelect(`survey.categories`, `category`)
+      .where(`category.catogoryName = ${categoryName}`)
+      .getMany();
   }
 
   async update(input: UpdateSurveyInput) {

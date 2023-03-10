@@ -24,6 +24,15 @@ export class CategoryResolver {
     return this.categoryService.findOne(id);
   }
 
+  /**
+   * @description 설문에 포함된 항목 조회
+   * @param surveyId 설문아이디
+   * @returns [Category]
+   */
+  @Query(() => [Category])
+  findCategoryWithSurvey(@Args('surveyId', { type: () => Int }) surveyId: number) {
+    return this.categoryService.findSurveyWithCategory(surveyId);
+  }
   @Mutation(() => Category)
   updateCategory(@Args('input') input: UpdateCategoryInput) {
     return this.categoryService.update(input);

@@ -37,6 +37,10 @@ export class QuestionCategoryService {
     return this.validQuestionCategory(id);
   }
 
+  findQustionCategoryWithQuestion(questionId: number) {
+    return this.questionCategoryRepository.findBy({ questionId: questionId });
+  }
+
   async update(input: UpdateQuestionCategoryInput) {
     const questionCategory = await this.validQuestionCategory(input.id);
     if (input?.questionId) {
