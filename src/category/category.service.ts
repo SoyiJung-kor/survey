@@ -1,7 +1,7 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Survey } from '../survey/entities/survey.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
@@ -41,20 +41,6 @@ export class CategoryService {
     return this.categoryRepository.findBy({ surveyId: surveyId });
   }
 
-  /**
-   * @description "항목이 포함된 설문 조회"
-   * @param id 
-   * @returns 
-   */
-  async findSurveyWithCategory(id: number) {
-    const result = await this.categoryRepository
-      .createQueryBuilder('category')
-      .innerJoinAndSelect('category.survey', 'survey')
-      .where(`category.id = ${id}`)
-      .getOne();
-
-    return result;
-  }
 
   async update(input: UpdateCategoryInput) {
     const category = await this.validCategory(input.id);
