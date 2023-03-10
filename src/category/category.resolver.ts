@@ -31,7 +31,7 @@ export class CategoryResolver {
    */
   @Query(() => [Category])
   findCategoryWithSurvey(@Args('surveyId', { type: () => Int }) surveyId: number) {
-    return this.categoryService.findSurveyWithCategory(surveyId);
+    return this.categoryService.findCategoryWithSurvey(surveyId);
   }
   @Mutation(() => Category)
   updateCategory(@Args('input') input: UpdateCategoryInput) {

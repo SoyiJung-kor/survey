@@ -6,12 +6,13 @@ import { Survey } from '../survey/entities/survey.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 import { Category } from './entities/category.entity';
+import { CategoryRepository } from './repositories/category.repository';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectRepository(Category)
-    private categoryRepository: Repository<Category>,
+    private readonly categoryRepository: CategoryRepository,
     private entityManager: EntityManager,
   ) { }
   private readonly logger = new Logger(CategoryService.name);
