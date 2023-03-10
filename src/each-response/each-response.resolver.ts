@@ -6,39 +6,45 @@ import { UpdateEachResponseInput } from './dto/update-each-response.input';
 
 @Resolver(() => EachResponse)
 export class EachResponseResolver {
-  // eslint-disable-next-line prettier/prettier
   constructor(private readonly eachResponseService: EachResponseService) { }
 
-  @Mutation(() => EachResponse, { name: 'createEachResponse' })
+  @Mutation(() => EachResponse)
   createEachResponse(
-    @Args('createEachResponseInput')
-    createEachResponseInput: CreateEachResponseInput,
+    @Args('input')
+    input: CreateEachResponseInput,
   ) {
-    return this.eachResponseService.create(createEachResponseInput);
+    return this.eachResponseService.create(input);
   }
 
-  @Query(() => [EachResponse], { name: 'findAllEachResponse' })
-  findAll() {
+  @Query(() => [EachResponse])
+  findAllEachResponse() {
     return this.eachResponseService.findAll();
   }
 
-  @Query(() => EachResponse, { name: 'findOneEachResponse' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => EachResponse)
+  findEachResponse(@Args('id', { type: () => Int }) id: number) {
     return this.eachResponseService.findOne(id);
   }
 
-  @Mutation(() => EachResponse, { name: 'updateEachResponse' })
-  updateEachResponse(
-    @Args('updateEachResponseInput')
-    updateEachResponseInput: UpdateEachResponseInput,
-  ) {
-    return this.eachResponseService.update(
-      updateEachResponseInput.id,
-      updateEachResponseInput,
-    );
+  /**
+   * @description 응답의 상세응답 조회
+   * @param responseId 응답아이디
+   * @returns [EachResponse]
+   */
+  @Query(() => [EachResponse])
+  findEachResponseWithResponse(@Args('responseId', { type: () => Int }) responseId: number) {
+    return this.eachResponseService.findEachResponseWithResponse(responseId);
   }
 
-  @Mutation(() => EachResponse, { name: 'removeEachResponse' })
+  @Mutation(() => EachResponse)
+  updateEachResponse(
+    @Args('input')
+    input: UpdateEachResponseInput,
+  ) {
+    return this.eachResponseService.update(input);
+  }
+
+  @Mutation(() => EachResponse)
   removeEachResponse(@Args('id', { type: () => Int }) id: number) {
     return this.eachResponseService.remove(id);
   }

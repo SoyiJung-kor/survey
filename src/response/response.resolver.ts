@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { ResponseService } from './response.service';
 import { Response } from './entities/response.entity';
@@ -11,19 +11,25 @@ export class ResponseResolver {
 
   @Mutation(() => Response)
   createResponse(
-    @Args('createResponseInput') createResponseInput: CreateResponseInput,
+    @Args('input') input: CreateResponseInput,
   ) {
-    return this.responseService.create(createResponseInput);
+    return this.responseService.create(input);
   }
 
-  @Query(() => [Response], { name: 'findAllResponses' })
-  findAll() {
+  @Query(() => [Response])
+  findAllResponses() {
     return this.responseService.findAll();
   }
 
-  @Query(() => Response, { name: 'findResponse' })
-  findOne(@Args('responseId', { type: () => Int }) responseId: number) {
+  @Query(() => Response)
+  findResponse(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.findOne(responseId);
+  }
+
+  @Mutation(() => Response)
+  updateResponse(
+    @Args('input') input: UpdateResponseInput) {
+    return this.responseService.updateSubmit(input);
   }
 
   @Mutation(() => Response)
@@ -31,28 +37,23 @@ export class ResponseResolver {
     return this.responseService.remove(responseId);
   }
 
-  @Query(() => Response, { name: 'findResponseWithQueryBuilder' })
-  find(@Args('responseId', { type: () => Int }) responseId: number) {
-    return this.responseService.getResponseData(responseId);
-  }
-
+  /**
+   * @description 참가자 아이디로 응답 조회
+   * @param participantId 참가자 아이디 
+   * @returns [Response]
+   */
   @Query(() => [Response])
-  findOneResponseDetail(@Args('responseId', { type: () => Int }) responseId: number) {
-    return this.responseService.findDetail(responseId);
+  findResponseWithParticipant(@Args('participantId', { type: () => Int }) participantId: number) {
+    return this.responseService.findResponseWithParticipant(participantId);
   }
 
-  @Query(() => Response, { name: 'getSumScore' })
-  getScore(@Args('responseId', { type: () => Int }) responseId: number) {
-    return this.responseService.getSumScore(responseId);
-  }
-
-  @Mutation(() => Response, { name: 'updateResponse' })
-  updateResponse(
-    @Args('updateResponseInput') updateResponseInput: UpdateResponseInput,
-  ) {
-    return this.responseService.updateSubmit(
-      updateResponseInput.id,
-      updateResponseInput,
-    );
+  /**
+   * @description 설문 아이디로 응답 조회
+   * @param surveyId 설문 아이디 
+   * @returns [Response]
+   */
+  @Query(() => [Response])
+  findResponseWithSurvey(@Args('surveytId', { type: () => Int }) surveyId: number) {
+    return this.responseService.findResponseWithSurvey(surveyId);
   }
 }

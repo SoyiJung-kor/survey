@@ -23,4 +23,12 @@ export class QuestionCategory extends CommonEntity {
   @Field(() => Question)
   @JoinColumn({ name: 'questionId' })
   question: Question;
+
+  copyQuestionCategory(questionCategory: QuestionCategory, question: Question) {
+    const newQuestionCategory = new QuestionCategory();
+    newQuestionCategory.categoryName = questionCategory.categoryName;
+    newQuestionCategory.questionId = question.id;
+    newQuestionCategory.question = question;
+    return newQuestionCategory;
+  }
 }

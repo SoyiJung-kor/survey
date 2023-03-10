@@ -6,7 +6,7 @@ import { UpdateCategoryScoreInput } from './dto/update-category-score.input';
 
 @Resolver(() => CategoryScore)
 export class CategoryScoreResolver {
-  // eslint-disable-next-line prettier/prettier
+
   constructor(private readonly categoryScoreService: CategoryScoreService) { }
 
   @Mutation(() => CategoryScore)

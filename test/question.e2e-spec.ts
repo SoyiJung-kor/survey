@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { Survey } from '../src/survey/entities/survey.entity';
 import request from 'supertest';
@@ -75,14 +75,10 @@ describe('question', () => {
         .send({
           query: `
           mutation {
-            createQuestion(createQuestionInput:{questionNumber:1,questionContent:"Test Question",surveyId:1}) {
+            createQuestion(input:{questionNumber:1,questionContent:"Test Question",surveyId:1}) {
               id
               questionNumber
               questionContent
-              survey{
-                id
-                surveyTitle
-              }
             }
           }
           `,
@@ -93,10 +89,6 @@ describe('question', () => {
           expect(res.body.data.createQuestion.questionNumber).toBe(1);
           expect(res.body.data.createQuestion.questionContent).toBe(
             'Test Question',
-          );
-          expect(res.body.data.createQuestion.survey.id).toBe(1);
-          expect(res.body.data.createQuestion.survey.surveyTitle).toBe(
-            'Mock Survey for Test',
           );
         });
     });
@@ -126,7 +118,7 @@ describe('question', () => {
         .send({
           query: `
           mutation {
-            createQuestion(createQuestionInput:{questionNumber:"1",questionContent:"Test Question",surveyId:1}) {
+            createQuestion(input:{questionNumber:"1",questionContent:"Test Question",surveyId:1}) {
               id
               questionNumber
               questionContent
@@ -146,7 +138,7 @@ describe('question', () => {
         .send({
           query: `
           mutation {
-            createQuestion(createQuestionInput:{questionNumber:1,questionContent:" ",surveyId:1}) {
+            createQuestion(input:{questionNumber:1,questionContent:" ",surveyId:1}) {
               id
               questionNumber
               questionContent
@@ -169,7 +161,7 @@ describe('question', () => {
         .send({
           query: `
           mutation {
-            createQuestion(createQuestionInput:{questionNumber:1,questionContent:"Test Question",surveyId:}) {
+            createQuestion(input:{questionNumber:1,questionContent:"Test Question",surveyId:}) {
               id
               questionNumber
               questionContent
@@ -267,64 +259,6 @@ describe('question', () => {
           expect(res.body.data).toBeNull();
         })
     });
-    it('디테일한 특정 질문 조회 성공!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `
-          query {
-            findOneQuestionDetail(id:1) {
-              id
-              questionNumber
-              questionContent
-              survey{
-                id
-              }
-            }
-          }
-          `,
-        })
-        .expect(200);
-    });
-    it('없는 id로 디테일한 특정 질문 조회 실패!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `
-          query {
-            findOneQuestionDetail(id:100) {
-              id
-              questionNumber
-              questionContent
-              survey{
-                id
-              }
-            }
-          }
-          `,
-        })
-        .expect((res) => {
-          expect(res.body.data).toBeNull();
-        })
-    });
-    it('잘못된 query field때문에 디테일한 특정 질문 조회 실패!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `
-          query {
-            findOneQuestionDetail(id:1) {
-              id
-              questionNumber
-              questionContent
-              survey{
-              }
-            }
-          }
-          `,
-        })
-        .expect(400);
-    });
   });
   describe('질문 수정!', () => {
     it('질문 수정 성공!', async () => {
@@ -333,7 +267,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:1}) {
+            updateQuestion(input:{questionContent:"Modified Question",id:1}) {
               id
               questionContent
             }
@@ -354,7 +288,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:1}) {
+            updateQuestion(input:{questionContent:"Modified Question",id:1}) {
               id
               question
             }
@@ -369,7 +303,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:100}) {
+            updateQuestion(input:{questionContent:"Modified Question",id:100}) {
               id
               questionContent
             }
@@ -386,7 +320,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:"Modified Question",id:"1"}) {
+            updateQuestion(input:{questionContent:"Modified Question",id:"1"}) {
               id
               questionContent
             }
@@ -401,7 +335,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{questionContent:" ",id:1}) {
+            updateQuestion(input:{questionContent:" ",id:1}) {
               id
               questionContent
             }
@@ -418,7 +352,7 @@ describe('question', () => {
         .send({
           query: `
           mutation updateQuestion {
-            updateQuestion(updateQuestionInput:{id:100,questionContent:"Modified Question",surveyId:100}) {
+            updateQuestion(input:{id:100,questionContent:"Modified Question",surveyId:100}) {
               id
               questionContent
             }

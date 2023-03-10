@@ -1,13 +1,22 @@
 import { Module } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CategoryResolver } from './category.resolver';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { getDataSourceToken, getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
 import { CategoryScoreModule } from '../category-score/category-score.module';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [CategoryScoreModule, TypeOrmModule.forFeature([Category])],
-  providers: [CategoryResolver, CategoryService],
+  providers: [
+    {
+      provide: getRepositoryToken(Category),
+      inject: [getDataSourceToken()],
+      useFactory(dataSource: DataSource) {
+        return dataSource
+          .getRepository(Category)
+      }
+    },
+    CategoryResolver, CategoryService],
 })
-// eslint-disable-next-line prettier/prettier
 export class CategoryModule { }

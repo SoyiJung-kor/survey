@@ -40,4 +40,13 @@ export class Question extends CommonEntity {
   )
   @Field(() => [QuestionCategory], { nullable: true })
   questionCategories: QuestionCategory[];
+
+  copyQuestion(question: Question) {
+    const newQuestion = new Question();
+    newQuestion.questionNumber = question.questionNumber;
+    newQuestion.questionContent = question.questionContent;
+    newQuestion.surveyId = question.surveyId;
+    newQuestion.survey = question.survey;
+    return newQuestion;
+  }
 }

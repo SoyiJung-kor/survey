@@ -1,16 +1,16 @@
-/* eslint-disable prettier/prettier */
+
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateParticipantInput } from './dto/create-participant.input';
 import { UpdateParticipantInput } from './dto/update-participant.input';
 import { Participant } from './entities/participant.entity';
+import { ParticipantRepository } from './repositories/participant.repository';
 
 @Injectable()
 export class ParticipantService {
   constructor(
     @InjectRepository(Participant)
-    private participantRepository: Repository<Participant>,
+    private readonly participantRepository: ParticipantRepository,
   ) { }
 
   private readonly logger = new Logger(ParticipantService.name);
@@ -28,19 +28,16 @@ export class ParticipantService {
     return this.validParticipant(id);
   }
 
-  async update(id: number, updateParticipantInput: UpdateParticipantInput) {
-    const participant = this.validParticipant(id);
-    this.participantRepository.merge(await participant, updateParticipantInput);
-    this.participantRepository.update(id, await participant);
+  async update(input: UpdateParticipantInput) {
+    const participant = await this.validParticipant(input.id);
+    this.participantRepository.merge(participant, input);
+    this.participantRepository.update(input.id, participant);
     return participant;
   }
 
   async remove(id: number) {
-    const participant = this.participantRepository.findOneBy({ id });
-    if (!participant) {
-      throw new Error("CAN'T FIND THE PARTICIPANT!");
-    }
-    await this.participantRepository.delete({ id });
+    const participant = await this.validParticipant(id)
+    this.participantRepository.delete({ id });
     return participant;
   }
 

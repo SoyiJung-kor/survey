@@ -9,7 +9,7 @@ import {
 /**
  * @Catch(HttpException)
  * 해당 데코레이터는 필요한 메타 데이터를 ExceptionFilter에 바인딩하여,
- * 필터가 HttpException 타입의 예외만 찾고 있다는 것을 Nset.js에 알리기 위해 선언한다.
+ * 필터가 HttpException 타입의 예외만 찾고 있다는 것을 Nest.js에 알리기 위해 선언한다.
  */
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -35,5 +35,20 @@ export class HttpExceptionFilter implements ExceptionFilter {
      * @description HttpException에서 전송한 데이터를 추출할 때 사용
      */
     const res: any = exception.getResponse();
+
+    //요청 url 및 에러 정보
+    const url: string = request.url;
+    const error: string = res.error;
+    const timestamp: string = new Date().toISOString();
+
+    console.log('요청 url : ', url);
+    console.log('error 정보 : ', error);
+    console.log('발생 시간 : ', timestamp);
+
+    /* 클라이언트에게 정보를 전달한다. */
+    response.status(status).json({
+      success: false,
+      message: res.message,
+    });
   }
 }

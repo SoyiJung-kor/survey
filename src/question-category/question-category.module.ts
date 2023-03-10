@@ -1,12 +1,21 @@
 import { Module } from '@nestjs/common';
 import { QuestionCategoryService } from './question-category.service';
 import { QuestionCategoryResolver } from './question-category.resolver';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { getDataSourceToken, getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { QuestionCategory } from './entities/question-category.entity';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [TypeOrmModule.forFeature([QuestionCategory])],
-  providers: [QuestionCategoryResolver, QuestionCategoryService],
+  providers: [
+    {
+      provide: getRepositoryToken(QuestionCategory),
+      inject: [getDataSourceToken()],
+      useFactory(dataSource: DataSource) {
+        return dataSource
+          .getRepository(QuestionCategory)
+      }
+    }
+    , QuestionCategoryResolver, QuestionCategoryService],
 })
-// eslint-disable-next-line prettier/prettier
 export class QuestionCategoryModule { }

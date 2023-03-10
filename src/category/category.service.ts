@@ -1,28 +1,32 @@
-/* eslint-disable prettier/prettier */
+
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Survey } from '../survey/entities/survey.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 import { Category } from './entities/category.entity';
+import { CategoryRepository } from './repositories/category.repository';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectRepository(Category)
-    private categoryRepository: Repository<Category>,
+    private readonly categoryRepository: CategoryRepository,
     private entityManager: EntityManager,
   ) { }
   private readonly logger = new Logger(CategoryService.name);
 
   async create(input: CreateCategoryInput) {
     const newCategory = this.categoryRepository.create(input);
-    newCategory.survey = await this.entityManager.findOneBy(Survey, { id: input.surveyId },);
-    // const survey = new Survey();
-    // survey.id = input.surveyId;
-    // newCategory.survey = survey;
+    newCategory.survey = await this.createSurvey(input.surveyId);
     return this.entityManager.save(newCategory);
+  }
+
+  async createSurvey(id: number) {
+    const survey = new Survey();
+    survey.id = id;
+    return survey;
   }
 
   findAll() {
@@ -33,20 +37,10 @@ export class CategoryService {
     return this.validCategory(id);
   }
 
-  /**
-   * @description "항목이 포함된 설문 조회"
-   * @param id 
-   * @returns 
-   */
-  async findSurveyWithCategory(id: number) {
-    const result = await this.categoryRepository
-      .createQueryBuilder('category')
-      .innerJoinAndSelect('category.survey', 'survey')
-      .where(`category.id = ${id}`)
-      .getOne();
-
-    return result;
+  async findCategoryWithSurvey(surveyId: number) {
+    return this.categoryRepository.findBy({ surveyId: surveyId });
   }
+
 
   async update(input: UpdateCategoryInput) {
     const category = await this.validCategory(input.id);
@@ -61,7 +55,7 @@ export class CategoryService {
 
   async remove(id: number) {
     const category = await this.validCategory(id);
-    await this.categoryRepository.delete(id);
+    this.categoryRepository.delete(id);
     return category;
   }
 
@@ -77,8 +71,8 @@ export class CategoryService {
     const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
     if (!survey) {
       throw new Error(`CAN NOT FIND THE SURVEY! ID: ${surveyId}`);
-    } else {
-      return survey;
     }
+    return survey;
+
   }
 }

@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -46,18 +46,18 @@ describe('response-category', () => {
         dataSource = moduleFixture.get<DataSource>(DataSource);
 
         const mockSurvey = new Survey();
-        mockSurvey.surveyTitle = 'Mock Survey for Test';
+        mockSurvey.surveyTitle = 'Mock SurveyTest';
         await dataSource.manager.save(mockSurvey);
 
         const mockQuestion = new Question();
-        mockQuestion.questionContent = 'Mock Question for Test';
+        mockQuestion.questionContent = 'Mock QuestionTest';
         mockQuestion.surveyId = 1;
         mockQuestion.questionNumber = 1;
         mockQuestion.survey = mockSurvey;
         await dataSource.manager.save(mockQuestion);
 
         const mockAnswer = new Answer();
-        mockAnswer.answerContent = 'Mock Answer for Test';
+        mockAnswer.answerContent = 'Mock AnswerTest';
         mockAnswer.answerNumber = 1;
         mockAnswer.answerScore = 5;
         mockAnswer.questionId = 1;
@@ -77,14 +77,14 @@ describe('response-category', () => {
 
         const mockCategory = new Category();
         mockCategory.id = 1;
-        mockCategory.categoryName = 'Mock Category for Test';
+        mockCategory.categoryName = 'Mock CategoryTest';
         mockCategory.survey = mockSurvey;
         await dataSource.manager.save(mockCategory);
 
         const mockQuestionCategory = new QuestionCategory();
         mockQuestionCategory.questionId = 1;
         mockQuestionCategory.question = mockQuestion;
-        mockQuestionCategory.categoryName = 'Mock Category for Test';
+        mockQuestionCategory.categoryName = 'Mock CategoryTest';
         await dataSource.manager.save(mockQuestionCategory);
 
         const mockCategoryScore = new CategoryScore();
@@ -97,8 +97,8 @@ describe('response-category', () => {
 
         const mockEachResponse = new EachResponse();
         mockEachResponse.responseId = 1;
-        mockEachResponse.responseQuestion = 'Mock Question for Test';
-        mockEachResponse.responseAnswer = 'Mock Answer for Test';
+        mockEachResponse.responseQuestion = 'Mock QuestionTest';
+        mockEachResponse.responseAnswer = 'Mock AnswerTest';
         mockEachResponse.responseScore = 5;
         mockEachResponse.response = mockResponse;
         await dataSource.manager.save(mockEachResponse);
@@ -125,6 +125,7 @@ describe('response-category', () => {
                 }`,
                 })
                 .expect(200);
+
         })
         it('응답 아이디가 없어서 응답한 설문 항목 생성 실패!', () => {
             return request(app.getHttpServer())
@@ -257,8 +258,8 @@ describe('response-category', () => {
                 .expect(400);
         })
     })
-    describe('아이디로 응답한 설문의 항목 전체 조회', () => {
-        it('아이디로 응답한 설문의 항목 전체 조회 성공!', () => {
+    describe('아이디로 응답한 설문의 항목 조회', () => {
+        it('아이디로 응답한 설문의 항목 조회 성공!', () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -277,12 +278,12 @@ describe('response-category', () => {
                     const findResponseCategory = res.body.data.findResponseCategory;
                     const { id, categoryName, sumCategoryScore, message } = findResponseCategory;
                     expect(id).toBe(1);
-                    expect(categoryName).toBe('Mock Category for Test');
+                    expect(categoryName).toBe('Mock CategoryTest');
                     expect(sumCategoryScore).toBe(0);
                     expect(message).toBe(' ');
                 })
         })
-        it('아이디가 없어서 아이디로 응답한 설문의 항목 전체 조회 실패!', () => {
+        it('아이디가 없어서 아이디로 응답한 설문의 항목 조회 실패!', () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -298,7 +299,7 @@ describe('response-category', () => {
                 })
                 .expect(400)
         })
-        it('없는 아이디를 입력해서 아이디로 응답한 설문의 항목 전체 조회 실패!', () => {
+        it('없는 아이디를 입력해서 아이디로 응답한 설문의 항목 조회 실패!', () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({
@@ -316,7 +317,7 @@ describe('response-category', () => {
                     expect(res.body.data).toBeNull();
                 })
         })
-        it('아이디가 숫자가 아니라서 아이디로 응답한 설문의 항목 전체 조회 실패!', () => {
+        it('아이디가 숫자가 아니라서 아이디로 응답한 설문의 항목 조회 실패!', () => {
             return request(app.getHttpServer())
                 .post(gql)
                 .send({

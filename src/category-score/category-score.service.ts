@@ -1,17 +1,18 @@
-/* eslint-disable prettier/prettier */
+
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Category } from '../category/entities/category.entity';
 import { CreateCategoryScoreInput } from './dto/create-category-score.input';
 import { UpdateCategoryScoreInput } from './dto/update-category-score.input';
 import { CategoryScore } from './entities/category-score.entity';
+import { CategoryScoreRepository } from './repositories/category-score.repository';
 
 @Injectable()
 export class CategoryScoreService {
   constructor(
     @InjectRepository(CategoryScore)
-    private categoryScoreRepository: Repository<CategoryScore>,
+    private readonly categoryScoreRepository: CategoryScoreRepository,
     private entityManager: EntityManager,
   ) { }
 
@@ -19,10 +20,14 @@ export class CategoryScoreService {
 
   async create(input: CreateCategoryScoreInput) {
     const newCategoryScore = this.categoryScoreRepository.create(input);
-    newCategoryScore.category = await this.entityManager.findOneBy(Category, {
-      id: input.categoryId,
-    });
+    newCategoryScore.category = await this.createCategory(input.categoryId);
     return this.entityManager.save(newCategoryScore);
+  }
+
+  async createCategory(id: number) {
+    const category = new Category();
+    category.id = id;
+    return category;
   }
 
   findAll() {
@@ -49,7 +54,7 @@ export class CategoryScoreService {
 
   async remove(id: number) {
     const categoryScore = await this.validCategoryScore(id);
-    await this.categoryScoreRepository.delete(id);
+    this.categoryScoreRepository.delete(id);
     return categoryScore;
   }
 
@@ -67,8 +72,8 @@ export class CategoryScoreService {
     });
     if (!category) {
       throw new Error(`CAN NOT FIND CATEGORY! ID: ${categoryId}`);
-    } else {
-      return category;
     }
+    return category;
+
   }
 }

@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { AnswerService } from './answer.service';
 import { Answer } from './entities/answer.entity';
@@ -11,9 +11,9 @@ export class AnswerResolver {
 
   @Mutation(() => Answer)
   createAnswer(
-    @Args('createAnswerInput') createAnswerInput: CreateAnswerInput,
+    @Args('input') input: CreateAnswerInput,
   ) {
-    return this.answerService.create(createAnswerInput);
+    return this.answerService.create(input);
   }
 
   @Query(() => [Answer])
@@ -26,16 +26,21 @@ export class AnswerResolver {
     return this.answerService.findOne(id);
   }
 
+  /**
+   * @description 질문에 포함된 답안지 목록 조회
+   * @param questionId
+   * @returns [Answer]
+   */
   @Query(() => [Answer])
-  findOneAnswerDetail(@Args('answerId', { type: () => Int }) answerId: number) {
-    return this.answerService.findDetail(answerId);
+  findAnswerWithQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
+    return this.answerService.findAnswerWithQudstion(questionId);
   }
 
   @Mutation(() => Answer)
   updateAnswer(
-    @Args('updateAnswerInput') updateAnswerInput: UpdateAnswerInput,
+    @Args('input') input: UpdateAnswerInput,
   ) {
-    return this.answerService.update(updateAnswerInput.id, updateAnswerInput);
+    return this.answerService.update(input);
   }
 
   @Mutation(() => Answer)

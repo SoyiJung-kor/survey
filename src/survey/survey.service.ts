@@ -1,22 +1,22 @@
-/* eslint-disable prettier/prettier */
+
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateSurveyInput } from './dto/create-survey.input';
 import { UpdateSurveyInput } from './dto/update-survey.input';
 import { Survey } from './entities/survey.entity';
+import { SurveyRepository } from './repositories/survey.repository';
 
 @Injectable()
 export class SurveyService {
   constructor(
     @InjectRepository(Survey)
-    private surveyRepository: Repository<Survey>,
+    private readonly surveyRepository: SurveyRepository,
   ) { }
 
   private readonly logger = new Logger(SurveyService.name);
 
-  create(createSurveyInput: CreateSurveyInput) {
-    const newSurvey = this.surveyRepository.create(createSurveyInput);
+  create(input: CreateSurveyInput) {
+    const newSurvey = this.surveyRepository.create(input);
     return this.surveyRepository.save(newSurvey);
   }
 
@@ -29,51 +29,34 @@ export class SurveyService {
   }
 
   /**
-   * @description "설문이 갖고 있는 항목 조회"
-   * @param id 
-   * @returns 
+   * @description 항목이름이 포함된 설문 조회
+   * @param categoryName 
+   * @returns [Survey]
    */
-  async findCategory(id: number) {
-    const result = await this.surveyRepository
-      .createQueryBuilder('survey')
-      .leftJoinAndSelect('survey.categories', 'category')
-      .where(`survey.id = ${id}`)
-      .getOne();
-
-    return result;
+  findSurveyWithCategory(categoryName: string) {
+    return this.surveyRepository.findSurveyWithCategory(categoryName);
   }
 
-  /**
-   * @description 설문이 갖고 있는 질문 조회
-   * @param id 
-   * @returns 
-   */
-  async findQuestion(id: number) {
-    const result = await this.surveyRepository
-      .createQueryBuilder('survey')
-      .leftJoinAndSelect('survey.questions', 'question')
-      .where(`survey.id = ${id}`)
-      .getOne();
-
-    this.logger.debug(result);
-    return result;
+  findSurveyWithQuestion(questionId: number) {
+    return this.surveyRepository.findSurveyWithQuestion(questionId);
   }
 
-  async update(id: number, updateSurveyInput: UpdateSurveyInput) {
-    const survey = await this.validSurvey(id);
-    this.surveyRepository.merge(survey, updateSurveyInput);
-    this.surveyRepository.update(id, survey);
+  async update(input: UpdateSurveyInput) {
+    const survey = await this.validSurvey(input.id);
+    this.surveyRepository.merge(survey, input);
+    this.surveyRepository.update(input.id, survey);
     return survey;
   }
 
   async remove(id: number) {
     const survey = await this.validSurvey(id);
-    await this.surveyRepository.delete({ id });
+    this.surveyRepository.delete({ id });
     return survey;
   }
 
   async validSurvey(id: number) {
     const survey = await this.surveyRepository.findOneBy({ id });
+
     if (!survey) {
       throw new Error(`CAN NOT FIND SURVEY! ID: ${id}`);
     }

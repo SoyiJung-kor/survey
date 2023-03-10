@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -58,10 +58,6 @@ describe('category', () => {
                     createCategory(input:{categoryName:"Test Category",surveyId:1}){
                         id
                         categoryName
-                        survey{
-                            id
-                            surveyTitle
-                        }
                     }
                 }
                 `,
@@ -69,12 +65,10 @@ describe('category', () => {
                 .expect(200)
                 .expect((res) => {
                     const createCategory = res.body.data.createCategory;
-                    const { id, categoryName, survey } = createCategory;
+                    const { id, categoryName } = createCategory;
 
                     expect(id).toBe(1);
                     expect(categoryName).toBe('Test Category');
-                    expect(survey.id).toBe(1);
-                    expect(survey.surveyTitle).toBe('Mock Survey for Test');
                 });
 
         });

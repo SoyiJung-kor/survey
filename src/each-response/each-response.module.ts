@@ -2,11 +2,20 @@ import { Module } from '@nestjs/common';
 import { EachResponseService } from './each-response.service';
 import { EachResponseResolver } from './each-response.resolver';
 import { EachResponse } from './entities/each-response.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { getDataSourceToken, getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [TypeOrmModule.forFeature([EachResponse])],
-  providers: [EachResponseResolver, EachResponseService],
+  providers: [
+    {
+      provide: getRepositoryToken(EachResponse),
+      inject: [getDataSourceToken()],
+      useFactory(dataSource: DataSource) {
+        return dataSource
+          .getRepository(EachResponse)
+      }
+    },
+    EachResponseResolver, EachResponseService],
 })
-// eslint-disable-next-line prettier/prettier
 export class EachResponseModule { }

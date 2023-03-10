@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { QuestionCategoryService } from './question-category.service';
 import { QuestionCategory } from './entities/question-category.entity';
@@ -27,6 +27,16 @@ export class QuestionCategoryResolver {
   @Query(() => QuestionCategory)
   findQuestionCategory(@Args('id', { type: () => Int }) id: number) {
     return this.questionCategoryService.findOne(id);
+  }
+
+  /**
+   * @description 질문이 포함하는 항목 조회
+   * @param questionId 질문아이디
+   * @returns [QuestionCategory]
+   */
+  @Query(() => [QuestionCategory])
+  findQuestionCategoryWithQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
+    return this.questionCategoryService.findQustionCategoryWithQuestion(questionId);
   }
 
   @Mutation(() => QuestionCategory)

@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { ResponseCategoryService } from './response-category.service';
 import { ResponseCategory } from './entities/response-category.entity';

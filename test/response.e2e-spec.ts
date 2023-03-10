@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -77,7 +77,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              createResponse(createResponseInput:{surveyId:1,participantId:1}) {
+              createResponse(input:{surveyId:1,participantId:1}) {
                 id
                 isSubmit
                 sumScore
@@ -128,7 +128,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              createResponse(createResponseInput:{surveyId:1,participantId:100}) {
+              createResponse(input:{surveyId:1,participantId:100}) {
                 id
                 isSubmit
                 sumScore
@@ -152,7 +152,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              createResponse(createResponseInput:{surveyId:1,participantId:}) {
+              createResponse(input:{surveyId:1,participantId:}) {
                 id
                 isSubmit
                 sumScore
@@ -174,7 +174,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              createResponse(createResponseInput:{surveyId:100,participantId:1}) {
+              createResponse(input:{surveyId:100,participantId:1}) {
                 id
                 isSubmit
                 sumScore
@@ -198,7 +198,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              createResponse(createResponseInput:{surveyId:,participantId:1}) {
+              createResponse(input:{surveyId:,participantId:1}) {
                 id
                 isSubmit
                 sumScore
@@ -391,7 +391,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              updateResponse(updateResponseInput:{id:1,isSubmit:true}) {
+              updateResponse(input:{id:1,isSubmit:true}) {
                 id
                 isSubmit
               }
@@ -409,7 +409,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              updateResponse(updateResponseInput:{id:100,isSubmit:true}) {
+              updateResponse(input:{id:100,isSubmit:true}) {
                 id
                 isSubmit
               }
@@ -426,7 +426,7 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              updateResponse(updateResponseInput:{id:,isSubmit:true}) {
+              updateResponse(input:{id:,isSubmit:true}) {
                 id
                 isSubmit
               }
@@ -456,62 +456,12 @@ describe('response', () => {
         .send({
           query: `
             mutation {
-              updateResponse(updateResponseInput:{id:1,isSubmite:true}) {
+              updateResponse(input:{id:1,isSubmite:true}) {
                 id
                 isSubmit
               }
             }
             `,
-        })
-        .expect(400);
-    });
-  });
-  describe('점수 합산!', () => {
-    it('점수 합산 성공!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `{
-              getSumScore(responseId:1){
-                id
-                isSubmit
-                sumScore
-              }
-            }`,
-        })
-        .expect((res) => {
-          expect(res.body.data.getSumScore.id).toBe(1);
-          expect(res.body.data.getSumScore.isSubmit).toBe(true);
-          expect(res.body.data.getSumScore.sumScore).toBe(0);
-        });
-    });
-    it('존재하지 않는 응답 아이디를 입력해서 점수 합산 실패!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `{
-              getSumScore(responseId:100){
-                id
-                isSubmit
-                sumScore
-              }
-            }`,
-        })
-        .expect((res) => {
-          expect(res.body.data).toBeNull();
-        });
-    });
-    it('응답 아이디를 입력하지 않아 점수 합산 실패!', async () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: `{
-              getSumScore(responseId:){
-                id
-                isSubmit
-                sumScore
-              }
-            }`,
         })
         .expect(400);
     });

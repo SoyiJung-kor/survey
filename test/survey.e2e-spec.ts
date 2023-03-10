@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
@@ -51,7 +51,7 @@ describe('survey', () => {
         .send({
           query: `
           mutation {
-            createSurvey(createSurveyInput:{surveyTitle:"Test Survey"}) {
+            createSurvey(input:{surveyTitle:"Test Survey"}) {
               id
               surveyTitle
             }
@@ -85,7 +85,7 @@ describe('survey', () => {
         .send({
           query: `
           mutation {
-            createSurvey(createSurveyInput:{surveyTitle:"l"}) {
+            createSurvey(input:{surveyTitle:"l"}) {
               id
               surveyTitle
             }
@@ -204,7 +204,7 @@ describe('survey', () => {
         .send({
           query: `
           mutation updateSurvey {
-            updateSurvey(updateSurveyInput:{surveyTitle:"Modified Survey",id:1}) {
+            updateSurvey(input:{surveyTitle:"Modified Survey",id:1}) {
               id
               surveyTitle
             }
@@ -225,7 +225,7 @@ describe('survey', () => {
         .send({
           query: `
           mutation updateSurvey {
-            updateSurvey(updateSurveyInput:{surveyTitle:" ",id:1}) {
+            updateSurvey(input:{surveyTitle:" ",id:1}) {
               id
               surveyTitle
             }

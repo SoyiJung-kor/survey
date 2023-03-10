@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -62,14 +62,10 @@ describe('answer', () => {
         .send({
           query: `
             mutation {
-              createAnswer(createAnswerInput:{answerNumber:1,answerContent:"Test Answer",answerScore:5, questionId:1}) {
+              createAnswer(input:{answerNumber:1,answerContent:"Test Answer",answerScore:5, questionId:1}) {
                 id
                 answerNumber
                 answerContent
-                question{
-                  id
-                  questionContent
-                }
               }
             }
             `,
@@ -77,15 +73,11 @@ describe('answer', () => {
         .expect(200)
         .expect((res) => {
           const createAnswer = res.body.data.createAnswer
-          const { id, answerNumber, answerContent, question } = createAnswer;
+          const { id, answerNumber, answerContent } = createAnswer;
 
           expect(id).toBe(1);
           expect(answerNumber).toBe(1);
           expect(answerContent).toBe('Test Answer');
-          expect(question.id).toBe(1);
-          expect(question.questionContent).toBe(
-            'Mock Question for Test',
-          );
         });
     });
     it('인풋데이터가 없어서 답지 생성 실패!', async () => {
@@ -114,7 +106,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation {
-              createAnswer(createAnswerInput:{answerNumber:"1",answerContent:"Test Answer",answerScore:5, questionId:1}) {
+              createAnswer(input:{answerNumber:"1",answerContent:"Test Answer",answerScore:5, questionId:1}) {
                 id
                 answerNumber
                 answerContent
@@ -134,7 +126,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation {
-              createAnswer(createAnswerInput:{answerContent:" ",answerScore:5, questionId:1}) {
+              createAnswer(input:{answerContent:" ",answerScore:5, questionId:1}) {
                 id
                 answerNumber
                 answerContent
@@ -154,7 +146,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation {
-              createAnswer(createAnswerInput:{answerNumber:1,answerScore:5, questionId:1}) {
+              createAnswer(input:{answerNumber:1,answerScore:5, questionId:1}) {
                 id
                 answerNumber
                 answerContent
@@ -174,7 +166,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation {
-              createAnswer(createAnswerInput:{answerNumber:1,answerContent:" ",answerScore:5, questionId:1}) {
+              createAnswer(input:{answerNumber:1,answerContent:" ",answerScore:5, questionId:1}) {
                 id
                 answerNumber
                 answerContent
@@ -196,7 +188,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation {
-              createAnswer(createAnswerInput:{answerNumber:1,answerContent:"Test Answer",answerScore:"5", questionId:1}) {
+              createAnswer(input:{answerNumber:1,answerContent:"Test Answer",answerScore:"5", questionId:1}) {
                 id
                 answerNumber
                 answerContent
@@ -216,7 +208,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation {
-              createAnswer(createAnswerInput:{answerNumber:1,answerContent:"Test Answer", questionId:1}) {
+              createAnswer(input:{answerNumber:1,answerContent:"Test Answer", questionId:1}) {
                 id
                 answerNumber
                 answerContent
@@ -236,7 +228,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation {
-              createAnswer(createAnswerInput:{answerNumber:1,answerContent:"Test Answer",answerScore:5}) {
+              createAnswer(input:{answerNumber:1,answerContent:"Test Answer",answerScore:5}) {
                 id
                 answerNumber
                 answerContent
@@ -256,7 +248,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation {
-              createAnswer(createAnswerInput:{answerNumber:1,answerContent:"Test Answer",answerScore:5, questionId:100}) {
+              createAnswer(input:{answerNumber:1,answerContent:"Test Answer",answerScore:5, questionId:100}) {
                 id
                 answerNumber
                 answerContent
@@ -390,6 +382,22 @@ describe('answer', () => {
         .expect(400);
     });
   });
+  describe('질문에 포함된 답지 조회!', () => {
+    it('질문에 포함된 답지 조회 성공!', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          query {
+            findAnswerWithQuestion(questionId:1) {
+              id
+            }
+          }
+          `,
+        })
+        .expect(200);
+    });
+  })
   describe('update a answer', () => {
     it('질문 수정 성공!', async () => {
       return request(app.getHttpServer())
@@ -397,7 +405,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation updateAnswer {
-              updateAnswer(updateAnswerInput:{answerContent:"Modified Answer",id:1}) {
+              updateAnswer(input:{answerContent:"Modified Answer",id:1}) {
                 id
                 answerContent
               }
@@ -418,7 +426,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation updateAnswer {
-              updateAnswer(updateAnswerInput:{answerContent:"Modified Answer",id:100}) {
+              updateAnswer(input:{answerContent:"Modified Answer",id:100}) {
                 id
                 answerContent
               }
@@ -435,7 +443,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation updateAnswer {
-              updateAnswer(updateAnswerInput:{answerContent:"Modified Answer",id:1}) {
+              updateAnswer(input:{answerContent:"Modified Answer",id:1}) {
                 id
                 answer
               }
@@ -450,7 +458,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation updateAnswer {
-              updateAnswer(updateAnswerInput:{answerNumber:"1",id:1}) {
+              updateAnswer(input:{answerNumber:"1",id:1}) {
                 id
                 answerContent
               }
@@ -465,7 +473,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation updateAnswer {
-              updateAnswer(updateAnswerInput:{answerContent:" ",id:1}) {
+              updateAnswer(input:{answerContent:" ",id:1}) {
                 id
                 answerContent
               }
@@ -482,7 +490,7 @@ describe('answer', () => {
         .send({
           query: `
             mutation updateAnswer {
-              updateAnswer(updateAnswerInput:{questionId:100,id:1}) {
+              updateAnswer(input:{questionId:100,id:1}) {
                 id
                 answerContent
               }

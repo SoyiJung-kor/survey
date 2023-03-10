@@ -1,13 +1,13 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import {
+  BaseEntity,
   CreateDateColumn,
-  DeleteDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @ObjectType()
-export abstract class CommonEntity {
+export abstract class CommonEntity extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -17,7 +17,4 @@ export abstract class CommonEntity {
 
   @UpdateDateColumn({ nullable: true })
   updatedAt: Date;
-
-  @DeleteDateColumn({ nullable: true })
-  deletedAt: Date;
 }

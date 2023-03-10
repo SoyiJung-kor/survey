@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { SurveyService } from './survey.service';
 import { Survey } from './entities/survey.entity';
@@ -11,9 +11,9 @@ export class SurveyResolver {
 
   @Mutation(() => Survey)
   createSurvey(
-    @Args('createSurveyInput') createSurveyInput: CreateSurveyInput,
+    @Args('input') input: CreateSurveyInput,
   ) {
-    return this.surveyService.create(createSurveyInput);
+    return this.surveyService.create(input);
   }
 
   @Query(() => [Survey])
@@ -27,33 +27,33 @@ export class SurveyResolver {
   }
 
   /**
-   * @description 설문에 포함된 항목 조회
-   * @param id 설문 아이디
-   * @returns 
+   * @description 항목이름이 포함된 설문 조회
+   * @param categoryName 항목의 이름
+   * @returns [Survey]
    */
   @Query(() => Survey)
-  findSurveyWithCategory(@Args('id', { type: () => Int }) id: number) {
-    return this.surveyService.findCategory(id);
+  findSurveyWithCategory(@Args('categoryName', { type: () => String }) categoryName: string) {
+    return this.surveyService.findSurveyWithCategory(categoryName);
   }
 
   /**
-     * @description 설문에 포함된 질문 조회
-     * @param id 설문 아이디
-     * @returns 
-     */
+   * @description 질문이 포함된 설문 조회
+   * @param questionId 질문 아이디
+   * @returns Survey
+   */
   @Query(() => Survey)
-  findSurveyWithQuestion(@Args('id', { type: () => Int }) id: number) {
-    return this.surveyService.findQuestion(id);
+  findSurveyWithQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
+    return this.surveyService.findSurveyWithQuestion(questionId);
   }
 
-  @Mutation(() => Survey, { name: 'updateSurvey' })
+  @Mutation(() => Survey)
   updateSurvey(
-    @Args('updateSurveyInput') updateSurveyInput: UpdateSurveyInput,
+    @Args('input') input: UpdateSurveyInput,
   ) {
-    return this.surveyService.update(updateSurveyInput.id, updateSurveyInput);
+    return this.surveyService.update(input);
   }
 
-  @Mutation(() => Survey, { name: 'removeSurvey' })
+  @Mutation(() => Survey)
   removeSurvey(@Args('surveyId', { type: () => Int }) surveyId: number) {
     return this.surveyService.remove(surveyId);
   }
