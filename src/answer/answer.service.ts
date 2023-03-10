@@ -1,17 +1,18 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Question } from '../question/entities/question.entity';
 import { CreateAnswerInput } from './dto/create-answer.input';
 import { UpdateAnswerInput } from './dto/update-answer.input';
 import { Answer } from './entities/answer.entity';
+import { AnswerRepository } from './repositories/answer.repository';
 
 @Injectable()
 export class AnswerService {
   constructor(
     @InjectRepository(Answer)
-    private answerRepository: Repository<Answer>,
+    private readonly answerRepository: AnswerRepository,
     private entityManager: EntityManager,
   ) { }
   private readonly logger = new Logger(AnswerService.name);
