@@ -37,21 +37,6 @@ export class AnswerService {
     return await this.validAnswer(id);
   }
 
-  /**
-  * @description "선택한 답지의 질문 조회"
-  * @param id
-  * @returns
-  */
-  async findDetail(id: number) {
-    const result = await this.answerRepository
-      .createQueryBuilder('answer')
-      .innerJoinAndSelect('answer.question', 'question')
-      .where(`answer.id= ${id}`)
-      .getOne();
-
-    return result;
-  }
-
   async update(input: UpdateAnswerInput) {
     const answer = await this.validAnswer(input.id);
 
@@ -87,9 +72,9 @@ export class AnswerService {
   }
 
   /**
- * @description "선택한 질문의 답지 조회"
- * @param id
- * @returns
+ * @description 선택한 질문의 답지 조회
+ * @param id 질문 아이디
+ * @returns Answer[]
  */
   async findAnswerWithQudstion(questionId: number) {
     return this.answerRepository.find({ where: { questionId: questionId } })

@@ -26,11 +26,6 @@ export class AnswerResolver {
     return this.answerService.findOne(id);
   }
 
-  @Query(() => [Answer])
-  findOneAnswerDetail(@Args('answerId', { type: () => Int }) answerId: number) {
-    return this.answerService.findDetail(answerId);
-  }
-
   /**
    * @description 질문에 포함된 답안지 목록 조회
    * @param questionId

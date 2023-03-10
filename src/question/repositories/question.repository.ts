@@ -20,13 +20,12 @@ export const CustomQuestionRepositoryMethods: CustomQuestionRepository = {
         surveyId: number,
         categoryName: string,
     ) {
-        const question = await this.questionRepository
+        return await this.questionRepository
             .createQueryBuilder('question')
             .leftJoinAndSelect('question.questionCategories', 'question_category')
             .where(`question_category.categoryName = '${categoryName}'`)
             .andWhere(`question.surveyId = ${surveyId}`)
             .getMany();
-        return question;
     },
 
     async findQuestionWithSurvey(surveyId: number) {

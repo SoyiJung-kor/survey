@@ -54,10 +54,7 @@ export class EachResponseService {
       const response = await this.validResponse(input.responseId);
       eachResponse.response = response;
     }
-    this.eachResponseRepository.merge(
-      eachResponse,
-      input,
-    );
+    this.eachResponseRepository.merge(eachResponse, input);
     this.eachResponseRepository.update(input.id, eachResponse);
     return eachResponse;
   }

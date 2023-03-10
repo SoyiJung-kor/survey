@@ -48,10 +48,7 @@ export class QuestionCategoryService {
       const question = await this.validQuestion(input.questionId);
       questionCategory.question = question;
     }
-    const result = this.questionCategoryRepository.merge(
-      questionCategory,
-      input,
-    );
+    const result = this.questionCategoryRepository.merge(questionCategory, input);
     this.questionCategoryRepository.update(input.id, questionCategory);
     return result;
   }

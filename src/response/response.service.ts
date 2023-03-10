@@ -62,8 +62,11 @@ export class ResponseService {
     return this.responseRepository.findBy({ surveyId: surveyId });
   }
 
-  async getScore(id: number) {
-    return await this.responseRepository.getScore(id);
+  async updateSubmit(input: UpdateResponseInput) {
+    const response = await this.getSumScore(input.id);
+    this.responseRepository.merge(response, input);
+    this.responseRepository.update(input.id, response);
+    return response;
   }
 
   async getSumScore(id: number) {
@@ -71,6 +74,10 @@ export class ResponseService {
     const SumScore = +Score.totalScore;
     await this.responseRepository.getSumScore(id, SumScore)
     return this.findOne(id);
+  }
+
+  async getScore(id: number) {
+    return await this.responseRepository.getScore(id);
   }
 
   async remove(id: number) {
@@ -87,13 +94,6 @@ export class ResponseService {
     return response;
   }
 
-  async updateSubmit(input: UpdateResponseInput) {
-    const response = await this.getSumScore(input.id);
-    this.responseRepository.merge(response, input);
-    this.responseRepository.update(input.id, response);
-    return response;
-  }
-
   async validSurvey(surveyId: number) {
     const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
     if (!survey) {
@@ -101,6 +101,7 @@ export class ResponseService {
     }
     return survey;
   }
+
   async validParticipant(participantId: number) {
     const participant = await this.entityManager.findOneBy(Participant, { id: participantId });
     if (!participant) {

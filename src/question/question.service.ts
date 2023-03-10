@@ -1,5 +1,5 @@
 
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { Answer } from '../answer/entities/answer.entity';
@@ -80,19 +80,11 @@ export class QuestionService {
   }
 
   async validSurvey(surveyId: number) {
-    try {
-      const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
-
-      return survey;
-    } catch (error) {
-      throw new HttpException(
-        {
-          message: `SQL ERROR`,
-          error: error.sqlMessage,
-        },
-        HttpStatus.FORBIDDEN,
-      );
+    const survey = await this.entityManager.findOneBy(Survey, { id: surveyId });
+    if (!survey) {
+      throw new Error(`CAN NOT FOUND SURVEY! ID: ${surveyId}`);
     }
+    return survey;
   }
 
   async remove(id: number) {
@@ -109,6 +101,11 @@ export class QuestionService {
     return question;
   }
 
+  /**
+   * Question 복사
+   * @param id -복사하는 question id
+   * @returns 복사된 새 Question 객체
+   */
   async copyQuestion(id: number) {
     const question = await this.validQuestion(id);
     const newQuestion = new Question().copyQuestion(question);
@@ -119,22 +116,35 @@ export class QuestionService {
     return finalQuestion;
   }
 
+  /**
+   * Question 하위 Answer 복사
+   * @param id -복사하는 question의 id
+   * @param finalQuestion -복사된 새 Question 객체
+   */
   async copyAnswer(id: number, finalQuestion: Question) {
-    const answers = await this.entityManager
-      .findBy(Answer, { questionId: id });
+    const answers = await this.entityManager.findBy(Answer, { questionId: id });
+
     const newAnswers = new Array<Answer>();
     answers.map(answer => {
       newAnswers.push(new Answer().copyAnswer(answer, finalQuestion));
     });
+
     this.entityManager.save(newAnswers);
   }
+
+  /**
+   * Question 하위 Category 복사
+   * @param id -복사하는 question의 id
+   * @param finalQuestion -복사된 새 Question 객체
+   */
   async copyQuestionCategory(id: number, finalQuestion: Question) {
-    const questionCategories = await this.entityManager
-      .findBy(QuestionCategory, { questionId: id });
+    const questionCategories = await this.entityManager.findBy(QuestionCategory, { questionId: id });
+
     const newQuestionCategory = new Array<QuestionCategory>();
     questionCategories.map(questionCategory => {
       newQuestionCategory.push(new QuestionCategory().copyQuestionCategory(questionCategory, finalQuestion));
     })
+
     this.entityManager.save(newQuestionCategory);
   }
 }

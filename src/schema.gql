@@ -90,7 +90,6 @@ type Query {
   findQuestionWithSurvey(surveyId: Int!): [Question!]!
   findAllAnswers: [Answer!]!
   findAnswer(id: Int!): Answer!
-  findOneAnswerDetail(answerId: Int!): [Answer!]!
   findAnswerWithQuestion(questionId: Int!): [Answer!]!
   findAllQuestionCategories: [QuestionCategory!]!
   findQuestionCategory(id: Int!): QuestionCategory!
@@ -128,8 +127,8 @@ type Mutation {
   updateQuestionCategory(input: UpdateQuestionCategoryInput!): QuestionCategory!
   removeQuestionCategory(id: Int!): QuestionCategory!
   createResponse(input: CreateResponseInput!): Response!
-  removeResponse(responseId: Int!): Response!
   updateResponse(input: UpdateResponseInput!): Response!
+  removeResponse(responseId: Int!): Response!
   createResponseCategory(input: CreateResponseCategoryInput!): [ResponseCategory!]!
   sumResponseCategory(input: UpdateResponseCategoryInput!): [ResponseCategory!]!
   removeResponseCategory(id: Int!): ResponseCategory!

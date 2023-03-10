@@ -27,6 +27,12 @@ export class ResponseResolver {
   }
 
   @Mutation(() => Response)
+  updateResponse(
+    @Args('input') input: UpdateResponseInput) {
+    return this.responseService.updateSubmit(input);
+  }
+
+  @Mutation(() => Response)
   removeResponse(@Args('responseId', { type: () => Int }) responseId: number) {
     return this.responseService.remove(responseId);
   }
@@ -49,14 +55,5 @@ export class ResponseResolver {
   @Query(() => [Response])
   findResponseWithSurvey(@Args('surveytId', { type: () => Int }) surveyId: number) {
     return this.responseService.findResponseWithSurvey(surveyId);
-  }
-
-  @Mutation(() => Response)
-  updateResponse(
-    @Args('input') input: UpdateResponseInput,
-  ) {
-    return this.responseService.updateSubmit(
-      input
-    );
   }
 }
