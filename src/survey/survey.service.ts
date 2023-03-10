@@ -1,5 +1,5 @@
 
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateSurveyInput } from './dto/create-survey.input';
 import { UpdateSurveyInput } from './dto/update-survey.input';
@@ -55,23 +55,11 @@ export class SurveyService {
   }
 
   async validSurvey(id: number) {
-    try {
-      const survey = await this.surveyRepository.findOneBy({ id });
+    const survey = await this.surveyRepository.findOneBy({ id });
 
-      return survey;
-    } catch (error) {
-      throw new HttpException(
-        {
-          message: `SQL ERROR`,
-          error: error.sqlMessage,
-        },
-        HttpStatus.FORBIDDEN,
-      );
+    if (!survey) {
+      throw new Error(`CAN NOT FIND SURVEY! ID: ${id}`);
     }
-
-    // if (!survey) {
-    //   throw new Error(`CAN NOT FIND SURVEY! ID: ${id}`);
-    // }
-    // return survey;
+    return survey;
   }
 }

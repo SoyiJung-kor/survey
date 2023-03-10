@@ -50,18 +50,33 @@ export class ResponseCategoryService {
   }
 
 
+  /**
+   * 질문의 카테고리별 점수를 계산한다.
+   * @param input -UpdateResponseCategoryInput
+   * @returns ResponseCategory[]
+   */
   async sumCategoryScore(input: UpdateResponseCategoryInput) {
     await this.validResponse(input.responseId);
     await this.validSurvey(input.surveyId);
     const eachResponses = await this.findEachResponseWithResponseId(input.responseId);
     const questions = await this.getQuestionWithSurveyId(input.surveyId);
 
-    const questionContents = new Map(); //{questionContent: questionId}
+
+    /**
+     * @type {Map<questionContent questionId>} -질문 제목 목록
+     * @property {string} questionContent -질문제목
+     * @property {int} questionId -질문아이디
+    */
+    const questionContents = new Map();
     questions.map(question => {
       questionContents.set(question.questionContent, question)
     })
 
-    //{categoryName: total score}
+    /**
+     * @type {Map<categoryName, totalScore>} 
+     * @property {EachResponse[]} eachResponses 세부 응답 목록
+     * @property {string} questionContents 질문 제목 목록
+     * */
     const responseCategoryMap = this.setScore(eachResponses, questionContents);
 
     const responseCategory = await this.entityManager.createQueryBuilder(ResponseCategory, 'responseCategory')
@@ -83,6 +98,12 @@ export class ResponseCategoryService {
     return responseCategory;
   }
 
+  /**
+   * 세부 응답의 점수를 각 항목의 점수에 더한다.
+   * @param eachResponses -세부 응답 목록
+   * @param questionContents -질문 제목 목록
+   * @returns responseCategoryMap
+   */
   async setScore(eachResponses: EachResponse[], questionContents: any) {
     const responseCategoryMap = new Map();
     eachResponses.map(async eachResponse => {
