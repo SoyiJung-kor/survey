@@ -1,17 +1,18 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Category } from '../category/entities/category.entity';
 import { CreateCategoryScoreInput } from './dto/create-category-score.input';
 import { UpdateCategoryScoreInput } from './dto/update-category-score.input';
 import { CategoryScore } from './entities/category-score.entity';
+import { CategoryScoreRepository } from './repositories/category-score.repository';
 
 @Injectable()
 export class CategoryScoreService {
   constructor(
     @InjectRepository(CategoryScore)
-    private categoryScoreRepository: Repository<CategoryScore>,
+    private readonly categoryScoreRepository: CategoryScoreRepository,
     private entityManager: EntityManager,
   ) { }
 
