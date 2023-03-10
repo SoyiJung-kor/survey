@@ -36,7 +36,7 @@ export class QuestionResolver {
     @Args('surveyId', { type: () => Int }) surveyId: number,
     @Args('categoryName', { type: () => String }) categoryName: string,
   ) {
-    return this.questionService.findQuestionContainCategory(
+    return this.questionService.findQuestionWithCategory(
       surveyId,
       categoryName,
     );

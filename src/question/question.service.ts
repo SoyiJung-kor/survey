@@ -1,19 +1,20 @@
 
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Answer } from '../answer/entities/answer.entity';
 import { QuestionCategory } from '../question-category/entities/question-category.entity';
 import { Survey } from '../survey/entities/survey.entity';
 import { CreateQuestionInput } from './dto/create-question.input';
 import { UpdateQuestionInput } from './dto/update-question.input';
 import { Question } from './entities/question.entity';
+import { QuestionRepository } from './repositories/question.repository';
 
 @Injectable()
 export class QuestionService {
   constructor(
     @InjectRepository(Question)
-    private questionRepository: Repository<Question>,
+    private readonly questionRepository: QuestionRepository,
     private entityManager: EntityManager,
   ) { }
 
@@ -45,19 +46,11 @@ export class QuestionService {
    * @param categoryName 항목 이름
    * @returns [Question]
    */
-  async findQuestionContainCategory(
+  async findQuestionWithCategory(
     surveyId: number,
     categoryName: string,
   ) {
-    const question = await this.questionRepository
-      .createQueryBuilder('question')
-      .leftJoinAndSelect('question.questionCategories', 'question_category')
-      .where(`question_category.categoryName = '${categoryName}'`)
-      .andWhere(`question.surveyId = ${surveyId}`)
-      .getMany();
-
-    this.logger.debug(question);
-    return question;
+    return this.questionRepository.findQuestionWithCategory(surveyId, categoryName);
   }
 
   /**
