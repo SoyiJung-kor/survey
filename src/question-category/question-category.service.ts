@@ -1,17 +1,18 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Question } from '../question/entities/question.entity';
 import { CreateQuestionCategoryInput } from './dto/create-question-category.input';
 import { UpdateQuestionCategoryInput } from './dto/update-question-category.input';
 import { QuestionCategory } from './entities/question-category.entity';
+import { QuestionCategoryRepository } from './repositories/question-category.repository';
 
 @Injectable()
 export class QuestionCategoryService {
   constructor(
     @InjectRepository(QuestionCategory)
-    private questionCategoryRepository: Repository<QuestionCategory>,
+    private readonly questionCategoryRepository: QuestionCategoryRepository,
     private entityManager: EntityManager,
   ) { }
 
