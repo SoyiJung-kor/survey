@@ -4,9 +4,10 @@ import { Question } from "../entities/question.entity";
 export interface QuestionRepository extends Repository<Question> {
     this: Repository<Question>
     findQuestionWithCategory(surveyId: number, categoryName: string): Promise<Question[]>;
+    findQuestionWithSurvey(surveyId: number): Promise<Question[]>;
 }
 
-type CustomQuestionRepository = Pick<QuestionRepository, 'findQuestionWithCategory'>;
+type CustomQuestionRepository = Pick<QuestionRepository, 'findQuestionWithCategory' | 'findQuestionWithSurvey'>;
 
 export const CustomQuestionRepositoryMethods: CustomQuestionRepository = {
     /**
@@ -26,5 +27,13 @@ export const CustomQuestionRepositoryMethods: CustomQuestionRepository = {
             .andWhere(`question.surveyId = ${surveyId}`)
             .getMany();
         return question;
+    },
+
+    async findQuestionWithSurvey(surveyId: number) {
+        return await this.questionRepository
+            .createQueryBuilder('question')
+            .innerJoinAndSelect('question.questionCategories', 'questionCategory')
+            .where(`question.surveyId = ${surveyId}`)
+            .getMany();
     }
 }

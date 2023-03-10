@@ -1,7 +1,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { CategoryScore } from '../category-score/entities/category-score.entity';
 import { Category } from '../category/entities/category.entity';
 import { EachResponse } from '../each-response/entities/each-response.entity';
@@ -12,12 +12,13 @@ import { Survey } from '../survey/entities/survey.entity';
 import { CreateResponseCategoryInput } from './dto/create-response-category.input';
 import { UpdateResponseCategoryInput } from './dto/update-response-category.input';
 import { ResponseCategory } from './entities/response-category.entity';
+import { ResponseCategoryRepository } from './repositories/response-category.repository';
 
 @Injectable()
 export class ResponseCategoryService {
   constructor(
     @InjectRepository(ResponseCategory)
-    private responseCategoryRepository: Repository<ResponseCategory>,
+    private readonly responseCategoryRepository: ResponseCategoryRepository,
     private entityManager: EntityManager,
   ) { }
   async create(
@@ -29,14 +30,17 @@ export class ResponseCategoryService {
     const categoryResponse = new Array<ResponseCategory>();
     categories.forEach(async category => {
       const responseCategory = this.responseCategoryRepository.create(input);
-      responseCategory.categoryName = category.categoryName;
-      responseCategory.sumCategoryScore = 0;
-      responseCategory.response = response;
-      categoryResponse.push(responseCategory);
+      categoryResponse.push(this.bindCategory(responseCategory, category, response));
     });
     return this.responseCategoryRepository.save(categoryResponse);
   }
 
+  bindCategory(responseCategory: ResponseCategory, category: Category, response: Response) {
+    responseCategory.categoryName = category.categoryName;
+    responseCategory.sumCategoryScore = 0;
+    responseCategory.response = response;
+    return responseCategory;
+  }
   findAll() {
     return this.responseCategoryRepository.find();
   }
