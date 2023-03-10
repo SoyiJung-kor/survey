@@ -11,7 +11,7 @@ type CustomSurveyRepository = Pick<SurveyRepository, 'findSurveyWithQuestion' | 
 
 export const CustomSurveyRepositoryMethods: CustomSurveyRepository = {
     async findSurveyWithQuestion(questionId: number) {
-        return await this.surveys
+        return await this.surveyReposytory
             .createQueryBuilder()
             .innerJoinAndSelect(`survey`, `question.surveyId`)
             .where(`question.id = ${questionId}`)
@@ -20,7 +20,8 @@ export const CustomSurveyRepositoryMethods: CustomSurveyRepository = {
     },
 
     async findSurveyWithCategory(categoryName: string) {
-        return this.surveyRepository.createQueryBuilder()
+        return this.surveyReposytory
+            .createQueryBuilder()
             .innerJoinAndSelect(`survey.categories`, `category`)
             .where(`category.catogoryName = ${categoryName}`)
             .getMany();

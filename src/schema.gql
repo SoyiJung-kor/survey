@@ -82,6 +82,7 @@ type Query {
   findAllSurveys: [Survey!]!
   findSurvey(surveyId: Int!): Survey!
   findSurveyWithCategory(categoryName: String!): Survey!
+  findSurveyWithQuestion(questionId: Int!): Survey!
   findAllQuestions: [Question!]!
   findQuestion(questionId: Int!): Question!
   findQuestionContainCategory(surveyId: Int!, categoryName: String!): [Question!]!

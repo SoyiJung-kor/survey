@@ -36,6 +36,15 @@ export class SurveyResolver {
     return this.surveyService.findSurveyWithCategory(categoryName);
   }
 
+  /**
+   * @description 질문이 포함된 설문 조회
+   * @param questionId 질문 아이디
+   * @returns Survey
+   */
+  @Query(() => Survey)
+  findSurveyWithQuestion(@Args('questionId', { type: () => Int }) questionId: number) {
+    return this.surveyService.findSurveyWithQuestion(questionId);
+  }
 
   @Mutation(() => Survey)
   updateSurvey(

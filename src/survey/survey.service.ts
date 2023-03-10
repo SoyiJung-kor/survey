@@ -1,16 +1,16 @@
 
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateSurveyInput } from './dto/create-survey.input';
 import { UpdateSurveyInput } from './dto/update-survey.input';
 import { Survey } from './entities/survey.entity';
+import { SurveyRepository } from './repositories/survey.repository';
 
 @Injectable()
 export class SurveyService {
   constructor(
     @InjectRepository(Survey)
-    private surveyRepository: Repository<Survey>,
+    private readonly surveyRepository: SurveyRepository,
   ) { }
 
   private readonly logger = new Logger(SurveyService.name);
@@ -34,10 +34,11 @@ export class SurveyService {
    * @returns [Survey]
    */
   findSurveyWithCategory(categoryName: string) {
-    return this.surveyRepository.createQueryBuilder()
-      .innerJoinAndSelect(`survey.categories`, `category`)
-      .where(`category.catogoryName = ${categoryName}`)
-      .getMany();
+    return this.surveyRepository.findSurveyWithCategory(categoryName);
+  }
+
+  findSurveyWithQuestion(questionId: number) {
+    return this.surveyRepository.findSurveyWithQuestion(questionId);
   }
 
   async update(input: UpdateSurveyInput) {
