@@ -1,16 +1,16 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateParticipantInput } from './dto/create-participant.input';
 import { UpdateParticipantInput } from './dto/update-participant.input';
 import { Participant } from './entities/participant.entity';
+import { ParticipantRepository } from './repositories/participant.repository';
 
 @Injectable()
 export class ParticipantService {
   constructor(
     @InjectRepository(Participant)
-    private participantRepository: Repository<Participant>,
+    private readonly participantRepository: ParticipantRepository,
   ) { }
 
   private readonly logger = new Logger(ParticipantService.name);
